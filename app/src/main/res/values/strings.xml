@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Wanda Mobile Promoter</string>
+
+    <string name="client_secret">uy90t9L5xjgiYYWrBINzqs4JvHbGvC0tE72pTWeT</string>
+    <string name="grant_type">password</string>
+    <string name="client_id">2</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="network_unavailable">Internet connection unavailable</string>
+    <string name="enter_username">Please enter your username</string>
+    <string name="enter_password">Please enter a valid password</string>
+    <string name="loading">Loading...</string>
+
+    <!-- Main Menu Options -->
+    <string name="farmer_reg">Farmer Registration</string>
+    <string name="farm_audit">Farm Audit</string>
+    <string name="order_mgmt">Order Management</string>
+    <string name="voucher_mgmt">Voucher Management</string>
+    <string name="commission_mgmt">Commission Management</string>
+
+    <!-- Commission Menu Options -->
+    <string name="check_commission">Check Commission</string>
+    <string name="request_commission">Request Commission</string>
+    <string name="commission_request_processed">Request successfully processed. You shall be notified when your commission has been processed.</string>
+
+</resources>

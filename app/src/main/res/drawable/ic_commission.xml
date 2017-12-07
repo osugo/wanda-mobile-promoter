@@ -1,0 +1,40 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:autoMirrored="true"
+    android:viewportHeight="477.665"
+    android:viewportWidth="477.665">
+    <path
+        android:fillColor="#EE964B"
+        android:pathData="M262.8,360l162.7,-28.3c11.1,-1.9 21.3,6.6 21.3,17.9l0,0c0,6.5 -3.4,12.4 -9,15.7L262.4,475.2c-4.7,3 -10.7,3.2 -15.7,0.8l-88,-44h-32v-72H262.8z" />
+    <path
+        android:fillColor="#3F3F3F"
+        android:pathData="M126.8,304h88l65.4,65.4c4.2,4.2 6.6,10 6.6,16l0,0c0,12.5 -10.1,22.6 -22.6,22.6l0,0c-6,0 -11.8,-2.4 -16,-6.6l-41.4,-41.4h-80V304" />
+    <path
+        android:fillColor="#F4D35E"
+        android:pathData="M94.8,304h32v128h-32z" />
+    <path
+        android:fillColor="#EE964B"
+        android:pathData="M22.8,304h72v128h-72z" />
+    <path
+        android:fillColor="#70C1B3"
+        android:pathData="M425.7,28.7c-38.8,-38.2 -101.7,-38.2 -140.5,0l-6.4,6.3l-6.4,-6.3c-38.8,-38.2 -101.7,-38.2 -140.5,0s-38.8,100.3 0,138.5l6.4,6.3l140.5,138.5l140.5,-138.5l6.4,-6.3C464.5,128.9 464.5,66.9 425.7,28.7z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M324.7,93.4l-80,88l-11.8,-10.8l80,-88z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M246.8,132c-13.2,0 -24,-10.8 -24,-24s10.8,-24 24,-24c13.2,0 24,10.8 24,24S260.1,132 246.8,132zM246.8,100c-4.4,0 -8,3.6 -8,8c0,4.4 3.6,8 8,8s8,-3.6 8,-8S251.2,100 246.8,100z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M310.8,180c-13.2,0 -24,-10.8 -24,-24s10.8,-24 24,-24s24,10.8 24,24S324.1,180 310.8,180zM310.8,148c-4.4,0 -8,3.6 -8,8s3.6,8 8,8s8,-3.6 8,-8S315.2,148 310.8,148z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M238.8,192h16v16h-16z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M270.8,192h16v16h-16z" />
+    <path
+        android:fillColor="#EBEBD3"
+        android:pathData="M302.8,192h16v16h-16z" />
+</vector>
