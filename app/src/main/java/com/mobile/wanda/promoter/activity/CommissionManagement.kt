@@ -99,8 +99,10 @@ class CommissionManagement : AppCompatActivity() {
         if (hideMenu) {
             recycler.visibility = View.GONE
             loadingIndicator.visibility = View.VISIBLE
+            loadingIndicator.show()
         } else {
             loadingIndicator.visibility = View.GONE
+            loadingIndicator.hide()
             commissionLayout.visibility = View.GONE
             recycler.visibility = View.VISIBLE
         }

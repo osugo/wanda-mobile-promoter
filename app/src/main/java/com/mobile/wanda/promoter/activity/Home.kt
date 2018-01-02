@@ -6,6 +6,8 @@ import android.support.v7.widget.GridLayoutManager
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.adapter.MenuAdapter
 import com.mobile.wanda.promoter.model.MenuItem
+import com.mobile.wanda.promoter.view.GridItemDecoration
+import com.mobile.wanda.promoter.view.SpacesItemDecoration
 import kotlinx.android.synthetic.main.activity_home.*
 
 class Home : AppCompatActivity() {
@@ -16,7 +18,7 @@ class Home : AppCompatActivity() {
 
         val adapter = MenuAdapter(this, getMenuOptions())
         recycler.layoutManager = GridLayoutManager(this, 2)
-//        recycler.addItemDecoration(SpacesItemDecoration(15))
+        recycler.addItemDecoration(GridItemDecoration(2, 5, false))
         recycler.adapter = adapter
     }
 
