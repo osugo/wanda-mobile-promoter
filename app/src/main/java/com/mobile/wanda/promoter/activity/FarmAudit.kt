@@ -40,7 +40,7 @@ class FarmAudit : AppCompatActivity(), View.OnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
             } else {
-                //retrieve locatoin
+                //retrieve location
                 getLocation()
             }
         } catch (e: Exception) {
