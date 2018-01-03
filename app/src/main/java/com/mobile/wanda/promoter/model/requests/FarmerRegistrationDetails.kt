@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.model
+package com.mobile.wanda.promoter.model.requests
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class FarmerRegistrationDetails(
         @SerializedName("name")
         val name: String,
-        @SerializedName("mobile-number")
+        @SerializedName("mobile_number")
         val number: String,
         @SerializedName("farmer-collection-center")
         val collectionCenter: String,

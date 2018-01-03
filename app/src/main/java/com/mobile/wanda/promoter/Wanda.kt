@@ -3,7 +3,7 @@ package com.mobile.wanda.promoter
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.mobile.wanda.promoter.model.AuthCredentials
+import com.mobile.wanda.promoter.model.responses.AuthCredentials
 import com.mobile.wanda.promoter.util.PrefUtils
 import io.realm.Realm
 import io.realm.RealmConfiguration

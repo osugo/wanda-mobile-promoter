@@ -30,6 +30,10 @@
             android:name=".activity.CommissionManagement"
             android:label="Commissions"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.FarmerRegistration"
+            android:label="@string/farmer_reg"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

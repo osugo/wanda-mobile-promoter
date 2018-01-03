@@ -1,7 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -18,6 +17,7 @@ import kotlinx.android.synthetic.main.commission.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.design.snackbar
 
 /**
  * Created by kombo on 06/12/2017.
@@ -28,6 +28,9 @@ class CommissionManagement : AppCompatActivity() {
         val TAG: String = CommissionManagement::class.java.simpleName
     }
 
+    /**
+     * EventBus listener that detect what button has been clicked and performs appropriate action
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMenuEvent(menuEvent: MenuSelectionEvent) {
         toggleViews(true)
@@ -54,6 +57,9 @@ class CommissionManagement : AppCompatActivity() {
         recycler.adapter = adapter
     }
 
+    /**
+     * Retrieve menu options
+     */
     private fun getMenuOptions(): ArrayList<String> {
         val menus = ArrayList<String>()
         menus.add(getString(R.string.check_commission))
@@ -62,6 +68,9 @@ class CommissionManagement : AppCompatActivity() {
         return menus
     }
 
+    /**
+     * Network call to check for commission
+     */
     private fun checkCommission() {
         RestClient.client.create(RestInterface::class.java).checkCommission()
                 .subscribeOn(Schedulers.io())
@@ -76,8 +85,12 @@ class CommissionManagement : AppCompatActivity() {
                 })
     }
 
+    /**
+     * Network call to request for commission
+     */
     private fun requestCommission() {
-        RestClient.client.create(RestInterface::class.java).requestCommission()
+        RestClient.client.create(RestInterface::class.java)
+                .requestCommission()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -90,28 +103,40 @@ class CommissionManagement : AppCompatActivity() {
                 })
     }
 
+    /**
+     * Show commission layout once result is received from server
+     */
     private fun showCommissionLayout() {
         loadingIndicator.visibility = View.GONE
         commissionLayout.visibility = View.VISIBLE
     }
 
+    /**
+     * Hide or show menu depending on loading state
+     */
     private fun toggleViews(hideMenu: Boolean) {
         if (hideMenu) {
             recycler.visibility = View.GONE
             loadingIndicator.visibility = View.VISIBLE
-            loadingIndicator.show()
+            loadingIndicator.smoothToShow()
         } else {
             loadingIndicator.visibility = View.GONE
-            loadingIndicator.hide()
+            loadingIndicator.smoothToHide()
             commissionLayout.visibility = View.GONE
             recycler.visibility = View.VISIBLE
         }
     }
 
+    /**
+     * Display message in a SnackBar on bottom of screen
+     */
     private fun showSnackBar(message: String) {
-        Snackbar.make(parentLayout, message, Snackbar.LENGTH_SHORT).show()
+        snackbar(parentLayout, message)
     }
 
+    /**
+     * Listener for hardware back button press
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
@@ -124,11 +149,17 @@ class CommissionManagement : AppCompatActivity() {
         }
     }
 
+    /**
+     * Register the EventBus when activity starts
+     */
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
 
+    /**
+     * Unregister the EventBus when activity is stopped
+     */
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()

@@ -1,6 +1,8 @@
 package com.mobile.wanda.promoter.rest
 
-import com.mobile.wanda.promoter.model.*
+import com.mobile.wanda.promoter.model.Order
+import com.mobile.wanda.promoter.model.requests.*
+import com.mobile.wanda.promoter.model.responses.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import retrofit2.http.Body
@@ -17,21 +19,19 @@ interface RestInterface {
     @get:GET("vouchers/balance")
     val voucherBalance: Observable<VoucherBalance>
 
-    @POST("http://35.176.127.140/wanda-mobile/oauth/token")
+    @POST("/wanda-mobile/oauth/token")
     fun login(@Body loginCredentials: LoginCredentials): Observable<AuthCredentials>
 
-    @POST("/farmers/registration") //TODO need to know format of payload
-    fun registerFarmer(@Body registrationDetails: FarmerRegistrationDetails): Completable
+    @POST("farmers/register")
+    fun registerFarmer(@Body registrationDetails: FarmerRegistrationDetails): Observable<FarmerRegistrationResponse>
 
-    //TODO need to know payload to add farm and return type and the likes
-
-    @GET("/products/categories?search={searchTerm}")
+    @GET("products/categories?search={searchTerm}")
     fun searchProductCategories(@Path("searchTerm") searchTerm: String): Observable<ProductResults>
 
-    @GET("/products/products?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
+    @GET("products/products?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
     fun searchProducts(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
 
-    @GET("/products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
+    @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
     fun getProductVariations(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
 
     @POST("farmers/orders/create")  //TODO this returns a 404. Need to check on this

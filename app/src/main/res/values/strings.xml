@@ -28,5 +28,6 @@
     <string name="ward">Ward</string>
     <string name="collection_center">Collection Center</string>
     <string name="submit">Submit</string>
+    <string name="farmer_reg_successful">Farmer successfully registered.</string>
 
 </resources>

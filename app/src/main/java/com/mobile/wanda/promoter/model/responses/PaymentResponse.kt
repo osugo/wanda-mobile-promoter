@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.model
+package com.mobile.wanda.promoter.model.responses
 
 import com.google.gson.annotations.SerializedName
 

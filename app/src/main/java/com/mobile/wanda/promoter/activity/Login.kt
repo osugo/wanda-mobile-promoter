@@ -10,8 +10,8 @@ import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
-import com.mobile.wanda.promoter.model.LoginCredentials
-import com.mobile.wanda.promoter.rest.RestClient
+import com.mobile.wanda.promoter.model.requests.LoginCredentials
+import com.mobile.wanda.promoter.rest.HeaderlessRestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import com.mobile.wanda.promoter.util.PrefUtils
@@ -91,7 +91,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
      */
     private fun signInUser(username: String, password: String) {
         //build RestClient here
-        RestClient.headerLessClient.create(RestInterface::class.java)
+        HeaderlessRestClient.client.create(RestInterface::class.java)
                 .login(LoginCredentials(getString(R.string.grant_type), getString(R.string.client_id), getString(R.string.client_secret),
                         username, password))
                 .subscribeOn(Schedulers.io())
@@ -120,8 +120,6 @@ class Login : AppCompatActivity(), View.OnClickListener {
     private fun showProgressDialog() {
         progressDialog = ProgressDialog(this)
         progressDialog.isIndeterminate = true
-        progressDialog.setCancelable(false)
-        progressDialog.setCanceledOnTouchOutside(false)
         progressDialog.setMessage(getString(R.string.loading))
         progressDialog.show()
     }
