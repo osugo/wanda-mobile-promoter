@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
 data class FarmerRegistrationDetails(
         @SerializedName("name")
         val name: String,
-        @SerializedName("mobile_number")
+        @SerializedName("mobile-number")
         val number: String,
-        @SerializedName("farmer_collection_center")
+        @SerializedName("farmer-collection-center")
         val collectionCenter: String,
-        @SerializedName("farmer_ward")
+        @SerializedName("farmer-ward")
         val farmerWard: String
 )
