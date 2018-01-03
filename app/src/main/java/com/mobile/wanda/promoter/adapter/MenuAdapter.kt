@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.CommissionManagement
+import com.mobile.wanda.promoter.activity.FarmAudit
 import com.mobile.wanda.promoter.activity.FarmerRegistration
 import com.mobile.wanda.promoter.model.MenuItem
 import com.mobile.wanda.promoter.view.SquareImageView
@@ -60,6 +61,7 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
                 when (menu.title) {
                     context.getString(R.string.commission_mgmt) -> context.startActivity(Intent(context, CommissionManagement::class.java))
                     context.getString(R.string.farmer_reg) -> context.startActivity(Intent(context, FarmerRegistration::class.java))
+                    context.getString(R.string.farm_audit) -> context.startActivity(Intent(context, FarmAudit::class.java))
                 }
             }
         }

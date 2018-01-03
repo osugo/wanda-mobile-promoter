@@ -1,10 +1,13 @@
 package com.mobile.wanda.promoter.activity
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -18,6 +21,8 @@ import com.mobile.wanda.promoter.util.PrefUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
+import org.jetbrains.anko.design.snackbar
+
 
 /**
  * Created by kombo on 29/11/2017.
@@ -32,6 +37,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         val TAG: String = Login::class.java.simpleName
+        val REQUEST_CODE_PERMISSION = 23
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +46,35 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
         login.setOnClickListener(this)
 
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE_PERMISSION)
+            } else {
+                //proceed to login
+               login()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun login(){
         Handler().postDelayed({
             showProgressDialog() //indicate to the user that login process has started
             signInUser(username.text.toString(), password.text.toString())
         }, 200)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_PERMISSION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                login()
+            } else {
+                snackbar(parentLayout, "Location permission denied.")
+                login()
+            }
+        }
     }
 
     /**
