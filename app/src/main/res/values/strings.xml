@@ -23,5 +23,10 @@
     <string name="check_commission">Check Commission</string>
     <string name="request_commission">Request Commission</string>
     <string name="commission_request_processed">Request successfully processed. You shall be notified when your commission has been processed.</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="ward">Ward</string>
+    <string name="collection_center">Collection Center</string>
+    <string name="submit">Submit</string>
 
 </resources>
