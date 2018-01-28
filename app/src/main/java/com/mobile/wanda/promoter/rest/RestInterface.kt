@@ -48,4 +48,10 @@ interface RestInterface {
 
     @POST("commissions/request-payment")
     fun requestCommission(): Observable<CommissionRequestResponse>
+
+    @GET("lookup/farmer?search")
+    fun getFarmers(): Observable<FarmerList>
+
+    @GET("lookup/ward?search")
+    fun getWards(): Observable<WardList>
 }
