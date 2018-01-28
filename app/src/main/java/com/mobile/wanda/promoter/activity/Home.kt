@@ -1,13 +1,14 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.adapter.MenuAdapter
 import com.mobile.wanda.promoter.model.MenuItem
+import com.mobile.wanda.promoter.service.BackgroundDataLoaderService
 import com.mobile.wanda.promoter.view.GridItemDecoration
-import com.mobile.wanda.promoter.view.SpacesItemDecoration
 import kotlinx.android.synthetic.main.activity_home.*
 
 class Home : AppCompatActivity() {
@@ -20,8 +21,14 @@ class Home : AppCompatActivity() {
         recycler.layoutManager = GridLayoutManager(this, 2)
         recycler.addItemDecoration(GridItemDecoration(2, 5, false))
         recycler.adapter = adapter
+
+        loadWards()
     }
 
+    private fun loadWards() {
+        startService(Intent(this, BackgroundDataLoaderService::class.java).setAction(BackgroundDataLoaderService.GET_WARDS))
+    }
+    
     /**
      * Create the list of menu options since they are relatively static
      */

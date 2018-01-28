@@ -39,6 +39,10 @@
             android:name=".activity.FarmAudit"
             android:label="@string/farm_audit"
             android:launchMode="singleTask" />
+
+        <service
+            android:name=".service.BackgroundDataLoaderService"
+            android:exported="false" />
     </application>
 
 </manifest>

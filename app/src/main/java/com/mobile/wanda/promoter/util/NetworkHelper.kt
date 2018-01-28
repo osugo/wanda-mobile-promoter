@@ -18,7 +18,7 @@ object NetworkHelper {
      * @param context
      * @return
      */
-    fun getNetworkInfo(context: Context): NetworkInfo? {
+    private fun getNetworkInfo(context: Context): NetworkInfo? {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return connectivityManager.activeNetworkInfo
     }
