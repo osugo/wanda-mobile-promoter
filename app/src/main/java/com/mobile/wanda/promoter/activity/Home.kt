@@ -28,7 +28,7 @@ class Home : AppCompatActivity() {
     private fun loadWards() {
         startService(Intent(this, BackgroundDataLoaderService::class.java).setAction(BackgroundDataLoaderService.GET_WARDS))
     }
-    
+
     /**
      * Create the list of menu options since they are relatively static
      */

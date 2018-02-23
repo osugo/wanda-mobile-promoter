@@ -19,9 +19,11 @@ import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import com.mobile.wanda.promoter.util.PrefUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
 import org.jetbrains.anko.design.snackbar
+import org.jetbrains.anko.indeterminateProgressDialog
 
 
 /**
@@ -33,7 +35,12 @@ import org.jetbrains.anko.design.snackbar
  */
 class Login : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var progressDialog: ProgressDialog
+    private var dialog: ProgressDialog? = null
+    private val disposable = CompositeDisposable()
+
+    private val headlessClient by lazy {
+        HeaderlessRestClient.client.create(RestInterface::class.java)
+    }
 
     companion object {
         val TAG: String = Login::class.java.simpleName
@@ -51,16 +58,16 @@ class Login : AppCompatActivity(), View.OnClickListener {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
             } else {
                 //proceed to login
-               login()
+                login()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun login(){
+    private fun login() {
         Handler().postDelayed({
-            showProgressDialog() //indicate to the user that login process has started
+            dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
             signInUser(username.text.toString(), password.text.toString())
         }, 200)
     }
@@ -96,7 +103,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
             //username and password fields not empty, continue to login
             if (username.text.isNotEmpty() && password.text.isNotEmpty()) {
-                showProgressDialog() //indicate to the user that login process has started
+                dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
                 signInUser(username.text.toString(), password.text.toString())
             }
 
@@ -121,9 +128,9 @@ class Login : AppCompatActivity(), View.OnClickListener {
      */
     private fun signInUser(username: String, password: String) {
         //build RestClient here
-        HeaderlessRestClient.client.create(RestInterface::class.java)
-                .login(LoginCredentials(getString(R.string.grant_type), getString(R.string.client_id), getString(R.string.client_secret),
-                        username, password))
+        disposable.add(
+                headlessClient.login(LoginCredentials(getString(R.string.grant_type), getString(R.string.client_id), getString(R.string.client_secret),
+                username, password))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -142,23 +149,19 @@ class Login : AppCompatActivity(), View.OnClickListener {
                     //show user error message
                     Log.e(TAG, it.localizedMessage, it)
                 })
-    }
-
-    /**
-     * Show progress dialog to indicate login process has begun
-     */
-    private fun showProgressDialog() {
-        progressDialog = ProgressDialog(this)
-        progressDialog.isIndeterminate = true
-        progressDialog.setMessage(getString(R.string.loading))
-        progressDialog.show()
+        )
     }
 
     /**
      * Hide progress dialog on completion of login action
      */
     private fun hideProgressDialog() {
-        if (progressDialog.isShowing)
-            progressDialog.dismiss()
+        dialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        disposable.dispose()
     }
 }
