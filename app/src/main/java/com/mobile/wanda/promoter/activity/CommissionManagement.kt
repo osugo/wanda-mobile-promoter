@@ -12,6 +12,7 @@ import com.mobile.wanda.promoter.event.MenuSelectionEvent
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.commission.*
 import org.greenrobot.eventbus.EventBus
@@ -23,6 +24,12 @@ import org.jetbrains.anko.design.snackbar
  * Created by kombo on 06/12/2017.
  */
 class CommissionManagement : AppCompatActivity() {
+
+    private val disposable = CompositeDisposable()
+
+    private val restInterface by lazy {
+        RestClient.client.create(RestInterface::class.java)
+    }
 
     companion object {
         val TAG: String = CommissionManagement::class.java.simpleName
@@ -72,25 +79,27 @@ class CommissionManagement : AppCompatActivity() {
      * Network call to check for commission
      */
     private fun checkCommission() {
-        RestClient.client.create(RestInterface::class.java).checkCommission()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    showCommissionLayout()
-                    commissionIcon.setImageResource(R.drawable.ic_get_money)
-                    commissionResponse.text = "Your commission is\n ${it.commission} KES"
-                }, {
-                    showSnackBar(it.localizedMessage)
-                    Log.e(TAG, it.localizedMessage, it)
-                })
+        disposable.add(
+                restInterface.checkCommission()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            showCommissionLayout()
+                            commissionIcon.setImageResource(R.drawable.ic_get_money)
+                            commissionResponse.text = "Your commission is\n ${it.commission} KES"
+                        }, {
+                            showSnackBar(it.localizedMessage)
+                            Log.e(TAG, it.localizedMessage, it)
+                        })
+        )
     }
 
     /**
      * Network call to request for commission
      */
     private fun requestCommission() {
-        RestClient.client.create(RestInterface::class.java)
-                .requestCommission()
+        disposable.add(
+                restInterface.requestCommission()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -101,6 +110,7 @@ class CommissionManagement : AppCompatActivity() {
                     showSnackBar(it.localizedMessage)
                     Log.e(TAG, it.localizedMessage, it)
                 })
+        )
     }
 
     /**
@@ -143,9 +153,7 @@ class CommissionManagement : AppCompatActivity() {
                 onBackPressed()
                 true
             }
-            else -> {
-                false
-            }
+            else -> false
         }
     }
 
@@ -163,5 +171,11 @@ class CommissionManagement : AppCompatActivity() {
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        disposable.dispose()
     }
 }

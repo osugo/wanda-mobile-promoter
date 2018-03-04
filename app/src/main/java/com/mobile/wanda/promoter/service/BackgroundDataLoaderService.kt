@@ -29,12 +29,12 @@ class BackgroundDataLoaderService: IntentService(TAG) {
             RestClient.client.create(RestInterface::class.java)
                     .getWards()
                     .subscribeOn(Schedulers.io())
-                    .subscribe({  wardList ->
-                            val realm = Realm.getInstance(Wanda.INSTANCE.realmConfig())
-                            realm.use {
-                                realm.executeTransaction { it.copyToRealmOrUpdate(wardList) }
-                                realm.close()
+                    .subscribe({ wardList ->
+                        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+                            it.executeTransaction {
+                                it.copyToRealmOrUpdate(wardList)
                             }
+                        }
                     }, {
                         Log.e(TAG, it.localizedMessage, it)
                     })

@@ -4,14 +4,14 @@
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
     android:padding="20dp">
 
     <com.mobile.wanda.promoter.view.SquareImageView
         android:id="@+id/icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         qpp:srcCompat="@drawable/ic_farmer" />
 

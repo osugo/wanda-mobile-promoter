@@ -2,29 +2,45 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
+import com.mobile.wanda.promoter.model.requests.WardList
 import com.mobile.wanda.promoter.model.responses.FarmerRegistrationResponse
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.rest.RetrofitException
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
 import kotlinx.android.synthetic.main.farmer_registration_layout.*
+import org.apache.commons.lang3.text.WordUtils
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.yesButton
 
+
 /**
  * Created by kombo on 03/01/2018.
  */
 class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
+
+    private val disposable = CompositeDisposable()
+
+    private val restInterface by lazy {
+        RestClient.client.create(RestInterface::class.java)
+    }
 
     companion object {
         val TAG: String = FarmerRegistration::class.java.simpleName
@@ -38,6 +54,28 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setHomeButtonEnabled(true)
 
         submit.setOnClickListener(this)
+
+        val adapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_item, getWards())
+        ward.threshold = 1
+        ward.setAdapter(adapter)
+    }
+
+    private fun getWards(): ArrayList<String> {
+        val items = ArrayList<String>()
+
+        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+            val wardList = it.where(WardList::class.java).findFirst()
+
+            wardList?.let {
+                if(it.wards.isNotEmpty()){
+                    it.wards.forEach({
+                        items.add(WordUtils.capitalizeFully(it.name!!))
+                    })
+                }
+            }
+        }
+
+        return items
     }
 
     /**
@@ -77,18 +115,19 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
         if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter)) {
             val dialog = indeterminateProgressDialog("Please wait")
 
-            RestClient.client.create(RestInterface::class.java)
-                    .registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), farmerWard.toString()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        dialog.dismiss()
-                        showMessage(it)
-                    }, {
-                        dialog.dismiss()
-                        Log.e(TAG, it.localizedMessage, it)
-                        showSnackbar(ErrorHandler.getExceptionMessage(it as RetrofitException))
-                    })
+            disposable.add(
+                    restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), farmerWard.toString()))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                dialog.dismiss()
+                                showMessage(it)
+                            }, {
+                                dialog.dismiss()
+                                Log.e(TAG, it.localizedMessage, it)
+                                showSnackbar(ErrorHandler.getExceptionMessage(it as RetrofitException))
+                            })
+            )
         }
     }
 
@@ -145,6 +184,23 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * Override lambda implementation to give better control over actions
+     */
+    private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+        this.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                afterTextChanged.invoke(editable.toString())
+            }
+        })
+    }
+
+    /**
      * Listener for hardware back button press
      */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -155,5 +211,11 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
             }
             else -> false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        disposable.dispose()
     }
 }
