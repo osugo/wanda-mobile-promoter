@@ -2,16 +2,12 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.EditText
+import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.adapter.WardAdapter
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
 import com.mobile.wanda.promoter.model.requests.WardList
@@ -24,17 +20,21 @@ import com.mobile.wanda.promoter.rest.RetrofitException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.realm.Case
 import io.realm.Realm
-import io.realm.RealmList
 import kotlinx.android.synthetic.main.farmer_registration_layout.*
-import org.jetbrains.anko.*
+import org.apache.commons.lang3.text.WordUtils
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.design.snackbar
+import org.jetbrains.anko.indeterminateProgressDialog
+import org.jetbrains.anko.yesButton
 
 
 /**
  * Created by kombo on 03/01/2018.
  */
-class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemClickListener, AnkoLogger {
+class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger {
 
     private val disposable = CompositeDisposable()
 
@@ -55,21 +55,22 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterVie
 
         submit.setOnClickListener(this)
 
-        val adapter = WardAdapter(this, getWards())
+        val adapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_item, getWards())
         ward.threshold = 1
         ward.setAdapter(adapter)
-        ward.onItemClickListener = this
     }
 
-    private fun getWards(): RealmList<Ward> {
-        val items = RealmList<Ward>()
+    private fun getWards(): ArrayList<String> {
+        val items = ArrayList<String>()
 
         Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
             val wardList = it.where(WardList::class.java).findFirst()
 
             wardList?.let {
                 if(it.wards.isNotEmpty()){
-                    items.addAll(it.wards)
+                    it.wards.forEach({
+                        items.add(WordUtils.capitalizeFully(it.name!!))
+                    })
                 }
             }
         }
@@ -77,18 +78,31 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterVie
         return items
     }
 
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val item = parent?.getItemAtPosition(position) as Ward
+    /**
+     * Easier to work backwards from name to obtain ward
+     */
+    private fun getWard(name: String): Ward? {
+        Log.e(TAG, "Searching for $name")
 
-        ward.setText(item.name)
+        var ward: Ward? = null
 
-        debug("${item.name} with ID: ${item.id}")
+        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+            val result = it.where(Ward::class.java).equalTo("name", name, Case.INSENSITIVE).findFirst()
+
+            if(result != null){
+                ward = it.copyFromRealm(result)
+            }
+        }
+
+        return ward
     }
 
     /**
      * Click listener for @Submit button
      */
     override fun onClick(v: View?) {
+        Log.e(TAG,"Ward is ${getWard(ward.text.toString())?.name} with ID: ${getWard(ward.text.toString())?.id}")
+
         val name = farmerName.text
         val phone = phoneNumber.text
         val farmerWard = ward.text
@@ -117,6 +131,8 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterVie
             showSnackbar("Please enter a valid collection center")
             return
         }
+
+        Log.e(TAG,"Ward is ${getWard(farmerWard.toString())?.name} with ID: ${getWard(farmerWard.toString())?.id}")
 
         //send details to server for processing
         if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter)) {
@@ -188,23 +204,6 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterVie
      */
     private fun showSnackbar(message: String) {
         snackbar(parentLayout, message)
-    }
-
-    /**
-     * Override lambda implementation to give better control over actions
-     */
-    private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-        this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                afterTextChanged.invoke(editable.toString())
-            }
-        })
     }
 
     /**
