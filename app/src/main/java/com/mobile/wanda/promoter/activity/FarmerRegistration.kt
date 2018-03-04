@@ -7,14 +7,16 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.AdapterView
 import android.widget.EditText
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.adapter.WardAdapter
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
 import com.mobile.wanda.promoter.model.requests.WardList
 import com.mobile.wanda.promoter.model.responses.FarmerRegistrationResponse
+import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
@@ -23,18 +25,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import io.realm.RealmList
 import kotlinx.android.synthetic.main.farmer_registration_layout.*
-import org.apache.commons.lang3.text.WordUtils
-import org.jetbrains.anko.alert
+import org.jetbrains.anko.*
 import org.jetbrains.anko.design.snackbar
-import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.yesButton
 
 
 /**
  * Created by kombo on 03/01/2018.
  */
-class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
+class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemClickListener, AnkoLogger {
 
     private val disposable = CompositeDisposable()
 
@@ -55,27 +55,34 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener {
 
         submit.setOnClickListener(this)
 
-        val adapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_item, getWards())
+        val adapter = WardAdapter(this, getWards())
         ward.threshold = 1
         ward.setAdapter(adapter)
+        ward.onItemClickListener = this
     }
 
-    private fun getWards(): ArrayList<String> {
-        val items = ArrayList<String>()
+    private fun getWards(): RealmList<Ward> {
+        val items = RealmList<Ward>()
 
         Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
             val wardList = it.where(WardList::class.java).findFirst()
 
             wardList?.let {
                 if(it.wards.isNotEmpty()){
-                    it.wards.forEach({
-                        items.add(WordUtils.capitalizeFully(it.name!!))
-                    })
+                    items.addAll(it.wards)
                 }
             }
         }
 
         return items
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val item = parent?.getItemAtPosition(position) as Ward
+
+        ward.setText(item.name)
+
+        debug("${item.name} with ID: ${item.id}")
     }
 
     /**
