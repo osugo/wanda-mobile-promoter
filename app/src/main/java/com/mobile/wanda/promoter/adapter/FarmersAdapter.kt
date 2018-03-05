@@ -14,23 +14,37 @@ import io.realm.Realm
 /**
  * Created by kombo on 04/03/2018.
  */
-class FarmersAdapter(context: Context, realm: Realm, filterColumnName: String) :
+class FarmersAdapter(context: Context, realm: Realm, filterColumnName: String, private val clickListener: ClickListener) :
         RealmSearchAdapter<Farmer, FarmersAdapter.ViewHolder>(context, realm, filterColumnName) {
 
     override fun onBindRealmViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItem(realmResults[position]!!)
+        holder?.bindItem(realmResults[position]!!, clickListener)
     }
 
     override fun onCreateRealmViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.farmer_layout_item, parent, false))
     }
 
-    inner class ViewHolder(itemView: View) : RealmSearchViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RealmSearchViewHolder(itemView), View.OnClickListener {
 
-        fun bindItem(farmer: Farmer) {
+        override fun onClick(v: View?) {
+            clickListener?.let {
+                it.onItemClicked(realmResults[adapterPosition]!!)
+            }
+        }
+
+        private var clickListener: ClickListener? = null
+
+        fun bindItem(farmer: Farmer, clickListener: ClickListener) {
             val name = itemView.findViewById(R.id.name) as TextView
 
             name.text = farmer.name
+            this.clickListener = clickListener
         }
+
+    }
+
+    interface ClickListener {
+        fun onItemClicked(farmer: Farmer)
     }
 }

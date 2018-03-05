@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -11,6 +12,7 @@ import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.FarmersAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.requests.FarmerList
+import com.mobile.wanda.promoter.model.responses.Farmer
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
@@ -34,6 +36,7 @@ class FarmersList : Fragment() {
 
     private val disposable = CompositeDisposable()
     private var farmersAdapter: FarmersAdapter? = null
+    private var callback: SelectionListener? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -113,7 +116,11 @@ class FarmersList : Fragment() {
             val farmersList = realm.where(FarmerList::class.java).findFirst()
 
             if (farmersList?.farmers!!.isNotEmpty()) {
-                farmersAdapter = FarmersAdapter(activity, realm, "name")
+                farmersAdapter = FarmersAdapter(activity, realm, "name", object : FarmersAdapter.ClickListener {
+                    override fun onItemClicked(farmer: Farmer) {
+                        callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
+                    }
+                })
                 farmerSearchView.setAdapter(farmersAdapter)
             }
         }
@@ -139,10 +146,24 @@ class FarmersList : Fragment() {
         super.onStop()
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        try {
+            callback = context as SelectionListener
+        } catch (c: ClassCastException){
+            throw ClassCastException(String.format("%s must implement SelectionListener", context.toString()))
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         disposable.dispose()
         realm?.close()
+    }
+
+    interface SelectionListener {
+        fun onFarmerSelected(id: Long, name: String)
     }
 }
