@@ -25,6 +25,9 @@ interface RestInterface {
     @POST("farmers/register")
     fun registerFarmer(@Body registrationDetails: FarmerRegistrationDetails): Observable<FarmerRegistrationResponse>
 
+    @POST("farmers/add-farm")
+    fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmAuditResponse>
+
     @GET("products/categories?search={searchTerm}")
     fun searchProductCategories(@Path("searchTerm") searchTerm: String): Observable<ProductResults>
 

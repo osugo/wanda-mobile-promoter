@@ -53,7 +53,7 @@ object PrefUtils {
     fun putString(key: String, value: String) {
         val editor = PreferenceManager.getDefaultSharedPreferences(Wanda.INSTANCE).edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     fun remove(key: String) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import co.moonmonkeylabs.realmsearchview.RealmSearchAdapter
 import co.moonmonkeylabs.realmsearchview.RealmSearchViewHolder
@@ -36,10 +37,13 @@ class FarmersAdapter(context: Context, realm: Realm, filterColumnName: String, p
         private var clickListener: ClickListener? = null
 
         fun bindItem(farmer: Farmer, clickListener: ClickListener) {
+            this.clickListener = clickListener
+
             val name = itemView.findViewById(R.id.name) as TextView
+            val layout = itemView.findViewById<LinearLayout>(R.id.layout)
 
             name.text = farmer.name
-            this.clickListener = clickListener
+            layout.setOnClickListener(this)
         }
 
     }

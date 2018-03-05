@@ -51,12 +51,13 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
-        alert(errorEvent.message, null) {
-            yesButton {
-                it.dismiss()
-                finish()
-            }
-        }.show()
+        if (!isFinishing)
+            alert(errorEvent.message, null) {
+                yesButton {
+                    it.dismiss()
+                    finish()
+                }
+            }.show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,22 +146,24 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
 
         //send details to server for processing
         if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter) && getWard(farmerWard.toString()) != null) {
-            val dialog = indeterminateProgressDialog("Please wait")
+            if (!isFinishing) {
+                val dialog = indeterminateProgressDialog("Please wait")
 
-            disposable.add(
-                    restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                dialog.dismiss()
-                                showMessage(it)
-                            }, {
-                                dialog.dismiss()
-                                Log.e(TAG, it.localizedMessage, it)
+                disposable.add(
+                        restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
+                                    dialog.dismiss()
+                                    showMessage(it)
+                                }, {
+                                    dialog.dismiss()
+                                    Log.e(TAG, it.localizedMessage, it)
 
-                                ErrorHandler.showError(it)
-                            })
-            )
+                                    ErrorHandler.showError(it)
+                                })
+                )
+            }
         }
     }
 

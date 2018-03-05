@@ -67,8 +67,10 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
     private fun login() {
         Handler().postDelayed({
-            dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
-            signInUser(username.text.toString(), password.text.toString())
+            if(!isFinishing) {
+                dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
+                signInUser(username.text.toString(), password.text.toString())
+            }
         }, 200)
     }
 
@@ -103,8 +105,10 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
             //username and password fields not empty, continue to login
             if (username.text.isNotEmpty() && password.text.isNotEmpty()) {
-                dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
-                signInUser(username.text.toString(), password.text.toString())
+                if (!isFinishing) {
+                    dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
+                    signInUser(username.text.toString(), password.text.toString())
+                }
             }
 
         } else {
@@ -130,25 +134,25 @@ class Login : AppCompatActivity(), View.OnClickListener {
         //build RestClient here
         disposable.add(
                 headlessClient.login(LoginCredentials(getString(R.string.grant_type), getString(R.string.client_id), getString(R.string.client_secret),
-                username, password))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    hideProgressDialog()
-                    //save credentials to PreferenceManager and proceed to home
-                    PrefUtils.putString(PrefUtils.CREDENTIALS, Gson().toJson(it))
+                        username, password))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            hideProgressDialog()
+                            //save credentials to PreferenceManager and proceed to home
+                            PrefUtils.putString(PrefUtils.CREDENTIALS, Gson().toJson(it))
 
-                    Log.e(TAG, "User logged in successfully")
+                            Log.e(TAG, "User logged in successfully")
 
-                    startActivity(Intent(this, Home::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                }
-                        , {
-                    hideProgressDialog()
-                    //show user error message
-                    showSnackBar(it.localizedMessage)
-                    //show user error message
-                    Log.e(TAG, it.localizedMessage, it)
-                })
+                            startActivity(Intent(this, Home::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                        }
+                                , {
+                            hideProgressDialog()
+                            //show user error message
+                            showSnackBar(it.localizedMessage)
+                            //show user error message
+                            Log.e(TAG, it.localizedMessage, it)
+                        })
         )
     }
 
