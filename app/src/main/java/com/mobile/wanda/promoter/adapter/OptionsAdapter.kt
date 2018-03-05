@@ -13,7 +13,7 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by kombo on 07/12/2017.
  */
-class CommissionMenuAdapter(private val menus: ArrayList<String>) : RecyclerView.Adapter<CommissionMenuAdapter.ViewHolder>() {
+class OptionsAdapter(private val menus: ArrayList<String>) : RecyclerView.Adapter<OptionsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.menu_item_layout, parent, false)
@@ -25,7 +25,6 @@ class CommissionMenuAdapter(private val menus: ArrayList<String>) : RecyclerView
     }
 
     override fun getItemCount(): Int = menus.size
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

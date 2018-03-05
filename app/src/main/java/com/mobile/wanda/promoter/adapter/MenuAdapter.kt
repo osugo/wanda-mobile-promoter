@@ -12,6 +12,7 @@ import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.CommissionManagement
 import com.mobile.wanda.promoter.activity.FarmReport
 import com.mobile.wanda.promoter.activity.FarmerRegistration
+import com.mobile.wanda.promoter.activity.VoucherManagement
 import com.mobile.wanda.promoter.model.MenuItem
 import com.mobile.wanda.promoter.view.SquareImageView
 
@@ -62,6 +63,7 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
                     context.getString(R.string.commission_mgmt) -> context.startActivity(Intent(context, CommissionManagement::class.java))
                     context.getString(R.string.farmer_reg) -> context.startActivity(Intent(context, FarmerRegistration::class.java))
                     context.getString(R.string.farm_audit) -> context.startActivity(Intent(context, FarmReport::class.java))
+                    context.getString(R.string.voucher_mgmt) -> context.startActivity(Intent(context, VoucherManagement::class.java))
                 }
             }
         }

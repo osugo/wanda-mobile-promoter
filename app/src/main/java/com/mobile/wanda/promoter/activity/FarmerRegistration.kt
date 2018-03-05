@@ -17,6 +17,7 @@ import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -146,24 +147,27 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
 
         //send details to server for processing
         if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter) && getWard(farmerWard.toString()) != null) {
-            if (!isFinishing) {
-                val dialog = indeterminateProgressDialog("Please wait")
+            if (NetworkHelper.isOnline(this)) {
+                if (!isFinishing) {
+                    val dialog = indeterminateProgressDialog("Please wait")
 
-                disposable.add(
-                        restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({
-                                    dialog.dismiss()
-                                    showMessage(it)
-                                }, {
-                                    dialog.dismiss()
-                                    Log.e(TAG, it.localizedMessage, it)
+                    disposable.add(
+                            restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({
+                                        dialog.dismiss()
+                                        showMessage(it)
+                                    }, {
+                                        dialog.dismiss()
+                                        Log.e(TAG, it.localizedMessage, it)
 
-                                    ErrorHandler.showError(it)
-                                })
-                )
-            }
+                                        ErrorHandler.showError(it)
+                                    })
+                    )
+                }
+            } else
+                snackbar(parentLayout, getString(R.string.network_unavailable))
         }
     }
 
@@ -171,17 +175,20 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
      * Show appropriate message of transaction; whether success or failure
      */
     private fun showMessage(farmerRegistrationResponse: FarmerRegistrationResponse) {
-        if (farmerRegistrationResponse.error)
-            alert(buildMessage(farmerRegistrationResponse.registrationErrors!!), "Error") {
-                yesButton { it.dismiss() }
-            }.show()
-        else
-            alert(getString(R.string.farmer_reg_successful), null) {
-                yesButton {
-                    it.dismiss()
-                    finish()
-                }
-            }.show()
+        if (farmerRegistrationResponse.error) {
+            if (!isFinishing)
+                alert(buildMessage(farmerRegistrationResponse.registrationErrors!!), "Error") {
+                    yesButton { it.dismiss() }
+                }.show()
+        } else {
+            if (!isFinishing)
+                alert(getString(R.string.farmer_reg_successful), null) {
+                    yesButton {
+                        it.dismiss()
+                        finish()
+                    }
+                }.show()
+        }
     }
 
     /**
