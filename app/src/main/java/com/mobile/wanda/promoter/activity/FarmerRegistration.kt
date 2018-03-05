@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
 import com.mobile.wanda.promoter.model.requests.WardList
@@ -16,7 +17,6 @@ import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
-import com.mobile.wanda.promoter.rest.RetrofitException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -24,6 +24,9 @@ import io.realm.Case
 import io.realm.Realm
 import kotlinx.android.synthetic.main.farmer_registration_layout.*
 import org.apache.commons.lang3.text.WordUtils
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.design.snackbar
@@ -44,6 +47,16 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
 
     companion object {
         val TAG: String = FarmerRegistration::class.java.simpleName
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorEvent(errorEvent: ErrorEvent) {
+        alert(errorEvent.message, null) {
+            yesButton {
+                it.dismiss()
+                finish()
+            }
+        }.show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +80,7 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
             val wardList = it.where(WardList::class.java).findFirst()
 
             wardList?.let {
-                if(it.wards.isNotEmpty()){
+                if (it.wards.isNotEmpty()) {
                     it.wards.forEach({
                         items.add(WordUtils.capitalizeFully(it.name!!))
                     })
@@ -89,7 +102,7 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
         Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
             val result = it.where(Ward::class.java).equalTo("name", name, Case.INSENSITIVE).findFirst()
 
-            if(result != null){
+            if (result != null) {
                 ward = it.copyFromRealm(result)
             }
         }
@@ -101,8 +114,6 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
      * Click listener for @Submit button
      */
     override fun onClick(v: View?) {
-        Log.e(TAG,"Ward is ${getWard(ward.text.toString())?.name} with ID: ${getWard(ward.text.toString())?.id}")
-
         val name = farmerName.text
         val phone = phoneNumber.text
         val farmerWard = ward.text
@@ -132,14 +143,12 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
             return
         }
 
-        Log.e(TAG,"Ward is ${getWard(farmerWard.toString())?.name} with ID: ${getWard(farmerWard.toString())?.id}")
-
         //send details to server for processing
-        if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter)) {
+        if (!isEmpty(name) && !isEmpty(phone) && !isEmpty(farmerWard) && !isEmpty(farmerCollectionCenter) && getWard(farmerWard.toString()) != null) {
             val dialog = indeterminateProgressDialog("Please wait")
 
             disposable.add(
-                    restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), farmerWard.toString()))
+                    restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
@@ -148,7 +157,8 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
                             }, {
                                 dialog.dismiss()
                                 Log.e(TAG, it.localizedMessage, it)
-                                showSnackbar(ErrorHandler.getExceptionMessage(it as RetrofitException))
+
+                                ErrorHandler.showError(it)
                             })
             )
         }
@@ -217,6 +227,16 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
             }
             else -> false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
     }
 
     override fun onDestroy() {

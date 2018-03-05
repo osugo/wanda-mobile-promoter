@@ -13,5 +13,5 @@ data class FarmerRegistrationDetails(
         @SerializedName("farmer-collection-center")
         val collectionCenter: String,
         @SerializedName("farmer-ward")
-        val farmerWard: String
+        val farmerWard: Long
 )

@@ -57,7 +57,6 @@ class FarmAudit : AppCompatActivity(), View.OnClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     location = it
-//                    toast("${location.latitude}")
                 }, {
                     if (it is RxGps.PermissionException)
                         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)

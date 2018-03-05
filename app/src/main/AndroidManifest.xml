@@ -36,7 +36,7 @@
             android:label="@string/farmer_reg"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.FarmAudit"
+            android:name=".activity.FarmReport"
             android:label="@string/farm_audit"
             android:launchMode="singleTask" />
 
