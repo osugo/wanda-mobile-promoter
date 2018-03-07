@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/parentLayout"
     android:padding="15dp">
 
     <TextView
@@ -20,31 +21,15 @@
         android:background="@drawable/textbox_bg"
         android:inputType="number" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/topUp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:id="@+id/cashPayment"
-            android:background="@drawable/button_bg"
-            android:text="Pay CASH"
-            android:textColor="#fff" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/mpesaPayment"
-            android:background="@drawable/button_bg"
-            android:text="Pay With MPESA"
-            android:textColor="#fff" />
-    </LinearLayout>
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_bg"
+        android:text="Top UP"
+        android:textColor="#fff"
+        android:textStyle="bold" />
 
 </LinearLayout>

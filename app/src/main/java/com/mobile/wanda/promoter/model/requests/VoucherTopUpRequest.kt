@@ -11,5 +11,5 @@ data class VoucherTopUpRequest(
         @SerializedName("payment_option")
         val paymentOption: String,
         @SerializedName("amount")
-        val amount: Int
+        val amount: String
 )

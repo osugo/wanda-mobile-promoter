@@ -62,7 +62,7 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
                     context.getString(R.string.farmer_reg) -> context.startActivity(Intent(context, FarmerRegistration::class.java))
                     context.getString(R.string.farm_audit) -> context.startActivity(Intent(context, FarmReport::class.java))
                     context.getString(R.string.farmer_voucher) -> context.startActivity(context.intentFor<FarmerVoucherTopup>())
-                    context.getString(R.string.voucher_mgmt) -> context.startActivity(Intent(context, VoucherManagement::class.java))
+                    context.getString(R.string.promoter_voucher) -> context.startActivity(Intent(context, VoucherManagement::class.java))
                 }
             }
         }

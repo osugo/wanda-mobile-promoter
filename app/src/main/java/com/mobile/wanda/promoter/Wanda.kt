@@ -1,6 +1,6 @@
 package com.mobile.wanda.promoter
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mobile.wanda.promoter.model.responses.AuthCredentials
@@ -11,7 +11,7 @@ import io.realm.RealmConfiguration
 /**
  * Created by kombo on 23/11/2017.
  */
-class Wanda : Application() {
+class Wanda : MultiDexApplication() {
 
     companion object {
         lateinit var INSTANCE: Wanda
