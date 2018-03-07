@@ -32,7 +32,7 @@ class FarmerVoucherTopup: AppCompatActivity(), FarmersList.SelectionListener {
     }
 
     /**
-     * Show farm report fragment after selecting farmer
+     * Use retrieved id from farmer to init voucher top up fragment
      */
     override fun onFarmerSelected(id: Long, name: String) {
         supportFragmentManager
