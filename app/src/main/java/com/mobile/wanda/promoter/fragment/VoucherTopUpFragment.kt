@@ -33,9 +33,13 @@ import org.jetbrains.anko.yesButton
 /**
  * Created by kombo on 07/03/2018.
  */
+
+/**
+ * Base class for all voucher top up transactions
+ */
 class VoucherTopUpFragment : Fragment(), View.OnClickListener {
 
-    private var userId: Int? = null
+    private var userId: Long? = null
     private val disposable = CompositeDisposable()
 
     private val restInterface by lazy {
@@ -48,9 +52,9 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         private val MPESA_NOW: String = "mpesa-now"
         private val MPESA_LATER: String = "mpesa-later"
 
-        fun newInstance(userId: Int): VoucherTopUpFragment {
+        fun newInstance(userId: Long): VoucherTopUpFragment {
             val bundle = Bundle().apply {
-                putInt(USER_ID, userId)
+                putLong(USER_ID, userId)
             }
 
             val fragment = VoucherTopUpFragment()
@@ -60,6 +64,9 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Show a dialog with error other than the one returned from server response
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
         if (!activity.isFinishing)
@@ -70,11 +77,10 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
             }.show()
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voucher_top_up, container, false)
 
-        userId = arguments.getInt(USER_ID)
+        userId = arguments.getLong(USER_ID)
 
         topUp.setOnClickListener(this)
 
@@ -95,6 +101,9 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Show dialog with the various payment options
+     */
     private fun showOptions() {
         val paymentOptions = listOf(getString(R.string.pay_cash), getString(R.string.mpesa_now), getString(R.string.mpesa_later))
         selector("Payment Options", paymentOptions, { _, i ->
@@ -102,6 +111,9 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         })
     }
 
+    /**
+     * Trigger the payment witht he appropriate payment method
+     */
     private fun initPayment(option: String) {
         val paymentMethod: String? = when (option) {
             getString(R.string.pay_cash) -> CASH
@@ -121,6 +133,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
                                     dialog.dismiss()
                                     showMessage(it)
                                 }) {
+                                    dialog.dismiss()
                                     ErrorHandler.showError(it)
                                 }
                 )
@@ -134,11 +147,13 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     private fun showMessage(voucherTopupResponse: VoucherTopupResponse) {
         if (voucherTopupResponse.error != null) {
             if (!activity.isFinishing)
+                //show dialog with error messages
                 alert(buildMessage(voucherTopupResponse.voucherTopupErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
                 }.show()
         } else {
             if (!activity.isFinishing)
+                //show dialog with success message
                 alert(getString(R.string.farm_audit_successful), null) {
                     yesButton {
                         it.dismiss()
@@ -175,5 +190,11 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        disposable.dispose()
     }
 }
