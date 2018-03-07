@@ -14,10 +14,11 @@
 
     <!-- Main Menu Options -->
     <string name="farmer_reg">Farmer Registration</string>
-    <string name="farm_audit">Farm Audit</string>
+    <string name="farm_audit">Farm Visit</string>
     <string name="order_mgmt">Order Management</string>
-    <string name="voucher_mgmt">Voucher Management</string>
-    <string name="commission_mgmt">Commission Management</string>
+    <string name="farmer_voucher">Farmer Voucher Topup</string>
+    <string name="promoter_voucher">Promoter Voucher Management</string>
+    <string name="commission_mgmt">Commissions</string>
 
     <!-- Commission Menu Options -->
     <string name="check_commission">Check Commission</string>
@@ -47,5 +48,12 @@
     <string name="unexpected_error">An unexpected error occurred. Please try again.</string>
     <string name="network_error">A network error occurred. Please check your connection.</string>
     <string name="farm_audit_successful">Farm added successfully</string>
+    <string name="check_voucher_balance">Check voucher balance</string>
+    <string name="voucher_top_up">Voucher top up</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="pay_cash">Pay cash</string>
+    <string name="mpesa_now">Pay now with MPESA</string>
+    <string name="mpesa_later">Pay later with MPESA</string>
+    <string name="enter_valid_amount">Please enter a valid amount to proceed</string>
 
 </resources>

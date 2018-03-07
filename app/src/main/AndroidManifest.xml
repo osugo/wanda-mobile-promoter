@@ -32,6 +32,14 @@
             android:label="Commissions"
             android:launchMode="singleTask" />
         <activity
+            android:name=".activity.VoucherManagement"
+            android:label="Voucher Management"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.FarmerVoucherTopup"
+            android:label="Voucher Management"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".activity.FarmerRegistration"
             android:label="@string/farmer_reg"
             android:launchMode="singleTask" />

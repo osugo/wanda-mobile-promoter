@@ -37,7 +37,8 @@ class Home : AppCompatActivity() {
         menu.add(MenuItem(getString(R.string.farmer_reg), R.drawable.ic_farmer))
         menu.add(MenuItem(getString(R.string.farm_audit), R.drawable.ic_fields))
         menu.add(MenuItem(getString(R.string.order_mgmt), R.drawable.ic_order))
-        menu.add(MenuItem(getString(R.string.voucher_mgmt), R.drawable.ic_voucher))
+        menu.add(MenuItem(getString(R.string.farmer_voucher), R.drawable.ic_voucher))
+        menu.add(MenuItem(getString(R.string.promoter_voucher), R.drawable.ic_voucher))
         menu.add(MenuItem(getString(R.string.commission_mgmt), R.drawable.ic_commission))
 
         return menu

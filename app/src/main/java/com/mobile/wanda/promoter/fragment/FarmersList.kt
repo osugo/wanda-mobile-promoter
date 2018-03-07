@@ -77,7 +77,10 @@ class FarmersList : Fragment() {
      * Load farmers from network
      */
     private fun getFarmers() {
-        if (NetworkHelper.isOnline(activity))
+        if (NetworkHelper.isOnline(activity)) {
+            loadingIndicator.visibility = View.VISIBLE
+            loadingIndicator.smoothToShow()
+
             disposable.add(
                     restInterface.getFarmers()
                             .subscribeOn(Schedulers.io())
@@ -98,7 +101,7 @@ class FarmersList : Fragment() {
                                 ErrorHandler.showError(it)
                             }
             )
-        else {
+        } else {
             toggleViews()
 
             errorText.text = getString(R.string.network_unavailable)
@@ -111,6 +114,8 @@ class FarmersList : Fragment() {
     private fun showFarmers() {
         if (!realm.isClosed) {
             loadingIndicator.visibility = View.GONE
+            loadingIndicator.smoothToHide()
+
             farmerSearchView.visibility = View.VISIBLE
 
             val farmersList = realm.where(FarmerList::class.java).findFirst()
@@ -151,7 +156,7 @@ class FarmersList : Fragment() {
 
         try {
             callback = context as SelectionListener
-        } catch (c: ClassCastException){
+        } catch (c: ClassCastException) {
             throw ClassCastException(String.format("%s must implement SelectionListener", context.toString()))
         }
     }

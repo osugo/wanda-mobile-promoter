@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
  */
 data class VoucherTopUpRequest(
         @SerializedName("user_id")
-        val user_id: Int,
+        val user_id: Long,
         @SerializedName("payment_option")
         val paymentOption: String,
         @SerializedName("amount")
-        val amount: Int
+        val amount: String
 )

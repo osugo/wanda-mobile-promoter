@@ -26,6 +26,7 @@ import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -241,25 +242,28 @@ class FarmAuditFragment : Fragment(), View.OnClickListener {
         }
 
         if (name.isNotEmpty() && size.isNotEmpty() && desc.isNotEmpty() && location != null && getWard(farmerWard) != null && location != null) {
-            val locale = "${location!!.latitude}, ${location!!.longitude}"
+            if (NetworkHelper.isOnline(activity)) {
+                val locale = "${location!!.latitude}, ${location!!.longitude}"
 
-            if (!activity.isFinishing) {
-                val dialog = indeterminateProgressDialog("Please wait")
-                compositeDisposable.add(
-                        restInterface.addFarm(FarmAuditDetails(farmer!!.id!!, getWard(farmerWard)!!.id, size, desc, locale))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({
-                                    dialog.dismiss()
-                                    showMessage(it)
-                                }) {
-                                    dialog.dismiss()
-                                    Log.e(TAG, it.localizedMessage, it)
+                if (!activity.isFinishing) {
+                    val dialog = indeterminateProgressDialog("Please wait")
+                    compositeDisposable.add(
+                            restInterface.addFarm(FarmAuditDetails(farmer!!.id!!, getWard(farmerWard)!!.id, size, desc, locale))
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({
+                                        dialog.dismiss()
+                                        showMessage(it)
+                                    }) {
+                                        dialog.dismiss()
+                                        Log.e(TAG, it.localizedMessage, it)
 
-                                    ErrorHandler.showError(it)
-                                }
-                )
-            }
+                                        ErrorHandler.showError(it)
+                                    }
+                    )
+                }
+            } else
+                snackbar(parentLayout!!, getString(R.string.network_unavailable))
         }
     }
 
@@ -267,18 +271,21 @@ class FarmAuditFragment : Fragment(), View.OnClickListener {
      * Show appropriate message of transaction; whether success or failure
      */
     private fun showMessage(farmAuditResponse: FarmAuditResponse) {
-        if (farmAuditResponse.error)
-            alert(buildMessage(farmAuditResponse.farmAuditErrors!!).toString(), "Error") {
-                yesButton { it.dismiss() }
-            }.show()
-        else
-            alert(getString(R.string.farm_audit_successful), null) {
-                yesButton {
-                    it.dismiss()
+        if (farmAuditResponse.error) {
+            if (!activity.isFinishing)
+                alert(buildMessage(farmAuditResponse.farmAuditErrors!!).toString(), "Error") {
+                    yesButton { it.dismiss() }
+                }.show()
+        } else {
+            if (!activity.isFinishing)
+                alert(getString(R.string.farm_audit_successful), null) {
+                    yesButton {
+                        it.dismiss()
 
-                    startActivity(intentFor<Home>().singleTop())
-                }
-            }.show()
+                        startActivity(intentFor<Home>().singleTop())
+                    }
+                }.show()
+        }
     }
 
     /**

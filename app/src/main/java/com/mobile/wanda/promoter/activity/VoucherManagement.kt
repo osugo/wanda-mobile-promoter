@@ -23,9 +23,9 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.design.snackbar
 
 /**
- * Created by kombo on 06/12/2017.
+ * Created by kombo on 06/03/2018.
  */
-class CommissionManagement : AppCompatActivity() {
+class VoucherManagement : AppCompatActivity() {
 
     private val disposable = CompositeDisposable()
 
@@ -34,7 +34,7 @@ class CommissionManagement : AppCompatActivity() {
     }
 
     companion object {
-        val TAG: String = CommissionManagement::class.java.simpleName
+        val TAG: String = VoucherManagement::class.java.simpleName
     }
 
     /**
@@ -45,15 +45,15 @@ class CommissionManagement : AppCompatActivity() {
         toggleViews(true)
 
         when (menuEvent.selectedMenu) {
-            getString(R.string.check_commission) -> {
+            getString(R.string.check_voucher_balance) -> {
                 if (NetworkHelper.isOnline(this))
-                    checkCommission()
+                    checkVoucherBalance()
                 else
                     snackbar(parentLayout, getString(R.string.network_unavailable))
             }
-            getString(R.string.request_commission) -> {
+            getString(R.string.voucher_top_up) -> {
                 if (NetworkHelper.isOnline(this))
-                    requestCommission()
+                    voucherTopUp()
                 else
                     snackbar(parentLayout, getString(R.string.network_unavailable))
             }
@@ -77,55 +77,43 @@ class CommissionManagement : AppCompatActivity() {
      */
     private fun getMenuOptions(): ArrayList<String> {
         val menus = ArrayList<String>()
-        menus.add(getString(R.string.check_commission))
-        menus.add(getString(R.string.request_commission))
+        menus.add(getString(R.string.check_voucher_balance))
+        menus.add(getString(R.string.voucher_top_up))
 
         return menus
     }
 
     /**
-     * Network call to check for commission
+     * Request for balance
      */
-    private fun checkCommission() {
+    private fun checkVoucherBalance() {
         disposable.add(
-                restInterface.checkCommission()
+                restInterface.voucherBalance
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            showCommissionLayout()
+                            showVoucherBalanceLayout()
                             moneyIcon.setImageResource(R.drawable.ic_get_money)
-                            amountResponse.text = String.format("Your commission is\n %s KES", it.commission)
-                        }, {
+                            amountResponse.text = String.format("Your voucher balance is\n %s KES", it.balance)
+                        }) {
                             toggleViews(false)
-                            showSnackBar(it.localizedMessage)
+                            snackbar(parentLayout, "Sorry an error occurred.")
                             Log.e(TAG, it.localizedMessage, it)
-                        })
+                        }
         )
     }
 
     /**
-     * Network call to request for commission
+     * start top up activity
      */
-    private fun requestCommission() {
-        disposable.add(
-                restInterface.requestCommission()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            showCommissionLayout()
-                            moneyIcon.setImageResource(R.drawable.ic_checked)
-                            amountResponse.text = getString(R.string.commission_request_processed)
-                        }, {
-                            showSnackBar(it.localizedMessage)
-                            Log.e(TAG, it.localizedMessage, it)
-                        })
-        )
+    private fun voucherTopUp() {
+//        startActivity(intentFor<VoucherTopUp>())
     }
 
     /**
-     * Show commission layout once result is received from server
+     * Show voucher balance layout once result is received from server
      */
-    private fun showCommissionLayout() {
+    private fun showVoucherBalanceLayout() {
         loadingIndicator.visibility = View.GONE
         valueLayout.visibility = View.VISIBLE
     }
@@ -147,26 +135,6 @@ class CommissionManagement : AppCompatActivity() {
     }
 
     /**
-     * Display message in a SnackBar on bottom of screen
-     */
-    private fun showSnackBar(message: String) {
-        snackbar(parentLayout, message)
-    }
-
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> false
-        }
-    }
-
-    /**
      * Register the EventBus when activity starts
      */
     override fun onStart() {
@@ -182,9 +150,23 @@ class CommissionManagement : AppCompatActivity() {
         super.onStop()
     }
 
+    /**
+     * Listener for hardware back button press
+     */
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         disposable.dispose()
     }
+
 }
