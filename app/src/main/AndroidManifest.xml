@@ -32,12 +32,12 @@
             android:label="Commissions"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.VoucherManagement"
-            android:label="Voucher Management"
+            android:name=".activity.PromoterVoucher"
+            android:label="Promoter Voucher Management"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.FarmerVoucherTopup"
-            android:label="Voucher Management"
+            android:label="Farmer Voucher Management"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.FarmerRegistration"
