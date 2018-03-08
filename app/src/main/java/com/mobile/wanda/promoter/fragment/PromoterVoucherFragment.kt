@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
@@ -16,7 +18,6 @@ import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.promoter_voucher_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -34,6 +35,10 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
 
     private val disposable = CompositeDisposable()
     private var clickListener: ClickListener? = null
+
+    private var checkBalance: Button? = null
+    private var topUp: Button? = null
+    private var parentLayout: LinearLayout? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -62,8 +67,12 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.promoter_voucher_layout, container, false)
 
-        checkBalance.setOnClickListener(this)
-        topUp.setOnClickListener(this)
+        checkBalance = view.findViewById(R.id.checkBalance) as Button
+        topUp = view.findViewById(R.id.topUp) as Button
+        parentLayout = view.findViewById(R.id.parentLayout) as LinearLayout
+
+        checkBalance?.setOnClickListener(this)
+        topUp?.setOnClickListener(this)
 
         return view
     }
@@ -74,7 +83,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
                 if (NetworkHelper.isOnline(activity))
                     checkBalance()
                 else
-                    snackbar(parentLayout, getString(R.string.network_unavailable))
+                    snackbar(parentLayout!!, getString(R.string.network_unavailable))
             }
             R.id.topUp -> clickListener?.onRequestVoucherTopUp()
         }
@@ -88,7 +97,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
             val dialog = indeterminateProgressDialog("Please wait...")
 
             disposable.add(
-                    restInterface.voucherBalance
+                    restInterface.voucherBalance()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
@@ -108,11 +117,11 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
      */
     private fun showBalance(balance: Long) {
         if (!activity.isFinishing)
-            alert(String.format("Your voucher balance is %s KES", balance), "Voucher Balance") {
+            alert(String.format("Your voucher balance is %s KES", balance), "Balance") {
                 yesButton {
                     startActivity(intentFor<Home>().clearTop())
                 }
-            }
+            }.show()
     }
 
     /**

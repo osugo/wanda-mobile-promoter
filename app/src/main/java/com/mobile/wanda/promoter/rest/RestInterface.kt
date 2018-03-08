@@ -16,8 +16,8 @@ import retrofit2.http.Path
 
 interface RestInterface {
 
-    @get:GET("vouchers/balance")
-    val voucherBalance: Observable<VoucherBalance>
+    @GET("vouchers/balance")
+    fun voucherBalance(): Observable<VoucherBalance>
 
     @POST("/wanda-mobile/oauth/token")
     fun login(@Body loginCredentials: LoginCredentials): Observable<AuthCredentials>

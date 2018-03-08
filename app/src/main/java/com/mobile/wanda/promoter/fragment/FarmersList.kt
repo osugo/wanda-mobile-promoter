@@ -7,6 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import co.moonmonkeylabs.realmsearchview.RealmSearchView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.FarmersAdapter
@@ -17,14 +21,12 @@ import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
+import com.wang.avi.AVLoadingIndicatorView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.exceptions.RealmException
-import kotlinx.android.synthetic.main.error_layout.*
-import kotlinx.android.synthetic.main.farmers.*
-import kotlinx.android.synthetic.main.loading_indicator.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,6 +39,12 @@ class FarmersList : Fragment() {
     private val disposable = CompositeDisposable()
     private var farmersAdapter: FarmersAdapter? = null
     private var callback: SelectionListener? = null
+
+    private var loadingIndicator: AVLoadingIndicatorView? = null
+    private var retry: Button? = null
+    private var farmerSearchView: RealmSearchView? = null
+    private var errorLayout: LinearLayout? = null
+    private var errorText: TextView? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -54,18 +62,20 @@ class FarmersList : Fragment() {
     fun onErrorEvent(errorEvent: ErrorEvent) {
         toggleViews()
 
-        errorText.text = errorEvent.message
+        errorText?.text = errorEvent.message
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.farmers, container, false)
 
+        initViews(view)
+
         getFarmers()
 
         retry?.setOnClickListener {
-            farmerSearchView.visibility = View.GONE
-            errorLayout.visibility = View.GONE
-            loadingIndicator.visibility = View.VISIBLE
+            farmerSearchView?.visibility = View.GONE
+            errorLayout?.visibility = View.GONE
+            loadingIndicator?.visibility = View.VISIBLE
 
             getFarmers()
         }
@@ -74,12 +84,23 @@ class FarmersList : Fragment() {
     }
 
     /**
+     * Initialize views
+     */
+    private fun initViews(v: View) {
+        loadingIndicator = v.findViewById(R.id.loadingIndicator) as AVLoadingIndicatorView
+        retry = v.findViewById(R.id.retry) as Button
+        errorText = v.findViewById(R.id.errorText) as TextView
+        errorLayout = v.findViewById(R.id.errorLayout) as LinearLayout
+        farmerSearchView = v.findViewById(R.id.farmerSearchView) as RealmSearchView
+    }
+
+    /**
      * Load farmers from network
      */
     private fun getFarmers() {
         if (NetworkHelper.isOnline(activity)) {
-            loadingIndicator.visibility = View.VISIBLE
-            loadingIndicator.smoothToShow()
+            loadingIndicator?.visibility = View.VISIBLE
+            loadingIndicator?.smoothToShow()
 
             disposable.add(
                     restInterface.getFarmers()
@@ -104,7 +125,7 @@ class FarmersList : Fragment() {
         } else {
             toggleViews()
 
-            errorText.text = getString(R.string.network_unavailable)
+            errorText?.text = getString(R.string.network_unavailable)
         }
     }
 
@@ -113,10 +134,10 @@ class FarmersList : Fragment() {
      */
     private fun showFarmers() {
         if (!realm.isClosed) {
-            loadingIndicator.visibility = View.GONE
-            loadingIndicator.smoothToHide()
+            loadingIndicator?.visibility = View.GONE
+            loadingIndicator?.smoothToHide()
 
-            farmerSearchView.visibility = View.VISIBLE
+            farmerSearchView?.visibility = View.VISIBLE
 
             val farmersList = realm.where(FarmerList::class.java).findFirst()
 
@@ -126,7 +147,7 @@ class FarmersList : Fragment() {
                         callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
                     }
                 })
-                farmerSearchView.setAdapter(farmersAdapter)
+                farmerSearchView?.setAdapter(farmersAdapter)
             }
         }
     }
@@ -135,10 +156,10 @@ class FarmersList : Fragment() {
      * Hide views and show error state
      */
     private fun toggleViews() {
-        loadingIndicator.visibility = View.GONE
-        farmerSearchView.visibility = View.GONE
+        loadingIndicator?.visibility = View.GONE
+        farmerSearchView?.visibility = View.GONE
 
-        errorLayout.visibility = View.VISIBLE
+        errorLayout?.visibility = View.VISIBLE
     }
 
     override fun onStart() {
