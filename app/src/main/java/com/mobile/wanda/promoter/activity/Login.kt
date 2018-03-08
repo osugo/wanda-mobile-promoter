@@ -67,7 +67,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
     private fun login() {
         Handler().postDelayed({
-            if(!isFinishing) {
+            if (!isFinishing) {
                 dialog = indeterminateProgressDialog(R.string.loading, null)//indicate to the user that login process has started
                 signInUser(username.text.toString(), password.text.toString())
             }
