@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.mobile.wanda.promoter.R
-import com.mobile.wanda.promoter.fragment.PromoterVoucherFragment
-import com.mobile.wanda.promoter.fragment.VoucherTopUpFragment
+import com.mobile.wanda.promoter.fragment.OrderOptionsFragment
+import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.intentFor
 
 /**
- * Created by kombo on 07/03/2018.
+ * Created by kombo on 08/03/2018.
  */
-class PromoterVoucher : AppCompatActivity(), PromoterVoucherFragment.ClickListener {
+class OrderManagement : AppCompatActivity(), OrderOptionsFragment.ClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,32 +23,26 @@ class PromoterVoucher : AppCompatActivity(), PromoterVoucherFragment.ClickListen
         if (savedInstanceState == null && !isFinishing) {
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.contentFrame, PromoterVoucherFragment())
+                    .replace(R.id.contentFrame, OrderOptionsFragment())
                     .commitAllowingStateLoss()
         }
     }
 
-    /**
-     * Find the promoter's id and send it as the parameter
-     */
-    override fun onRequestVoucherTopUp() {
-        if (!isFinishing)
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.contentFrame, VoucherTopUpFragment.newInstance(1))
-                    .commitAllowingStateLoss()
-    }
-
-    /**
-     * Handle hardware back button press
-     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressed() //TODO handle fragment changes depending on currently inflated fragment
                 true
             }
             else -> false
         }
+    }
+
+    override fun onClickCreateOrder() {
+        startActivity(intentFor<CreateOrders>().clearTop())
+    }
+
+    override fun onClickPendingOrders() {
+        startActivity(intentFor<PendingOrders>().clearTop())
     }
 }

@@ -1,9 +1,10 @@
 package com.mobile.wanda.promoter.rest
 
-import com.mobile.wanda.promoter.model.Order
+import com.mobile.wanda.promoter.model.orders.Order
+import com.mobile.wanda.promoter.model.orders.PendingOrder
+import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.requests.*
 import com.mobile.wanda.promoter.model.responses.*
-import io.reactivex.Completable
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -37,8 +38,8 @@ interface RestInterface {
     @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
     fun getProductVariations(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
 
-    @POST("farmers/orders/create")  //TODO this returns a 404. Need to check on this
-    fun placeOrder(@Body order: Order): Completable
+    @POST("farmers/orders/create")
+    fun placeOrder(@Body order: Order): Observable<PendingOrder>
 
     @POST("payments/pay-for-order")
     fun payOrder(@Body orderPayment: OrderPayment): Observable<PaymentResponse>

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class OrderPayment(
         @SerializedName("order_id")
-        val orderId: Int,
+        val orderId: Long,
         @SerializedName("payment_option")
         val paymentOption: String
 )

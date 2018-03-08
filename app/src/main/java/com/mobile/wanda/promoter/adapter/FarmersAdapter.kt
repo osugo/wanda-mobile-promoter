@@ -29,9 +29,7 @@ class FarmersAdapter(context: Context, realm: Realm, filterColumnName: String, p
     inner class ViewHolder(itemView: View) : RealmSearchViewHolder(itemView), View.OnClickListener {
 
         override fun onClick(v: View?) {
-            clickListener?.let {
-                it.onItemClicked(realmResults[adapterPosition]!!)
-            }
+            clickListener?.onItemClicked(realmResults[adapterPosition]!!)
         }
 
         private var clickListener: ClickListener? = null
