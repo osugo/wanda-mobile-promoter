@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
@@ -18,7 +21,6 @@ import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.voucher_top_up.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -41,6 +43,10 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
 
     private var userId: Long? = null
     private val disposable = CompositeDisposable()
+
+    private var topUp: Button? = null
+    private var amount: EditText? = null
+    private var parentLayout: LinearLayout? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -82,7 +88,11 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
 
         userId = arguments.getLong(USER_ID)
 
-        topUp.setOnClickListener(this)
+        topUp = view.findViewById(R.id.topUp) as Button
+        amount = view.findViewById(R.id.amount) as EditText
+        parentLayout = view.findViewById(R.id.parentLayout) as LinearLayout
+
+        topUp?.setOnClickListener(this)
 
         return view
     }
@@ -91,12 +101,12 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.topUp -> {
                 if (NetworkHelper.isOnline(activity)) {
-                    if ((amount.text.toString().isNotEmpty() || amount.text.toString() != "0") && userId != null)
+                    if ((amount?.text.toString().isNotEmpty() || amount?.text.toString() != "0") && userId != null)
                         showOptions()
                     else
-                        snackbar(parentLayout, getString(R.string.enter_valid_amount))
+                        snackbar(parentLayout!!, getString(R.string.enter_valid_amount))
                 } else
-                    snackbar(parentLayout, getString(R.string.network_unavailable))
+                    snackbar(parentLayout!!, getString(R.string.network_unavailable))
             }
         }
     }
@@ -126,7 +136,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
             if (!activity.isFinishing) {
                 val dialog = indeterminateProgressDialog("Please wait")
                 disposable.add(
-                        restInterface.voucherTopUp(VoucherTopUpRequest(userId!!, it, amount.text.toString()))
+                        restInterface.voucherTopUp(VoucherTopUpRequest(userId!!, it, amount?.text.toString()))
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
@@ -147,13 +157,13 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     private fun showMessage(voucherTopupResponse: VoucherTopupResponse) {
         if (voucherTopupResponse.error != null) {
             if (!activity.isFinishing)
-                //show dialog with error messages
+            //show dialog with error messages
                 alert(buildMessage(voucherTopupResponse.voucherTopupErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
                 }.show()
         } else {
             if (!activity.isFinishing)
-                //show dialog with success message
+            //show dialog with success message
                 alert(getString(R.string.farm_audit_successful), null) {
                     yesButton {
                         it.dismiss()

@@ -16,8 +16,8 @@ import retrofit2.http.Path
 
 interface RestInterface {
 
-    @get:GET("vouchers/balance")
-    val voucherBalance: Observable<VoucherBalance>
+    @GET("vouchers/balance")
+    fun voucherBalance(): Observable<VoucherBalance>
 
     @POST("/wanda-mobile/oauth/token")
     fun login(@Body loginCredentials: LoginCredentials): Observable<AuthCredentials>
@@ -43,7 +43,7 @@ interface RestInterface {
     @POST("payments/pay-for-order")
     fun payOrder(@Body orderPayment: OrderPayment): Observable<PaymentResponse>
 
-    @POST("payments/voucher-top-up")
+    @POST("payments/top-up-voucher")
     fun voucherTopUp(@Body voucherTopUpRequest: VoucherTopUpRequest): Observable<VoucherTopupResponse>
 
     @GET("commissions/check")
