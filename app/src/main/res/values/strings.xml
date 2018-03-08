@@ -55,5 +55,10 @@
     <string name="mpesa_now">Pay now with MPESA</string>
     <string name="mpesa_later">Pay later with MPESA</string>
     <string name="enter_valid_amount">Please enter a valid amount to proceed</string>
+    <string name="create_order">Create Order</string>
+    <string name="pendingOrders">Pending Orders</string>
+    <string name="no_pending_orders">You have no pending orders</string>
+    <string name="pay_order">Pay Order</string>
+    <string name="orders">Orders</string>
 
 </resources>
