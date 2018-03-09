@@ -57,7 +57,7 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
 
             parent.setOnClickListener {
                 when (menu.title) {
-                    context.getString(R.string.commission_mgmt) -> context.startActivity(context.intentFor<CommissionManagement>())
+                    context.getString(R.string.commission_mgmt) -> context.startActivity(context.intentFor<Commissions>())
                     context.getString(R.string.farmer_reg) -> context.startActivity(context.intentFor<FarmerRegistration>())
                     context.getString(R.string.farm_audit) -> context.startActivity(context.intentFor<FarmReport>())
                     context.getString(R.string.farmer_voucher) -> context.startActivity(context.intentFor<FarmerVoucherTopup>())

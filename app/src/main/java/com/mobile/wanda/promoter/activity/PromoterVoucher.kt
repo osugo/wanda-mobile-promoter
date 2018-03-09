@@ -49,7 +49,7 @@ class PromoterVoucher : AppCompatActivity(), PromoterVoucherFragment.ClickListen
                 onBackPressed()
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

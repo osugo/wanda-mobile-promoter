@@ -36,7 +36,7 @@ class OrderManagement : AppCompatActivity(), OrderOptionsFragment.ClickListener 
                 onBackPressed() //TODO handle fragment changes depending on currently inflated fragment
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -237,7 +237,7 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
                 onBackPressed()
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -17,10 +17,10 @@
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
     </style>
 
-    <style name="AppTheme.Widget"/>
+    <style name="AppTheme.Widget" />
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.TextView">
-        <item name="fontPath">fonts/CircularStd.ttf</item>
+        <item name="fontPath">fonts/CircularStd-Bold.ttf</item>
     </style>
 
 </resources>

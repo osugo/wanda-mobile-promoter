@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <Button
-        android:id="@+id/createOrder"
-        fontPath="fonts/CircularStd-Bold.ttf"
+        android:id="@+id/checkCommission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_bg"
-        android:text="@string/create_order"
-        android:textColor="#fff"
-        tools:ignore="MissingPrefix" />
+        android:text="Check commission"
+        fontPath="fonts/CircularStd-Bold.ttf"
+        android:textColor="#fff" />
 
     <Button
-        android:id="@+id/pendingOrders"
+        android:id="@+id/requestCommission"
         fontPath="fonts/CircularStd-Bold.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
-        android:text="@string/pendingOrders"
+        android:text="Request Commission"
         android:textColor="#fff"
         tools:ignore="MissingPrefix" />
 

@@ -48,7 +48,7 @@ class FarmReport : AppCompatActivity(), FarmersList.SelectionListener {
                 onBackPressed()
                 true
             }
-            else -> false
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

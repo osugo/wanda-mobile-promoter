@@ -3,6 +3,7 @@ package com.mobile.wanda.promoter.activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.OrderPaymentFragment
 import com.mobile.wanda.promoter.fragment.OrdersListFragment
@@ -41,6 +42,16 @@ class PendingOrders : AppCompatActivity(), OrdersListFragment.ClickListener {
                     .beginTransaction()
                     .replace(R.id.contentFrame, OrderPaymentFragment.newInstance(order.orderId!!))
                     .commitAllowingStateLoss()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed() //TODO handle fragment changes depending on currently inflated fragment
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

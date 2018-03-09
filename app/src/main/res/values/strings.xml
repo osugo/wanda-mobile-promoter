@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wanda Mobile Promoter</string>
+    <string name="app_name">Wanda</string>
 
     <string name="client_secret">uy90t9L5xjgiYYWrBINzqs4JvHbGvC0tE72pTWeT</string>
     <string name="grant_type">password</string>
