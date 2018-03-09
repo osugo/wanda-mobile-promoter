@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,7 @@ import com.mobile.wanda.promoter.model.MenuItem
 import com.mobile.wanda.promoter.service.BackgroundDataLoaderService
 import com.mobile.wanda.promoter.view.GridItemDecoration
 import kotlinx.android.synthetic.main.activity_home.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class Home : AppCompatActivity() {
 
@@ -42,5 +44,9 @@ class Home : AppCompatActivity() {
         menu.add(MenuItem(getString(R.string.commission_mgmt), R.drawable.ic_commission))
 
         return menu
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

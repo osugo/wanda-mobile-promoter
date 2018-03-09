@@ -20,20 +20,20 @@ data class Product(
 )
 
 open class Order(
-        @SerializedName("farmer_id") val farmerId: Int? = 0,
-        @SerializedName("items") val items: RealmList<OrderItem>? = RealmList()
+        @SerializedName("farmer_id") var farmerId: Long? = 0,
+        @SerializedName("items") var items: RealmList<OrderItem>? = RealmList()
 ) : RealmObject()
 
 open class OrderItem(
-        @SerializedName("variation_id") val variationId: Int? = 0,
-        @SerializedName("quantity") val quantity: Int? = 0
+        @SerializedName("variation_id") var variationId: Long? = 0,
+        @SerializedName("quantity") var quantity: Int? = 0
 ) : RealmObject()
 
 open class PendingOrder(
         @Ignore
-        @SerializedName("error") val error: Boolean?,
-        @SerializedName("message") val message: String?,
+        @SerializedName("error") var error: Boolean? = false,
+        @SerializedName("message") var message: String? = null,
         @PrimaryKey
-        @SerializedName("order_id") val orderId: Long? = 0,
-        @SerializedName("status") val status: String
+        @SerializedName("order_id") var orderId: Long? = 0,
+        @SerializedName("status") var status: String? = null
 ) : RealmObject()

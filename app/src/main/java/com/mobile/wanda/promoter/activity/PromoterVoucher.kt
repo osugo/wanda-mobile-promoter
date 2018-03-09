@@ -1,11 +1,13 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.PromoterVoucherFragment
 import com.mobile.wanda.promoter.fragment.VoucherTopUpFragment
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 07/03/2018.
@@ -49,5 +51,9 @@ class PromoterVoucher : AppCompatActivity(), PromoterVoucherFragment.ClickListen
             }
             else -> false
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

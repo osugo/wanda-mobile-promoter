@@ -2,6 +2,7 @@ package com.mobile.wanda.promoter.activity
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -24,6 +25,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 /**
@@ -167,5 +169,9 @@ class Login : AppCompatActivity(), View.OnClickListener {
         super.onDestroy()
 
         disposable.dispose()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

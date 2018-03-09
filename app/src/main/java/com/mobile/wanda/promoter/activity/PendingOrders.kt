@@ -1,11 +1,13 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.OrderPaymentFragment
 import com.mobile.wanda.promoter.fragment.OrdersListFragment
 import com.mobile.wanda.promoter.model.orders.PendingOrder
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 08/03/2018.
@@ -40,5 +42,9 @@ class PendingOrders : AppCompatActivity(), OrdersListFragment.ClickListener {
                     .replace(R.id.contentFrame, OrderPaymentFragment.newInstance(order.orderId!!))
                     .commitAllowingStateLoss()
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
