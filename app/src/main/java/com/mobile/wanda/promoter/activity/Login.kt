@@ -60,7 +60,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
             } else {
                 //proceed to login
-                login()
+//                login()
             }
         } catch (e: Exception) {
             e.printStackTrace()

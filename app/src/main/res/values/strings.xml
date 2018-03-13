@@ -60,5 +60,7 @@
     <string name="no_pending_orders">You have no pending orders</string>
     <string name="pay_order">Pay Order</string>
     <string name="orders">Orders</string>
+    <string name="products">Products</string>
+    <string name="select_farmer">Select Farmer</string>
 
 </resources>

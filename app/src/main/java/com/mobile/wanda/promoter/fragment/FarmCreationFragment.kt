@@ -48,7 +48,7 @@ import org.jetbrains.anko.yesButton
  */
 
 //TODO location does't work for some reason; figure it out; if it doesn't work, move it to parent activity
-class FarmAuditFragment : Fragment(), View.OnClickListener {
+class FarmCreationFragment : Fragment(), View.OnClickListener {
 
     private var location: Location? = null
     private var farmer: Farmer? = null
@@ -67,18 +67,18 @@ class FarmAuditFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG: String = FarmAuditFragment::class.java.simpleName
+        private val TAG: String = FarmCreationFragment::class.java.simpleName
         private val ID: String = "id"
         private val NAME: String = "name"
         private val PERMISSION_REQUEST_CODE = 234
 
-        fun newInstance(id: Long, name: String): FarmAuditFragment {
+        fun newInstance(id: Long, name: String): FarmCreationFragment {
             val bundle = Bundle().apply {
                 putLong(ID, id)
                 putString(NAME, name)
             }
 
-            val fragment = FarmAuditFragment()
+            val fragment = FarmCreationFragment()
             fragment.arguments = bundle
 
             return fragment
@@ -236,14 +236,15 @@ class FarmAuditFragment : Fragment(), View.OnClickListener {
             showSnackbar("Please choose a ward to proceed")
         }
 
-        if (location == null) {
-            Log.e(TAG, "Getting location")
-            getLocation()
-        }
+//        if (location == null) {
+//            Log.e(TAG, "Getting location")
+//            getLocation()
+//        }
 
-        if (name.isNotEmpty() && size.isNotEmpty() && desc.isNotEmpty() && location != null && getWard(farmerWard) != null && location != null) {
+        if (name.isNotEmpty() && size.isNotEmpty() && desc.isNotEmpty() && location != null && getWard(farmerWard) != null) {
             if (NetworkHelper.isOnline(activity)) {
-                val locale = "${location!!.latitude}, ${location!!.longitude}"
+//                val locale = "${location!!.latitude}, ${location!!.longitude}"
+                val locale = "1.235, 3.567"
 
                 if (!activity.isFinishing) {
                     val dialog = indeterminateProgressDialog("Please wait")

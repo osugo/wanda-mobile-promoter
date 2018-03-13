@@ -52,9 +52,14 @@
             android:label="@string/farmer_reg"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.FarmReport"
+            android:name=".activity.AddFarm"
             android:label="@string/farm_audit"
             android:launchMode="singleTask" />
+        <activity android:name=".activity.ProductsList"
+            android:label="@string/products"/>
+        <activity android:name=".activity.CreateOrders"
+            android:label="@string/select_farmer"
+            android:launchMode="singleTask"/>
 
         <service
             android:name=".service.BackgroundDataLoaderService"

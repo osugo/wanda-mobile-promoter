@@ -164,7 +164,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         } else {
             if (!activity.isFinishing)
             //show dialog with success message
-                alert(getString(R.string.farm_audit_successful), null) {
+                alert("Please wait for instructions on how to pay for the voucher", null) {
                     yesButton {
                         it.dismiss()
 

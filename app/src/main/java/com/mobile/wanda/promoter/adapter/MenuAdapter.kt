@@ -59,9 +59,10 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
                 when (menu.title) {
                     context.getString(R.string.commission_mgmt) -> context.startActivity(context.intentFor<Commissions>())
                     context.getString(R.string.farmer_reg) -> context.startActivity(context.intentFor<FarmerRegistration>())
-                    context.getString(R.string.farm_audit) -> context.startActivity(context.intentFor<FarmReport>())
+                    context.getString(R.string.farm_audit) -> context.startActivity(context.intentFor<AddFarm>())
                     context.getString(R.string.farmer_voucher) -> context.startActivity(context.intentFor<FarmerVoucherTopup>())
                     context.getString(R.string.promoter_voucher) -> context.startActivity(context.intentFor<PromoterVoucher>())
+                    context.getString(R.string.order_mgmt) -> context.startActivity(context.intentFor<OrderManagement>())
                 }
             }
         }

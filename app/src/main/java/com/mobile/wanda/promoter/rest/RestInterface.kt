@@ -29,8 +29,8 @@ interface RestInterface {
     @POST("farmers/add-farm")
     fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmAuditResponse>
 
-    @GET("products/categories?search={searchTerm}")
-    fun searchProductCategories(@Path("searchTerm") searchTerm: String): Observable<ProductResults>
+    @GET("products/categories?")
+    fun getProductCategories(): Observable<ProductResults>
 
     @GET("products/products?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
     fun searchProducts(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
