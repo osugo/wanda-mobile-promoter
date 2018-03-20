@@ -6,10 +6,7 @@ import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.requests.*
 import com.mobile.wanda.promoter.model.responses.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 /**
  * Created by kombo on 23/11/2017.
@@ -32,8 +29,8 @@ interface RestInterface {
     @GET("products/categories?")
     fun getProductCategories(): Observable<ProductResults>
 
-    @GET("products/products?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
-    fun searchProducts(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
+    @GET("products/products")
+    fun searchProducts(@Query("category_id") categoryId: Int): Observable<ProductResults>
 
     @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
     fun getProductVariations(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>

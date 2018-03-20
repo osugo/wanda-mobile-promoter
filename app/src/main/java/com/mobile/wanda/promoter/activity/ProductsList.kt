@@ -25,6 +25,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.design.snackbar
+import org.jetbrains.anko.selector
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -92,7 +94,32 @@ class ProductsList : AppCompatActivity() {
     }
 
     private fun loadProducts(id: Int) {
+        if (NetworkHelper.isOnline(this)) {
+            showLoadingIndicator()
 
+            disposable.add(
+                    restInterface.searchProducts(id)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                hideLoadingIndicator()
+
+                                showProducts(it)
+                            }) {
+                                hideLoadingIndicator()
+                                ErrorHandler.showError(it)
+                            }
+            )
+        } else
+            snackbar(parentLayout, getString(R.string.network_unavailable))
+    }
+
+    private fun showProducts(products: ProductResults) {
+        val options = products.items.map { it.name }
+
+        selector("Payment Options", options, { _, i ->
+            toast("Clicked ${options[i]}")
+        })
     }
 
     private fun showLoadingIndicator() {
