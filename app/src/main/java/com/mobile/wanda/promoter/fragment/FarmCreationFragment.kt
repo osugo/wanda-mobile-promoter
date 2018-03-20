@@ -1,17 +1,13 @@
 package com.mobile.wanda.promoter.fragment
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.github.florent37.rxgps.RxGps
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.activity.FarmerRegistration
@@ -29,7 +25,6 @@ import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Case
 import io.realm.Realm
@@ -117,20 +112,6 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
         ward?.threshold = 1
         ward?.setAdapter(adapter)
 
-        //check if location permission is enabled and request if not
-        try {
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
-                Log.e(TAG, "Location permission not permitted")
-            } else {
-                //retrieve location
-                Log.e(TAG, "Location permission permitted")
-                getLocation()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
         return view
     }
 
@@ -169,40 +150,6 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
         }
 
         return ward
-    }
-
-    /**
-     * Retrieve user location in background
-     */
-    private fun getLocation() {
-        RxGps(activity).locationLowPower()
-                .doOnSubscribe(this::addDisposable)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    location = it
-                    Log.e(TAG, "${location?.latitude}, ${location?.longitude}")
-                }, {
-                    when (it) {
-                        is RxGps.PermissionException -> ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
-                        is RxGps.PlayServicesNotAvailableException -> snackbar(parentLayout!!, "Google Play Services is not available. Unable to retrieve location")
-                    }
-                })
-    }
-
-    /**
-     * Confirm status of location permission. Keep asking until user allows
-     */
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation()
-            } else {
-                snackbar(parentLayout!!, "Location permission denied.").setAction("Allow", {
-                    ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
-                })
-            }
-        }
     }
 
     /**
@@ -325,10 +272,6 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
      */
     private fun showSnackbar(message: String) {
         snackbar(parentLayout!!, message)
-    }
-
-    private fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
     }
 
     override fun onDestroy() {

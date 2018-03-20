@@ -39,7 +39,7 @@
         android:layout_marginStart="15dp"
         android:background="@drawable/textbox_bg"
         android:hint="@string/size"
-        android:inputType="textCapWords" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/description"
