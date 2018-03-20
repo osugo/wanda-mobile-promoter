@@ -1,6 +1,5 @@
 package com.mobile.wanda.promoter.activity
 
-import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -8,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -27,6 +25,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
+import org.jetbrains.anko.startActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
@@ -55,18 +54,20 @@ class Login : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
-        login.setOnClickListener(this)
+        startActivity<Home>()
 
-        try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
-            } else {
-                //proceed to login
-//                login()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        login.setOnClickListener(this)
+//
+//        try {
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
+//            } else {
+//                //proceed to login
+////                login()
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     private fun login() {
