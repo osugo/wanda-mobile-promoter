@@ -1,7 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.OrderOptionsFragment
 import org.jetbrains.anko.clearTop
@@ -24,16 +23,6 @@ class OrderManagement : BaseActivity(), OrderOptionsFragment.ClickListener {
                     .beginTransaction()
                     .replace(R.id.contentFrame, OrderOptionsFragment())
                     .commitAllowingStateLoss()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed() //TODO handle fragment changes depending on currently inflated fragment
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 

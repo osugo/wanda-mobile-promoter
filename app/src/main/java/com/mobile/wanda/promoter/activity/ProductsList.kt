@@ -2,7 +2,6 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.MenuItem
 import android.view.View
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.adapter.ProductsAdapter
@@ -127,16 +126,6 @@ class ProductsList : BaseActivity() {
     private fun hideLoadingIndicator() {
         loadingIndicator.visibility = View.GONE
         loadingIndicator.smoothToHide()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onStart() {

@@ -2,7 +2,6 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
@@ -223,19 +222,6 @@ class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
      */
     private fun showSnackbar(message: String) {
         snackbar(parentLayout, message)
-    }
-
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onStart() {

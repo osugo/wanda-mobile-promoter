@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.util.Log
-import android.view.MenuItem
 import com.github.florent37.rxgps.RxGps
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
@@ -116,18 +115,5 @@ class AddFarm : BaseActivity(), FarmersList.SelectionListener {
 
     private fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
-    }
-
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }

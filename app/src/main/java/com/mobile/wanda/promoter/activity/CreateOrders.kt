@@ -1,7 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.FarmersList
 import org.jetbrains.anko.clearTop
@@ -29,15 +28,5 @@ class CreateOrders : BaseActivity(), FarmersList.SelectionListener {
 
     override fun onFarmerSelected(id: Long, name: String) {
         startActivity(intentFor<ProductsList>("farmerId" to id, "farmerName" to name).clearTop())
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }

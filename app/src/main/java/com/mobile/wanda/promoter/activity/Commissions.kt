@@ -1,7 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.event.ErrorEvent
@@ -142,16 +141,6 @@ class Commissions : BaseActivity(), View.OnClickListener {
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onDestroy() {

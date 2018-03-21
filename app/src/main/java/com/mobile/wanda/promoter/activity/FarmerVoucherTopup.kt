@@ -1,7 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.FarmersList
 import com.mobile.wanda.promoter.fragment.VoucherTopUpFragment
@@ -38,18 +37,5 @@ class FarmerVoucherTopup: BaseActivity(), FarmersList.SelectionListener {
                 .beginTransaction()
                 .replace(R.id.contentFrame, VoucherTopUpFragment.newInstance(id))
                 .commitAllowingStateLoss()
-    }
-
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }
