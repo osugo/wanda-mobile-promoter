@@ -56,12 +56,12 @@ class Home : BaseActivity() {
      */
     private fun navigate(position: Int) {
         when (position) {
-            0 -> startActivity<Commissions>()
-            1 -> startActivity<FarmerRegistration>()
-            2 -> startActivity<AddFarm>()
+            0 -> startActivity<FarmerRegistration>()
+            1 -> startActivity<AddFarm>()
+            2 -> startActivity<OrderManagement>()
             3 -> startActivity<FarmerVoucherTopup>()
             4 -> startActivity<PromoterVoucher>()
-            5 -> startActivity<OrderManagement>()
+            5 -> startActivity<Commissions>()
         }
     }
 }

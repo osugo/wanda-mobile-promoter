@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.singleTop
 import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.indeterminateProgressDialog
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.yesButton
@@ -93,12 +94,12 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.farm_audit, container, false)
 
-        username = view.findViewById(R.id.username)
-        submit = view.findViewById(R.id.submit)
-        ward = view.findViewById(R.id.ward)
-        description = view.findViewById(R.id.description)
-        farmSize = view.findViewById(R.id.farmSize)
-        parentLayout = view.findViewById(R.id.parentLayout)
+        username = find(R.id.username)
+        submit = find(R.id.submit)
+        ward = find(R.id.ward)
+        description = find(R.id.description)
+        farmSize = find(R.id.farmSize)
+        parentLayout = find(R.id.parentLayout)
 
         arguments?.let {
             farmer = Farmer(it.getLong(ID, 0), it.getString(NAME, null))
