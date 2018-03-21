@@ -8,7 +8,9 @@ import com.mobile.wanda.promoter.model.errors.FarmAuditErrors
  */
 data class FarmAuditResponse(
         @SerializedName("error")
-        val error: Boolean,
+        val error: Boolean?,
         @SerializedName("message")
+        val message: String?,
+        @SerializedName("data")
         val farmAuditErrors: FarmAuditErrors?
 )
