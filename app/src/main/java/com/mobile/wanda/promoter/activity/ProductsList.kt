@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -33,6 +34,8 @@ class ProductsList : BaseActivity() {
 
     private val disposable = CompositeDisposable()
     private var productsAdapter: ProductsAdapter? = null
+
+    private lateinit var alertDialog: DialogInterface
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -144,7 +147,7 @@ class ProductsList : BaseActivity() {
      * Creates the quantity dialog using Anko DSL
      */
     private fun getQuantity(product: String) {
-        alert {
+        alertDialog = alert {
             customView {
                 verticalLayout {
                     textView {
@@ -175,6 +178,8 @@ class ProductsList : BaseActivity() {
                             snackbar(parentLayout!!, getString(R.string.enter_valid_quantity))
                         else
                             addToCart(product, quantity.text.toString().toInt())
+
+                        alertDialog.dismiss()
                     }
                 }
             }
