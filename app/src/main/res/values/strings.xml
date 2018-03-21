@@ -15,6 +15,7 @@
     <!-- Main Menu Options -->
     <string name="farmer_reg">Farmer Registration</string>
     <string name="farm_audit">Farm Visit</string>
+    <string name="add_farm">Add Farm</string>
     <string name="order_mgmt">Order Management</string>
     <string name="farmer_voucher">Farmer Voucher Topup</string>
     <string name="promoter_voucher">Promoter Voucher Management</string>
@@ -62,5 +63,10 @@
     <string name="orders">Orders</string>
     <string name="products">Products</string>
     <string name="select_farmer">Select Farmer</string>
+    <string name="empty_products">No products available for this category</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="enter_quantity">Please enter the quantity</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_valid_quantity">Please enter a valid quantity to proceed.</string>
 
 </resources>

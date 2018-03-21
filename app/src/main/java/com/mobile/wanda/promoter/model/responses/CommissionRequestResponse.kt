@@ -9,7 +9,7 @@ data class CommissionRequestResponse(
         @SerializedName("success")
         val success: Boolean?,
         @SerializedName("error")
-        val error: String?,
+        val error: Boolean?,
         @SerializedName("message")
         val message: String?
 )

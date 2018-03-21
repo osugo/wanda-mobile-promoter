@@ -8,7 +8,9 @@ import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
  */
 data class FarmerRegistrationResponse(
         @SerializedName("error")
-        val error: Boolean,
+        var error: Boolean,
         @SerializedName("message")
-        val registrationErrors: FarmerRegistrationErrors?
+        var message: String?,
+        @SerializedName("data")
+        var registrationErrors: FarmerRegistrationErrors?
 )

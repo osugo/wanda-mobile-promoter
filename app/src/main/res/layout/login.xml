@@ -37,7 +37,8 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/edittext_bg"
             android:hint="@string/password"
-            android:text="Kombo2017"
+            android:text="2312"
+            android:inputType="number"
             android:textColor="#fff"
             android:textColorHint="#fff" />
 

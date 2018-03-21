@@ -1,10 +1,7 @@
 package com.mobile.wanda.promoter.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
@@ -34,13 +31,12 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.yesButton
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 /**
  * Created by kombo on 03/01/2018.
  */
-class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger {
+class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
 
     private val disposable = CompositeDisposable()
 
@@ -228,19 +224,6 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
         snackbar(parentLayout, message)
     }
 
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -255,9 +238,5 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
         super.onDestroy()
 
         disposable.dispose()
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

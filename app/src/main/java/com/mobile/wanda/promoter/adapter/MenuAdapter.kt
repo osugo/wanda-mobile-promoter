@@ -1,6 +1,5 @@
 package com.mobile.wanda.promoter.adapter
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.mobile.wanda.promoter.R
-import com.mobile.wanda.promoter.activity.*
 import com.mobile.wanda.promoter.model.MenuItem
 import com.mobile.wanda.promoter.view.SquareImageView
-import org.jetbrains.anko.intentFor
 
 /**
  * Created by kombo on 06/12/2017.
@@ -20,13 +17,13 @@ import org.jetbrains.anko.intentFor
 /**
  * Initialise the adapter and pass the parameters on constructor instantiation
  */
-class MenuAdapter(private val context: Context, private val menus: ArrayList<MenuItem>) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+class MenuAdapter(private val menus: ArrayList<MenuItem>, private val clickListener: ClickListener) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     /**
      * Bind items to viewholder
      */
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(context, menus[holder.adapterPosition])
+        holder?.bindItems(menus[holder.adapterPosition], clickListener, holder.adapterPosition)
     }
 
     /**
@@ -47,24 +44,25 @@ class MenuAdapter(private val context: Context, private val menus: ArrayList<Men
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindItems(context: Context, menu: MenuItem) {
+        var clickListener: ClickListener? = null
+
+        fun bindItems(menu: MenuItem, clickListener: ClickListener, position: Int) {
             val textView = itemView.findViewById(R.id.menuItem) as TextView
             val icon = itemView.findViewById(R.id.icon) as SquareImageView
             val parent = itemView.findViewById(R.id.parentLayout) as LinearLayout
+
+            this.clickListener = clickListener
 
             textView.text = menu.title
             icon.setImageResource(menu.icon!!)
 
             parent.setOnClickListener {
-                when (menu.title) {
-                    context.getString(R.string.commission_mgmt) -> context.startActivity(context.intentFor<Commissions>())
-                    context.getString(R.string.farmer_reg) -> context.startActivity(context.intentFor<FarmerRegistration>())
-                    context.getString(R.string.farm_audit) -> context.startActivity(context.intentFor<AddFarm>())
-                    context.getString(R.string.farmer_voucher) -> context.startActivity(context.intentFor<FarmerVoucherTopup>())
-                    context.getString(R.string.promoter_voucher) -> context.startActivity(context.intentFor<PromoterVoucher>())
-                    context.getString(R.string.order_mgmt) -> context.startActivity(context.intentFor<OrderManagement>())
-                }
+                clickListener.onMenuItemClicked(position)
             }
         }
+    }
+
+    interface ClickListener {
+        fun onMenuItemClicked(position: Int)
     }
 }

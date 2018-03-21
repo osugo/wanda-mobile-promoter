@@ -53,7 +53,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.AddFarm"
-            android:label="@string/farm_audit"
+            android:label="@string/add_farm"
             android:launchMode="singleTask" />
         <activity android:name=".activity.ProductsList"
             android:label="@string/products"/>
