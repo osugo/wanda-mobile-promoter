@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by kombo on 29/11/2017.
  */
-data class VoucherTopUpRequest(
+data class FarmerVoucherTopUpRequest(
         @SerializedName("user_id")
         val user_id: Long,
         @SerializedName("payment_option")

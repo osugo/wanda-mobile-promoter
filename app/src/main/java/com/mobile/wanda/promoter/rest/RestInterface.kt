@@ -41,8 +41,11 @@ interface RestInterface {
     @POST("payments/pay-for-order")
     fun payOrder(@Body orderPayment: OrderPayment): Observable<PaymentResponse>
 
-    @POST("payments/top-up-voucher")
-    fun voucherTopUp(@Body voucherTopUpRequest: VoucherTopUpRequest): Observable<VoucherTopupResponse>
+    @POST("payments/top-up-farmer-voucher")
+    fun farmerVoucherTopUp(@Body farmerVoucherTopUpRequest: FarmerVoucherTopUpRequest): Observable<VoucherTopupResponse>
+
+    @POST("payments/top-up-promoter-voucher")
+    fun promoterVoucherTopUp(@Body promoterVoucherTopUpRequest: PromoterVoucherTopUpRequest): Observable<VoucherTopupResponse>
 
     @GET("commissions/check")
     fun checkCommission(): Observable<Commission>

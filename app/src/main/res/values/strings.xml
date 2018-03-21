@@ -15,6 +15,7 @@
     <!-- Main Menu Options -->
     <string name="farmer_reg">Farmer Registration</string>
     <string name="farm_audit">Farm Visit</string>
+    <string name="add_farm">Add Farm</string>
     <string name="order_mgmt">Order Management</string>
     <string name="farmer_voucher">Farmer Voucher Topup</string>
     <string name="promoter_voucher">Promoter Voucher Management</string>

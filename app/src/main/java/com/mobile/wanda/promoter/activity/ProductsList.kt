@@ -1,8 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
@@ -28,12 +26,11 @@ import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.yesButton
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 09/03/2018.
  */
-class ProductsList : AppCompatActivity() {
+class ProductsList : BaseActivity() {
 
     private val disposable = CompositeDisposable()
     private var productsAdapter: ProductsAdapter? = null
@@ -150,10 +147,6 @@ class ProductsList : AppCompatActivity() {
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     override fun onDestroy() {

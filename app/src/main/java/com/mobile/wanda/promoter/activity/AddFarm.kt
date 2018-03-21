@@ -1,11 +1,9 @@
 package com.mobile.wanda.promoter.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import com.github.florent37.rxgps.RxGps
@@ -21,12 +19,11 @@ import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import kotlinx.android.synthetic.main.main_layout.*
 import org.jetbrains.anko.design.snackbar
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 05/03/2018.
  */
-class AddFarm : AppCompatActivity(), FarmersList.SelectionListener {
+class AddFarm : BaseActivity(), FarmersList.SelectionListener {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -132,9 +129,5 @@ class AddFarm : AppCompatActivity(), FarmersList.SelectionListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
@@ -27,7 +26,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.startActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
@@ -38,7 +36,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 /**
  * Handles logging in of the users to the app
  */
-class Login : AppCompatActivity(), View.OnClickListener {
+class Login : BaseActivity(), View.OnClickListener {
 
     private var dialog: ProgressDialog? = null
     private val disposable = CompositeDisposable()
@@ -56,16 +54,14 @@ class Login : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
 
-        startActivity<Home>()
-
         login.setOnClickListener(this)
 
         try {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
             } else {
-                //proceed to login
-//                login()
+//                proceed to login
+                login()
             }
         } catch (e: Exception) {
             e.printStackTrace()

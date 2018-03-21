@@ -1,8 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import com.mobile.wanda.promoter.R
@@ -20,12 +18,11 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.snackbar
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 09/03/2018.
  */
-class Commissions : AppCompatActivity(), View.OnClickListener {
+class Commissions : BaseActivity(), View.OnClickListener {
 
     private val disposable = CompositeDisposable()
 
@@ -163,7 +160,4 @@ class Commissions : AppCompatActivity(), View.OnClickListener {
         disposable.dispose()
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 }

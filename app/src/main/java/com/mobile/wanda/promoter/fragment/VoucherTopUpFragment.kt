@@ -12,7 +12,8 @@ import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.errors.VoucherTopupErrors
-import com.mobile.wanda.promoter.model.requests.VoucherTopUpRequest
+import com.mobile.wanda.promoter.model.requests.FarmerVoucherTopUpRequest
+import com.mobile.wanda.promoter.model.requests.PromoterVoucherTopUpRequest
 import com.mobile.wanda.promoter.model.responses.VoucherTopupResponse
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
@@ -86,7 +87,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.voucher_top_up, container, false)
 
-        userId = arguments.getLong(USER_ID)
+        userId = arguments?.getLong(USER_ID)
 
         topUp = view.findViewById(R.id.topUp) as Button
         amount = view.findViewById(R.id.amount) as EditText
@@ -100,13 +101,13 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.topUp -> {
-                if (NetworkHelper.isOnline(activity)) {
-                    if ((amount?.text.toString().isNotEmpty() || amount?.text.toString() != "0") && userId != null)
+                when {
+                    amount?.text.isNullOrBlank() || amount?.text.toString() == "0" -> snackbar(parentLayout!!, getString(R.string.enter_valid_amount))
+                    else -> if (NetworkHelper.isOnline(activity))
                         showOptions()
                     else
-                        snackbar(parentLayout!!, getString(R.string.enter_valid_amount))
-                } else
-                    snackbar(parentLayout!!, getString(R.string.network_unavailable))
+                        snackbar(parentLayout!!, getString(R.string.network_unavailable))
+                }
             }
         }
     }
@@ -135,9 +136,14 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         paymentMethod?.let {
             if (!activity.isFinishing) {
                 val dialog = indeterminateProgressDialog("Please wait")
+
+                val call = if (userId != null)
+                    restInterface.farmerVoucherTopUp(FarmerVoucherTopUpRequest(userId!!, it, amount!!.text.toString()))
+                else
+                    restInterface.promoterVoucherTopUp(PromoterVoucherTopUpRequest(it, amount!!.text.toString()))
+
                 disposable.add(
-                        restInterface.voucherTopUp(VoucherTopUpRequest(userId!!, it, amount?.text.toString()))
-                                .subscribeOn(Schedulers.io())
+                        call.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
                                     dialog.dismiss()

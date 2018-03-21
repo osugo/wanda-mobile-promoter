@@ -1,13 +1,10 @@
 package com.mobile.wanda.promoter.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.FarmersList
 import com.mobile.wanda.promoter.fragment.VoucherTopUpFragment
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by kombo on 07/03/2018.
@@ -16,7 +13,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 /**
  * Class to hold two fragments, farmers list and voucher topup fragment
  */
-class FarmerVoucherTopup: AppCompatActivity(), FarmersList.SelectionListener {
+class FarmerVoucherTopup: BaseActivity(), FarmersList.SelectionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +51,5 @@ class FarmerVoucherTopup: AppCompatActivity(), FarmersList.SelectionListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

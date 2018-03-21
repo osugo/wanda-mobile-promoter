@@ -219,7 +219,7 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
      * Show appropriate message of transaction; whether success or failure
      */
     private fun showMessage(farmAuditResponse: FarmAuditResponse) {
-        if (farmAuditResponse.error) {
+        if (farmAuditResponse.error != null) {
             if (!activity.isFinishing)
                 alert(buildMessage(farmAuditResponse.farmAuditErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
