@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
+import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
@@ -56,18 +58,18 @@ class Login : AppCompatActivity(), View.OnClickListener {
 
         startActivity<Home>()
 
-//        login.setOnClickListener(this)
-//
-//        try {
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
-//            } else {
-//                //proceed to login
-////                login()
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
+        login.setOnClickListener(this)
+
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
+            } else {
+                //proceed to login
+//                login()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun login() {
