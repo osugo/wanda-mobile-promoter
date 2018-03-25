@@ -15,7 +15,7 @@ data class ProductResults(
 )
 
 data class Product(
-        @SerializedName("id") val id: Int,
+        @SerializedName("id") val id: Long,
         @SerializedName("name") val name: String
 )
 
