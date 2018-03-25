@@ -1,24 +1,33 @@
 package com.mobile.wanda.promoter.activity
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.ProductsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
+import com.mobile.wanda.promoter.model.Cart
 import com.mobile.wanda.promoter.model.orders.Product
 import com.mobile.wanda.promoter.model.orders.ProductResults
+import com.mobile.wanda.promoter.model.responses.Farmer
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.util.CartUtil
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
+import io.realm.RealmList
+import io.realm.exceptions.RealmException
 import kotlinx.android.synthetic.main.loading_indicator.*
 import kotlinx.android.synthetic.main.products_list.*
 import org.greenrobot.eventbus.EventBus
@@ -34,8 +43,12 @@ class ProductsList : BaseActivity() {
 
     private val disposable = CompositeDisposable()
     private var productsAdapter: ProductsAdapter? = null
+    private var options: List<String>? = null
 
+    private lateinit var productList: ArrayList<Product>
     private lateinit var alertDialog: DialogInterface
+
+    private var farmer: Farmer? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -58,9 +71,22 @@ class ProductsList : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
+        farmer = initFarmer(intent)
+
         products.layoutManager = LinearLayoutManager(this)
 
         getProducts()
+
+        clear.setOnClickListener {
+            clearCart()
+        }
+    }
+
+    /**
+     * Create farmer from passed values
+     */
+    private fun initFarmer(intent: Intent): Farmer? {
+        return Farmer(intent.getLongExtra("id", 0), intent.getStringExtra("farmerName"))
     }
 
     /**
@@ -101,7 +127,7 @@ class ProductsList : BaseActivity() {
     /**
      * Retrieve products from a given category
      */
-    private fun loadProducts(id: Int) {
+    private fun loadProducts(id: Long) {
         if (NetworkHelper.isOnline(this)) {
             showLoadingDialog()
 
@@ -126,12 +152,13 @@ class ProductsList : BaseActivity() {
      * Show category specific products or error dialog if empty
      */
     private fun showProducts(products: ProductResults) {
-        val options = products.items.map { it.name }
+        productList = products.items
+        options = productList.map { it.name }
 
-        if (options.isNotEmpty())
-            selector("Products", options, { _, i ->
-                toast("Clicked ${options[i]}")
-                getQuantity(options[i])
+        if (options!!.isNotEmpty())
+            selector("Products", options!!, { _, i ->
+                toast("Clicked ${options!![i]}")
+                getQuantity(options!![i])
             })
         else {
             if (!isFinishing)
@@ -168,7 +195,7 @@ class ProductsList : BaseActivity() {
                         horizontalMargin = dip(17)
                     }
 
-                    button(getString(R.string.confirm)) {
+                    button("ADD TO CART") {
                         background = ContextCompat.getDrawable(this@ProductsList, R.color.colorPrimary)
                         textColor = Color.WHITE
                     }.lparams(width = matchParent, height = matchParent) {
@@ -186,8 +213,66 @@ class ProductsList : BaseActivity() {
         }.show()
     }
 
+    /**
+     * Add item to cart after selecting quantity
+     */
     private fun addToCart(item: String, quantity: Int) {
-        snackbar(parentLayout!!, "Entered $quantity")
+        val product = productList.first { it.name == item }
+
+        try {
+            Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+                it.executeTransaction {
+                    val results = it.where(Cart::class.java).findAll()
+                    val cart: Cart
+
+                    if (results.isEmpty()) {
+                        cart = Cart()
+                        cart.apply {
+                            id = farmer?.id
+                            items = RealmList()
+                            items!!.add(CartUtil.getCartItem(product, quantity))
+                        }
+                    } else {
+                        cart = results.first()!!
+                        cart.apply {
+                            items!!.add(CartUtil.getCartItem(product, quantity))
+                        }
+                    }
+
+                    it.copyToRealmOrUpdate(cart)
+
+                    cartItems.text = resources.getQuantityString(R.plurals.no_of_items, cart.items!!.size, cart.items!!.size)
+
+                    toast("Added to cart")
+                }
+            }
+        } catch (e: RealmException) {
+            Log.e(TAG, e.localizedMessage, e)
+        }
+    }
+
+    /**
+     * Clear cart
+     */
+    private fun clearCart() {
+        try {
+            Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+                it.executeTransaction {
+                    val cart = it.where(Cart::class.java).equalTo("id", farmer?.id).findFirst()
+
+                    if (cart != null) {
+                        cart.items?.clear()
+                        it.copyToRealmOrUpdate(cart)
+
+                        cartItems.text = resources.getQuantityString(R.plurals.no_of_items, 0, 0)
+
+                        toast("Cart cleared")
+                    }
+                }
+            }
+        } catch (e: RealmException) {
+            Log.e(TAG, e.localizedMessage, e)
+        }
     }
 
     private fun showLoadingIndicator() {
@@ -214,5 +299,9 @@ class ProductsList : BaseActivity() {
         super.onDestroy()
 
         disposable.dispose()
+    }
+
+    companion object {
+        val TAG: String = ProductsList::class.java.simpleName
     }
 }

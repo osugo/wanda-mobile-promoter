@@ -69,4 +69,9 @@
     <string name="confirm">Confirm</string>
     <string name="enter_valid_quantity">Please enter a valid quantity to proceed.</string>
 
+    <plurals name="no_of_items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
 </resources>
