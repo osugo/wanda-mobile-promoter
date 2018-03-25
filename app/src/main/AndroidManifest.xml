@@ -32,6 +32,10 @@
             android:label="Commissions"
             android:launchMode="singleTask" />
         <activity
+            android:name=".activity.CartReview"
+            android:label="Cart"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".activity.PromoterVoucher"
             android:label="Promoter Voucher Management"
             android:launchMode="singleTask" />
@@ -55,11 +59,13 @@
             android:name=".activity.AddFarm"
             android:label="@string/add_farm"
             android:launchMode="singleTask" />
-        <activity android:name=".activity.ProductsList"
-            android:label="@string/products"/>
-        <activity android:name=".activity.CreateOrders"
+        <activity
+            android:name=".activity.ProductsList"
+            android:label="@string/products" />
+        <activity
+            android:name=".activity.CreateOrders"
             android:label="@string/select_farmer"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
 
         <service
             android:name=".service.BackgroundDataLoaderService"

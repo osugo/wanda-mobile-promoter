@@ -29,7 +29,7 @@ interface RestInterface {
     @GET("products/categories?")
     fun getProductCategories(): Observable<ProductResults>
 
-    @GET("products/types?category_id=")
+    @GET("products/types")
     fun searchProducts(@Query("category_id") categoryId: Long): Observable<ProductResults>
 
     @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type

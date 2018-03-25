@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
@@ -157,7 +159,6 @@ class ProductsList : BaseActivity() {
 
         if (options!!.isNotEmpty())
             selector("Products", options!!, { _, i ->
-                toast("Clicked ${options!![i]}")
                 getQuantity(options!![i])
             })
         else {
@@ -283,6 +284,21 @@ class ProductsList : BaseActivity() {
     private fun hideLoadingIndicator() {
         loadingIndicator.visibility = View.GONE
         loadingIndicator.hide()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_product_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.done -> {
+                startActivity<CartReview>()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
