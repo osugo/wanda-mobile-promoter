@@ -15,7 +15,6 @@ import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.FarmersAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
-import com.mobile.wanda.promoter.model.Cart
 import com.mobile.wanda.promoter.model.requests.FarmerList
 import com.mobile.wanda.promoter.model.responses.Farmer
 import com.mobile.wanda.promoter.rest.ErrorHandler
@@ -71,8 +70,6 @@ class FarmersList : Fragment() {
 
         initViews(view)
 
-        clearCart()
-
         getFarmers()
 
         retry?.setOnClickListener {
@@ -84,20 +81,6 @@ class FarmersList : Fragment() {
         }
 
         return view
-    }
-
-    /**
-     * Remove all items from cart and begin afresh
-     */
-    private fun clearCart() {
-        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
-            val items = it.where(Cart::class.java).findAll()
-
-            if (items.isNotEmpty())
-                it.executeTransaction {
-                    items.deleteAllFromRealm()
-                }
-        }
     }
 
     /**

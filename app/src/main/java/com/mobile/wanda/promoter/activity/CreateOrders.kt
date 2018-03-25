@@ -2,7 +2,12 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.fragment.FarmersList
+import com.mobile.wanda.promoter.model.Cart
+import com.mobile.wanda.promoter.model.CartItem
+import io.reactivex.Completable
+import io.realm.Realm
 import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.intentFor
 
@@ -27,6 +32,29 @@ class CreateOrders : BaseActivity(), FarmersList.SelectionListener {
     }
 
     override fun onFarmerSelected(id: Long, name: String) {
-        startActivity(intentFor<ProductsList>("farmerId" to id, "farmerName" to name).clearTop())
+        Completable.fromAction {
+            clearCart()
+        }.subscribe {
+            startActivity(intentFor<ProductsList>("farmerId" to id, "farmerName" to name).clearTop())
+        }
+    }
+
+    /**
+     * Remove all items from cart and begin afresh
+     */
+    private fun clearCart() {
+        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+            val items = it.where(Cart::class.java).findAll()
+            if (items.isNotEmpty())
+                it.executeTransaction {
+                    items.deleteAllFromRealm()
+                }
+
+            val cartItems = it.where(CartItem::class.java).findAll()
+            if (cartItems.isNotEmpty())
+                it.executeTransaction {
+                    cartItems.deleteAllFromRealm()
+                }
+        }
     }
 }
