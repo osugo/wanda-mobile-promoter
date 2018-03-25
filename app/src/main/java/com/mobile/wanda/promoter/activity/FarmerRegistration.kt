@@ -172,11 +172,18 @@ class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
     /**
      * Show appropriate message of transaction; whether success or failure
      */
+
+    //TODO inform Moses that having data return both the farmer details and error body wont work
     private fun showMessage(farmerRegistrationResponse: FarmerRegistrationResponse) {
-        if (farmerRegistrationResponse.error) {
+        if (farmerRegistrationResponse.error != null) {
             if (!isFinishing)
-                alert(buildMessage(farmerRegistrationResponse.registrationErrors!!), "Error") {
-                    yesButton { it.dismiss() }
+//                alert(buildMessage(farmerRegistrationResponse.registrationErrors!), "Error") {
+//                    yesButton { it.dismiss() }
+//                }.show()
+                alert("Error creating farmer", null) {
+                    yesButton {
+                        it.dismiss()
+                    }
                 }.show()
         } else {
             if (!isFinishing)

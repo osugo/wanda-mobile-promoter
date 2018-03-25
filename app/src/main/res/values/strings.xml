@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wanda</string>
+    <string name="app_name">Wanda Mobile</string>
 
     <string name="client_secret">uy90t9L5xjgiYYWrBINzqs4JvHbGvC0tE72pTWeT</string>
     <string name="grant_type">password</string>
@@ -10,7 +10,7 @@
     <string name="network_unavailable">Internet connection unavailable</string>
     <string name="enter_username">Please enter your username</string>
     <string name="enter_password">Please enter a valid password</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
 
     <!-- Main Menu Options -->
     <string name="farmer_reg">Farmer Registration</string>
