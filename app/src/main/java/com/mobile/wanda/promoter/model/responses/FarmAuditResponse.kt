@@ -11,6 +11,6 @@ data class FarmAuditResponse(
         val error: Boolean?,
         @SerializedName("message")
         val message: String?,
-        @SerializedName("data")
+        @SerializedName("orderDetails")
         val farmAuditErrors: FarmAuditErrors?
 )

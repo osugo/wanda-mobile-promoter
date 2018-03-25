@@ -31,6 +31,9 @@ class CreateOrders : BaseActivity(), FarmersList.SelectionListener {
         }
     }
 
+    /**
+     * Start creating order for selected farmer
+     */
     override fun onFarmerSelected(id: Long, name: String) {
         Completable.fromAction {
             clearCart()
@@ -40,7 +43,7 @@ class CreateOrders : BaseActivity(), FarmersList.SelectionListener {
     }
 
     /**
-     * Remove all items from cart and begin afresh
+     * Remove all items from cart before beginning each order
      */
     private fun clearCart() {
         Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {

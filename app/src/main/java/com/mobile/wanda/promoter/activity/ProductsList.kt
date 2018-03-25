@@ -88,7 +88,7 @@ class ProductsList : BaseActivity() {
      * Create farmer from passed values
      */
     private fun initFarmer(intent: Intent): Farmer? {
-        return Farmer(intent.getLongExtra("id", 0), intent.getStringExtra("farmerName"))
+        return Farmer(intent.getLongExtra("farmerId", 0), intent.getStringExtra("farmerName"))
     }
 
     /**
@@ -294,7 +294,15 @@ class ProductsList : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.done -> {
-                startActivity<CartReview>()
+                Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+                    val items = it.where(Cart::class.java).findFirst()?.items
+
+                    if (items != null && items.isNotEmpty())
+                        startActivity<CartReview>()
+                    else
+                        snackbar(parentLayout, "Your cart is empty")
+                }
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

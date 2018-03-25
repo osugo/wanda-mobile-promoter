@@ -11,6 +11,6 @@ data class VoucherTopupResponse(
         val error: Boolean?,
         @SerializedName("message")
         val message: String?,
-        @SerializedName("data")
+        @SerializedName("orderDetails")
         val voucherTopupErrors: VoucherTopupErrors?
 )

@@ -32,7 +32,7 @@ interface RestInterface {
     @GET("products/types")
     fun searchProducts(@Query("category_id") categoryId: Long): Observable<ProductResults>
 
-    @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result data to create return type
+    @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result orderDetails to create return type
     fun getProductVariations(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
 
     @POST("farmers/orders/create")

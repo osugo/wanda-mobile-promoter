@@ -39,7 +39,7 @@ class Wanda : MultiDexApplication() {
 
     fun realmConfig(): RealmConfiguration {
         return RealmConfiguration.Builder()
-                .name("Wanda") //hardcoded string just in case app name may change and thus preserve Realm's integrity and data
+                .name("Wanda") //hardcoded string just in case app name may change and thus preserve Realm's integrity and orderDetails
                 .schemaVersion(1)
                 .deleteRealmIfMigrationNeeded()
                 .build()

@@ -11,4 +11,4 @@ import io.realm.annotations.PrimaryKey
  */
 open class WardList(
         @PrimaryKey var id: Int = 0,
-        @SerializedName("data") var wards: RealmList<Ward> = RealmList()) : RealmObject()
+        @SerializedName("orderDetails") var wards: RealmList<Ward> = RealmList()) : RealmObject()

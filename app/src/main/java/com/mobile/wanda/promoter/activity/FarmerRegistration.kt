@@ -173,7 +173,7 @@ class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
      * Show appropriate message of transaction; whether success or failure
      */
 
-    //TODO inform Moses that having data return both the farmer details and error body wont work
+    //TODO inform Moses that having orderDetails return both the farmer details and error body wont work
     private fun showMessage(farmerRegistrationResponse: FarmerRegistrationResponse) {
         if (farmerRegistrationResponse.error != null) {
             if (!isFinishing)

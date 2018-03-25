@@ -2,9 +2,7 @@ package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
-import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.CartItemsAdapter
@@ -110,14 +108,20 @@ class CartReview : BaseActivity(), View.OnClickListener {
             items = orderItems
         }
 
+        showLoadingDialog()
         restInterface.placeOrder(order)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.e(CartReview::class.java.simpleName, Gson().toJson(it))
+                    hideLoadingDialog()
                 }) {
+                    hideLoadingDialog()
                     ErrorHandler.showError(it)
                 }
+    }
+
+    private fun showMessage(){
+
     }
 
     override fun onStart() {
