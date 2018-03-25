@@ -37,7 +37,7 @@ data class OrderDetails(
         val currency: String? = null,
 
         @SerializedName("id")
-        val id: Int? = null,
+        val id: Long? = null,
 
         @SerializedName("items")
         val items: List<Any?>? = null,

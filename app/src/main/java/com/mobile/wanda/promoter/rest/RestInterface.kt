@@ -1,12 +1,15 @@
 package com.mobile.wanda.promoter.rest
 
+import com.mobile.wanda.promoter.model.PendingOrder
 import com.mobile.wanda.promoter.model.orders.Order
-import com.mobile.wanda.promoter.model.orders.PendingOrder
 import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.requests.*
 import com.mobile.wanda.promoter.model.responses.*
 import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
  * Created by kombo on 23/11/2017.
@@ -32,8 +35,8 @@ interface RestInterface {
     @GET("products/types")
     fun searchProducts(@Query("category_id") categoryId: Long): Observable<ProductResults>
 
-    @GET("products/variations?search={searchTerm}&category_id={categoryId}") //TODO I need sample result orderDetails to create return type
-    fun getProductVariations(@Path("searchTerm") searchTerm: String, @Path("category_id") categoryId: Int): Observable<ProductResults>
+    @GET("products/products")
+    fun getProductVariations(@Query("type_id") typeId: Long): Observable<ProductResults>
 
     @POST("farmers/orders/create")
     fun placeOrder(@Body order: Order): Observable<PendingOrder>

@@ -9,7 +9,7 @@ import io.realm.RealmObject
  */
 
 data class ProductResults(
-        @SerializedName("orderDetails") val items: ArrayList<Product>
+        @SerializedName("data") val items: ArrayList<Product>
 )
 
 data class Product(

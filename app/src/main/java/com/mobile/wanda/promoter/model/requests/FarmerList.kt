@@ -12,4 +12,4 @@ import io.realm.annotations.PrimaryKey
 open class FarmerList(
         @PrimaryKey
         var id: Long = 0,
-        @SerializedName("orderDetails") var farmers: RealmList<Farmer> = RealmList()) : RealmObject()
+        @SerializedName("data") var farmers: RealmList<Farmer> = RealmList()) : RealmObject()

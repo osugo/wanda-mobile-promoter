@@ -159,7 +159,7 @@ class ProductsList : BaseActivity() {
 
         if (options!!.isNotEmpty())
             selector("Products", options!!, { _, i ->
-                getQuantity(options!![i])
+                getProductVariation(options!![i])
             })
         else {
             if (!isFinishing)
@@ -168,6 +168,41 @@ class ProductsList : BaseActivity() {
                         it.dismiss()
                     }
                 }.show()
+        }
+    }
+
+    /**
+     * get product variations
+     */
+    private fun getProductVariation(productName: String?) {
+        val product = productList.first { it.name == productName }
+
+        if (NetworkHelper.isOnline(this)) {
+            showLoadingDialog()
+
+            disposable.add(
+                    restInterface.getProductVariations(product.id)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                hideLoadingDialog()
+                                showProductVariations(it)
+                            }) {
+                                hideLoadingDialog()
+                                ErrorHandler.showError(it)
+                            }
+            )
+        }
+    }
+
+    private fun showProductVariations(products: ProductResults) {
+        productList = products.items
+        options = productList.map { it.name }
+
+        if (options!!.isNotEmpty()) {
+            selector("Products", options!!, { _, i ->
+                getQuantity(options!![i])
+            })
         }
     }
 

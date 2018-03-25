@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.OrdersAdapter
-import com.mobile.wanda.promoter.model.orders.PendingOrder
+import com.mobile.wanda.promoter.model.PendingOrder
 import com.wang.avi.AVLoadingIndicatorView
 import io.realm.Realm
 
@@ -55,32 +55,34 @@ class OrdersListFragment : Fragment() {
     }
 
     /**
-     * Load pending orders from Realm (if any)
+     * Load pending orders from network
      */
+
+    //TODO laod pending orders from network call
     private fun showPendingOrders() {
-        showLoadingIndicator()
-
-        val pendingOrders = realm.where(PendingOrder::class.java).findAll()
-        if (pendingOrders.isNotEmpty()) {
-            hideLoadingIndicator()
-
-            ordersAdapter = OrdersAdapter(pendingOrders, object : OrdersAdapter.ClickListener {
-
-                override fun onOrderClicked(order: PendingOrder) {
-                    callback?.onOrderSelected(order)
-                }
-
-            })
-
-            recyclerView?.visibility = View.VISIBLE
-            recyclerView?.adapter = ordersAdapter
-        } else {
-            //show empty view if there are no pending orders
-            hideLoadingIndicator()
-            recyclerView?.visibility = View.GONE
-
-            empty?.visibility = View.VISIBLE
-        }
+//        showLoadingIndicator()
+//
+//        val pendingOrders = realm.where(PendingOrder::class.java).findAll()
+//        if (pendingOrders.isNotEmpty()) {
+//            hideLoadingIndicator()
+//
+//            ordersAdapter = OrdersAdapter(pendingOrders, object : OrdersAdapter.ClickListener {
+//
+//                override fun onOrderClicked(order: PendingOrder) {
+//                    callback?.onOrderSelected(order)
+//                }
+//
+//            })
+//
+//            recyclerView?.visibility = View.VISIBLE
+//            recyclerView?.adapter = ordersAdapter
+//        } else {
+//            //show empty view if there are no pending orders
+//            hideLoadingIndicator()
+//            recyclerView?.visibility = View.GONE
+//
+//            empty?.visibility = View.VISIBLE
+//        }
     }
 
     private fun showLoadingIndicator() {

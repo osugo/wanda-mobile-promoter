@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.fragment.OrderPaymentFragment
 import com.mobile.wanda.promoter.fragment.OrdersListFragment
-import com.mobile.wanda.promoter.model.orders.PendingOrder
+import com.mobile.wanda.promoter.model.PendingOrder
 
 /**
  * Created by kombo on 08/03/2018.
@@ -36,7 +36,7 @@ class PendingOrders : BaseActivity(), OrdersListFragment.ClickListener {
             supportActionBar?.title = getString(R.string.pay_order)
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.contentFrame, OrderPaymentFragment.newInstance(order.orderId!!))
+                    .replace(R.id.contentFrame, OrderPaymentFragment.newInstance(order.orderDetails!!.id!!))
                     .commitAllowingStateLoss()
         }
     }
