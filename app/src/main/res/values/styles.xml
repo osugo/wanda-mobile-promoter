@@ -20,7 +20,7 @@
     <style name="AppTheme.Widget" />
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.TextView">
-        <item name="fontPath">fonts/CircularStd-Bold.ttf</item>
+        <item name="fontPath">fonts/Vollkorn-SemiBold.ttf</item>
     </style>
 
 </resources>

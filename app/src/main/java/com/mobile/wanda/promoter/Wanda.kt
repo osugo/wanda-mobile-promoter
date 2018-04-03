@@ -28,7 +28,7 @@ class Wanda : MultiDexApplication() {
         super.onCreate()
 
         CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/CirclularStd-Bold.ttf")
+                .setDefaultFontPath("fonts/Vollkorn-SemiBold.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         )

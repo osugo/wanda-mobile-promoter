@@ -1,50 +1,76 @@
 package com.mobile.wanda.promoter.model
 
 import com.google.gson.annotations.SerializedName
+import com.mobile.wanda.promoter.model.responses.Farmer
 
 data class OrderDetails(
-        @SerializedName("total_cost")
-        val totalCost: Double? = null,
 
-        @SerializedName("collection_center_id")
-        val collectionCenterId: String? = null,
+	@SerializedName("total_cost")
+	val totalCost: Int? = null,
 
-        @SerializedName("items_cost")
-        val itemsCost: Any? = null,
+	@SerializedName("distribution-center-name")
+	val distributionCenterName: String? = null,
 
-        @SerializedName("estimate_delivery_cost")
-        val estimateDeliveryCost: Double? = null,
+	@SerializedName("can_cancel")
+	val canCancel: Boolean? = null,
 
-        @SerializedName("reference")
-        val reference: String? = null,
+	@SerializedName("collection_center_id")
+	val collectionCenterId: Int? = null,
 
-        @SerializedName("total")
-        val total: Double? = null,
+	@SerializedName("created_at")
+	val createdAt: CreatedAt? = null,
 
-        @SerializedName("delivery_cost")
-        val deliveryCost: Double? = null,
+	@SerializedName("items_cost")
+	val itemsCost: Int? = null,
 
-        @SerializedName("user_id")
-        val userId: Int? = null,
+	@SerializedName("collection-center")
+	val collectionCenter: CollectionCenter? = null,
 
-        @SerializedName("payment_id")
-        val paymentId: Int? = null,
+	@SerializedName("collection-center-name")
+	val collectionCenterName: String? = null,
 
-        @SerializedName("distribution_center_id")
-        val distributionCenterId: Int? = null,
+	@SerializedName("estimate_delivery_cost")
+	val estimateDeliveryCost: Int? = null,
 
-        @SerializedName("currency")
-        val currency: String? = null,
+	@SerializedName("reference")
+	val reference: String? = null,
 
-        @SerializedName("id")
-        val id: Long? = null,
+	@SerializedName("total")
+	val total: Int? = null,
 
-        @SerializedName("items")
-        val items: List<Any?>? = null,
+	@SerializedName("delivery_cost")
+	val deliveryCost: Int? = null,
 
-        @SerializedName("user")
-        val user: User? = null,
+	@SerializedName("distribution-center")
+	val distributionCenter: DistributionCenter? = null,
 
-        @SerializedName("status")
-        val status: String? = null
+	@SerializedName("user_id")
+	val userId: Int? = null,
+
+	@SerializedName("payment_id")
+	val paymentId: Any? = null,
+
+	@SerializedName("distribution_center_id")
+	val distributionCenterId: Int? = null,
+
+	@SerializedName("farmer")
+	val farmer: Farmer? = null,
+
+	@SerializedName("currency")
+	val currency: String? = null,
+
+	@SerializedName("id")
+	val id: Int? = null,
+
+	@SerializedName("items")
+	val items: List<ProductOrder?>? = null,
+
+	@SerializedName("can_update")
+	val canUpdate: Boolean? = null,
+
+	@SerializedName("status")
+	val status: String? = null,
+
+	@SerializedName("farmer_name")
+	val farmerName: String? = null
 )

@@ -13,8 +13,15 @@ data class ProductResults(
 )
 
 data class Product(
-        @SerializedName("id") val id: Long,
-        @SerializedName("name") val name: String
+
+        @SerializedName("name")
+        val name: String? = null,
+
+        @SerializedName("description")
+        val description: String? = null,
+
+        @SerializedName("id")
+        val id: Long? = null
 )
 
 open class Order(

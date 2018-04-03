@@ -79,9 +79,7 @@ class ProductsList : BaseActivity() {
 
         getProducts()
 
-        clear.setOnClickListener {
-            clearCart()
-        }
+        cartLayout.setOnClickListener { startCheckout() }
     }
 
     /**
@@ -120,7 +118,7 @@ class ProductsList : BaseActivity() {
     private fun showResults(productResults: ProductResults) {
         productsAdapter = ProductsAdapter(productResults, object : ProductsAdapter.ClickListener {
             override fun onProductSelected(product: Product) {
-                loadProducts(product.id)
+                loadProducts(product.id!!)
             }
         })
         products.adapter = productsAdapter
@@ -155,7 +153,7 @@ class ProductsList : BaseActivity() {
      */
     private fun showProducts(products: ProductResults) {
         productList = products.items
-        options = productList.map { it.name }
+        options = productList.map { it.name!! }
 
         if (options!!.isNotEmpty())
             selector("Products", options!!, { _, i ->
@@ -181,7 +179,7 @@ class ProductsList : BaseActivity() {
             showLoadingDialog()
 
             disposable.add(
-                    restInterface.getProductVariations(product.id)
+                    restInterface.getProductVariations(product.id!!)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
@@ -197,7 +195,7 @@ class ProductsList : BaseActivity() {
 
     private fun showProductVariations(products: ProductResults) {
         productList = products.items
-        options = productList.map { it.name }
+        options = productList.map { it.name!! }
 
         if (options!!.isNotEmpty()) {
             selector("Products", options!!, { _, i ->
@@ -288,6 +286,20 @@ class ProductsList : BaseActivity() {
     }
 
     /**
+     * Start checkout
+     */
+    private fun startCheckout() {
+        Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
+            val items = it.where(Cart::class.java).findFirst()?.items
+
+            if (items != null && items.isNotEmpty())
+                startActivity<CartReview>()
+            else
+                snackbar(parentLayout, "Your cart is empty")
+        }
+    }
+
+    /**
      * Clear cart
      */
     private fun clearCart() {
@@ -328,16 +340,8 @@ class ProductsList : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
-            R.id.done -> {
-                Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
-                    val items = it.where(Cart::class.java).findFirst()?.items
-
-                    if (items != null && items.isNotEmpty())
-                        startActivity<CartReview>()
-                    else
-                        snackbar(parentLayout, "Your cart is empty")
-                }
-
+            R.id.clear -> {
+                clearCart()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -3,9 +3,13 @@ package com.mobile.wanda.promoter.model
 import com.google.gson.annotations.SerializedName
 
 data class PendingOrder(
-        @SerializedName("orderDetails")
-        val orderDetails: OrderDetails? = null,
 
-        @SerializedName("message")
-        val message: String? = null
+        @field:SerializedName("data")
+        val data: OrderDetails? = null,
+
+        @field:SerializedName("message")
+        val message: String? = null,
+
+        @SerializedName("error")
+        val error: Boolean? = null
 )

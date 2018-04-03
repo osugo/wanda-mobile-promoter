@@ -36,7 +36,7 @@ class PendingOrders : BaseActivity(), OrdersListFragment.ClickListener {
             supportActionBar?.title = getString(R.string.pay_order)
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.contentFrame, OrderPaymentFragment.newInstance(order.orderDetails!!.id!!))
+                    .replace(R.id.contentFrame, OrderPaymentFragment())
                     .commitAllowingStateLoss()
         }
     }

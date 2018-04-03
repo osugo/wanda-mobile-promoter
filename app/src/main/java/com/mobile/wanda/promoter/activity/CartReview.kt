@@ -9,6 +9,7 @@ import com.mobile.wanda.promoter.adapter.CartItemsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.Cart
 import com.mobile.wanda.promoter.model.CartItem
+import com.mobile.wanda.promoter.model.PendingOrder
 import com.mobile.wanda.promoter.model.orders.Order
 import com.mobile.wanda.promoter.model.orders.OrderItem
 import com.mobile.wanda.promoter.rest.ErrorHandler
@@ -67,7 +68,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * Initialize the recyclerview
+     * Initialize the recyclerView
      */
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -114,14 +115,22 @@ class CartReview : BaseActivity(), View.OnClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     hideLoadingDialog()
+
+                    showMessage(it)
                 }) {
                     hideLoadingDialog()
                     ErrorHandler.showError(it)
                 }
     }
 
-    private fun showMessage(){
-
+    private fun showMessage(pendingOrder: PendingOrder) {
+        if (pendingOrder.error == null) {
+            alert(pendingOrder.message!!) {
+                yesButton {
+                    //TODO proceed to payment
+                }
+            }.show()
+        }
     }
 
     override fun onStart() {
