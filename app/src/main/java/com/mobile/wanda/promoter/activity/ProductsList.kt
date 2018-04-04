@@ -276,8 +276,6 @@ class ProductsList : BaseActivity() {
                     it.copyToRealmOrUpdate(cart)
 
                     cartItems.text = resources.getQuantityString(R.plurals.no_of_items, cart.items!!.size, cart.items!!.size)
-
-                    toast("Added to cart")
                 }
             }
         } catch (e: RealmException) {

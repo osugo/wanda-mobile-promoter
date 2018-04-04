@@ -130,6 +130,8 @@ class CartReview : BaseActivity(), View.OnClickListener {
                     //TODO proceed to payment
                 }
             }.show()
+        } else {
+            //TODO show error message here
         }
     }
 
