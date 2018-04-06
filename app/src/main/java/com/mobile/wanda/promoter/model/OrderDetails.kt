@@ -63,7 +63,7 @@ data class OrderDetails(
 	val id: Int? = null,
 
 	@SerializedName("items")
-	val items: List<ProductOrder?>? = null,
+	val items: List<ProductOrder>? = null,
 
 	@SerializedName("can_update")
 	val canUpdate: Boolean? = null,

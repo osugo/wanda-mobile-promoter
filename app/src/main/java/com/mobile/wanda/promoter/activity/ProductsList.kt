@@ -11,11 +11,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.ProductsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.Cart
+import com.mobile.wanda.promoter.model.orders.Order
+import com.mobile.wanda.promoter.model.orders.OrderItem
 import com.mobile.wanda.promoter.model.orders.Product
 import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.responses.Farmer
@@ -54,6 +57,10 @@ class ProductsList : BaseActivity() {
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
+    }
+
+    private val realm by lazy {
+        Realm.getInstance(Wanda.INSTANCE.realmConfig())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -291,7 +298,7 @@ class ProductsList : BaseActivity() {
             val items = it.where(Cart::class.java).findFirst()?.items
 
             if (items != null && items.isNotEmpty())
-                startActivity<CartReview>()
+                createOrder()
             else
                 snackbar(parentLayout, "Your cart is empty")
         }
@@ -319,6 +326,37 @@ class ProductsList : BaseActivity() {
         } catch (e: RealmException) {
             Log.e(TAG, e.localizedMessage, e)
         }
+    }
+
+    /**
+     * Create the order and get the prices.
+     */
+    private fun createOrder() {
+        val cart = realm.where(Cart::class.java).findFirst()
+
+        val orderItems = RealmList<OrderItem>()
+        cart?.items?.forEach {
+            orderItems.add(OrderItem(it.id, it.quantity))
+        }
+
+        val order = Order()
+        order.apply {
+            farmerId = cart!!.id
+            items = orderItems
+        }
+
+        showLoadingDialog()
+        restInterface.placeOrder(order)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    hideLoadingDialog()
+
+                    startActivity(intentFor<CartReview>(CartReview.PENDING_ORDER to Gson().toJson(it)))
+                }) {
+                    hideLoadingDialog()
+                    ErrorHandler.showError(it)
+                }
     }
 
     private fun showLoadingIndicator() {
@@ -358,6 +396,8 @@ class ProductsList : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        realm?.close()
 
         disposable.dispose()
     }

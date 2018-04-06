@@ -3,24 +3,18 @@ package com.mobile.wanda.promoter.activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.adapter.CartItemsAdapter
+import com.mobile.wanda.promoter.adapter.OrderReviewAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
-import com.mobile.wanda.promoter.model.Cart
-import com.mobile.wanda.promoter.model.CartItem
 import com.mobile.wanda.promoter.model.PendingOrder
-import com.mobile.wanda.promoter.model.orders.Order
-import com.mobile.wanda.promoter.model.orders.OrderItem
-import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.view.DividerItemDecoration
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
-import io.realm.RealmList
 import kotlinx.android.synthetic.main.cart_review.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -62,7 +56,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
 
         initRecyclerView()
 
-        loadCart()
+        loadCart(intent.getStringExtra(PENDING_ORDER))
 
         checkout.setOnClickListener(this)
     }
@@ -78,49 +72,29 @@ class CartReview : BaseActivity(), View.OnClickListener {
     /**
      * Load items from cart onto recycler
      */
-    private fun loadCart() {
-        val cartItems = realm.where(CartItem::class.java).findAll()
+    private fun loadCart(orderString: String) {
+        val pendingOrder = getPendingOrder(orderString)
 
-        if (cartItems.isNotEmpty()) {
-            val adapter = CartItemsAdapter(cartItems, true, true)
+
+        if (pendingOrder != null) {
+            val adapter = OrderReviewAdapter(pendingOrder.data!!.items!!)
             recyclerView.adapter = adapter
         }
+    }
+
+    private fun getPendingOrder(orderString: String): PendingOrder? {
+        val gson = Gson()
+        val type = object : TypeToken<PendingOrder>() {}.type
+
+        return gson.fromJson<PendingOrder>(orderString, type)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.checkout -> {
-                createOrder()
+//                createOrder()
             }
         }
-    }
-
-    private fun createOrder() {
-        val cart = realm.where(Cart::class.java).findFirst()
-
-        val orderItems = RealmList<OrderItem>()
-        cart?.items?.forEach {
-            orderItems.add(OrderItem(it.id, it.quantity))
-        }
-
-        val order = Order()
-        order.apply {
-            farmerId = cart!!.id
-            items = orderItems
-        }
-
-        showLoadingDialog()
-        restInterface.placeOrder(order)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    hideLoadingDialog()
-
-                    showMessage(it)
-                }) {
-                    hideLoadingDialog()
-                    ErrorHandler.showError(it)
-                }
     }
 
     private fun showMessage(pendingOrder: PendingOrder) {
@@ -149,5 +123,9 @@ class CartReview : BaseActivity(), View.OnClickListener {
         super.onDestroy()
 
         disposable.dispose()
+    }
+
+    companion object {
+        const val PENDING_ORDER = "pendingOrder"
     }
 }

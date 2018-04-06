@@ -20,7 +20,7 @@ class OrdersAdapter(private val pendingOrders: ArrayList<PendingOrder>, private 
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItems(pendingOrders[holder.adapterPosition]!!, clickListener)
+        holder?.bindItems(pendingOrders[holder.adapterPosition], clickListener)
     }
 
     override fun getItemCount(): Int = pendingOrders.size
