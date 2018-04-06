@@ -1,19 +1,21 @@
 package com.mobile.wanda.promoter.fragment
 
+import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import co.moonmonkeylabs.realmsearchview.RealmSearchView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.adapter.FarmersAdapter
+import com.mobile.wanda.promoter.adapter.FarmerAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.requests.FarmerList
 import com.mobile.wanda.promoter.model.responses.Farmer
@@ -26,25 +28,26 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
-import io.realm.exceptions.RealmException
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.find
 
 /**
  * Created by kombo on 04/03/2018.
  */
-class FarmersList : Fragment() {
+class FarmersList : Fragment(), SearchView.OnQueryTextListener {
 
     private val disposable = CompositeDisposable()
-    private var farmersAdapter: FarmersAdapter? = null
+    private var farmerAdapter: FarmerAdapter? = null
     private var callback: SelectionListener? = null
 
     private var loadingIndicator: AVLoadingIndicatorView? = null
     private var retry: Button? = null
-    private var farmerSearchView: RealmSearchView? = null
     private var errorLayout: LinearLayout? = null
     private var errorText: TextView? = null
+    private var recyclerView: RecyclerView? = null
+    private var searchView: SearchView? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -66,14 +69,14 @@ class FarmersList : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.farmers, container, false)
+        val view = inflater.inflate(R.layout.farmer_list, container, false)
 
         initViews(view)
 
         getFarmers()
 
         retry?.setOnClickListener {
-            farmerSearchView?.visibility = View.GONE
+            recyclerView?.visibility = View.GONE
             errorLayout?.visibility = View.GONE
             loadingIndicator?.visibility = View.VISIBLE
 
@@ -87,11 +90,29 @@ class FarmersList : Fragment() {
      * Initialize views
      */
     private fun initViews(v: View) {
-        retry = v.findViewById(R.id.retry) as Button
-        errorText = v.findViewById(R.id.errorText) as TextView
-        errorLayout = v.findViewById(R.id.errorLayout) as LinearLayout
-        farmerSearchView = v.findViewById(R.id.farmerSearchView) as RealmSearchView
-        loadingIndicator = v.findViewById(R.id.loadingIndicator) as AVLoadingIndicatorView
+        retry = v.find(R.id.retry) as Button
+        errorText = v.find(R.id.errorText) as TextView
+        searchView = v.find(R.id.searchView) as SearchView
+        errorLayout = v.find(R.id.errorLayout) as LinearLayout
+        recyclerView = v.find(R.id.recyclerView) as RecyclerView
+        loadingIndicator = v.find(R.id.loadingIndicator) as AVLoadingIndicatorView
+
+        recyclerView?.layoutManager = LinearLayoutManager(activity)
+
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+        val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+        searchView?.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean = false
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        farmerAdapter?.filter?.filter(newText)
+        return true
     }
 
     /**
@@ -106,18 +127,8 @@ class FarmersList : Fragment() {
                     restInterface.getFarmers()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ farmers ->
-                                try {
-                                    Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
-                                        it.executeTransaction {
-                                            it.copyToRealmOrUpdate(farmers)
-                                        }
-                                    }
-                                } catch (e: RealmException) {
-                                    Log.e(TAG, e.localizedMessage, e)
-                                } finally {
-                                    showFarmers()
-                                }
+                            .subscribe({
+                                showFarmers(it)
                             }) {
                                 ErrorHandler.showError(it)
                             }
@@ -132,25 +143,19 @@ class FarmersList : Fragment() {
     /**
      * load retrieved farmers into view
      */
-    private fun showFarmers() {
+    private fun showFarmers(farmerList: FarmerList) {
         if (!realm.isClosed) {
             loadingIndicator?.visibility = View.GONE
             loadingIndicator?.smoothToHide()
 
-            farmerSearchView?.visibility = View.VISIBLE
+            recyclerView?.visibility = View.VISIBLE
 
-            val farmersList = realm.where(FarmerList::class.java).findFirst()
-
-            farmersList?.let {
-                if(it.farmers.isNotEmpty()){
-                    farmersAdapter = FarmersAdapter(activity, realm, "name", object : FarmersAdapter.ClickListener {
-                        override fun onItemClicked(farmer: Farmer) {
-                            callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
-                        }
-                    })
-                    farmerSearchView?.setAdapter(farmersAdapter)
+            farmerAdapter = FarmerAdapter(farmerList.farmers!!, object : FarmerAdapter.ClickListener {
+                override fun onItemClicked(farmer: Farmer) {
+                    callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
                 }
-            }
+            })
+            recyclerView?.adapter = farmerAdapter
         }
     }
 
@@ -159,7 +164,7 @@ class FarmersList : Fragment() {
      */
     private fun toggleViews() {
         loadingIndicator?.visibility = View.GONE
-        farmerSearchView?.visibility = View.GONE
+        recyclerView?.visibility = View.GONE
 
         errorLayout?.visibility = View.VISIBLE
     }

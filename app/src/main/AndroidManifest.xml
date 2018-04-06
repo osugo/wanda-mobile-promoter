@@ -33,7 +33,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.CartReview"
-            android:label="Cart"
+            android:label="@string/order_review"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.PromoterVoucher"
@@ -50,7 +50,12 @@
         <activity
             android:name=".activity.FarmerVoucherTopup"
             android:label="Farmer Voucher Management"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
+        </activity>
         <activity
             android:name=".activity.FarmerRegistration"
             android:label="@string/farmer_reg"
@@ -58,14 +63,24 @@
         <activity
             android:name=".activity.AddFarm"
             android:label="@string/add_farm"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
+        </activity>
         <activity
             android:name=".activity.ProductsList"
             android:label="@string/products" />
         <activity
             android:name=".activity.CreateOrders"
             android:label="@string/select_farmer"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
+        </activity>
 
         <service
             android:name=".service.BackgroundDataLoaderService"

@@ -54,10 +54,10 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        private val USER_ID: String = "userId"
-        private val CASH: String = "cash"
-        private val MPESA_NOW: String = "mpesa-now"
-        private val MPESA_LATER: String = "mpesa-later"
+        private const val USER_ID: String = "userId"
+        private const val CASH: String = "cash"
+        private const val MPESA_NOW: String = "mpesa-now"
+        private const val MPESA_LATER: String = "mpesa-later"
 
         fun newInstance(userId: Long): VoucherTopUpFragment {
             val bundle = Bundle().apply {

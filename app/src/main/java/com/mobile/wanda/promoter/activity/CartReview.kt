@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
 
 /**
@@ -27,6 +28,7 @@ import org.jetbrains.anko.yesButton
  */
 class CartReview : BaseActivity(), View.OnClickListener {
 
+    private var orderId: Int? = null
     private val disposable = CompositeDisposable()
 
     private val restInterface by lazy {
@@ -58,7 +60,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
 
         loadCart(intent.getStringExtra(PENDING_ORDER))
 
-        checkout.setOnClickListener(this)
+        completeOrder.setOnClickListener(this)
     }
 
     /**
@@ -74,10 +76,10 @@ class CartReview : BaseActivity(), View.OnClickListener {
      */
     private fun loadCart(orderString: String) {
         val pendingOrder = getPendingOrder(orderString)
-
+        orderId = pendingOrder?.details?.id
 
         if (pendingOrder != null) {
-            val adapter = OrderReviewAdapter(pendingOrder.data!!.items!!)
+            val adapter = OrderReviewAdapter(pendingOrder.details!!.items!!)
             recyclerView.adapter = adapter
         }
     }
@@ -91,10 +93,24 @@ class CartReview : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.checkout -> {
-//                createOrder()
+            R.id.completeOrder -> {
+                showPickUpPrompt()
             }
         }
+    }
+
+    /**
+     * Prompts the user to either choose whether products are to be delivered or picked up
+     */
+    private fun showPickUpPrompt() {
+       alert("Would you like the delivery to be made to the farm?"){
+           yesButton {
+//               placeOrder(1)
+           }
+           noButton {
+//               placeOrder(0)
+           }
+       }.show()
     }
 
     private fun showMessage(pendingOrder: PendingOrder) {
@@ -127,5 +143,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
 
     companion object {
         const val PENDING_ORDER = "pendingOrder"
+        private const val DELIVERY = "Delivery"
+        private const val PICK_UP = "Pick up"
     }
 }

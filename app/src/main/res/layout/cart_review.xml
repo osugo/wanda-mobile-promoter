@@ -10,13 +10,13 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/checkout"
+        android:id="@+id/completeOrder"
         fontPath="fonts/CircularStd-Bold.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
-        android:text="@string/checkout"
+        android:text="@string/complete_order"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         tools:ignore="MissingPrefix" />
