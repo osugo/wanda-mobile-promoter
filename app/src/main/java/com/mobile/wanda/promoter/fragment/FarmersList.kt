@@ -87,11 +87,11 @@ class FarmersList : Fragment() {
      * Initialize views
      */
     private fun initViews(v: View) {
-        loadingIndicator = v.findViewById(R.id.loadingIndicator) as AVLoadingIndicatorView
         retry = v.findViewById(R.id.retry) as Button
         errorText = v.findViewById(R.id.errorText) as TextView
         errorLayout = v.findViewById(R.id.errorLayout) as LinearLayout
         farmerSearchView = v.findViewById(R.id.farmerSearchView) as RealmSearchView
+        loadingIndicator = v.findViewById(R.id.loadingIndicator) as AVLoadingIndicatorView
     }
 
     /**
@@ -141,13 +141,15 @@ class FarmersList : Fragment() {
 
             val farmersList = realm.where(FarmerList::class.java).findFirst()
 
-            if (farmersList?.farmers!!.isNotEmpty()) {
-                farmersAdapter = FarmersAdapter(activity, realm, "name", object : FarmersAdapter.ClickListener {
-                    override fun onItemClicked(farmer: Farmer) {
-                        callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
-                    }
-                })
-                farmerSearchView?.setAdapter(farmersAdapter)
+            farmersList?.let {
+                if(it.farmers.isNotEmpty()){
+                    farmersAdapter = FarmersAdapter(activity, realm, "name", object : FarmersAdapter.ClickListener {
+                        override fun onItemClicked(farmer: Farmer) {
+                            callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
+                        }
+                    })
+                    farmerSearchView?.setAdapter(farmersAdapter)
+                }
             }
         }
     }

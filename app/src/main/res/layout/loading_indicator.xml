@@ -8,4 +8,4 @@
     android:layout_gravity="center"
     android:visibility="gone"
     indicator:indicatorColor="@color/colorPrimaryDark"
-    indicator:indicatorName="BallClipRotatePulseIndicator" />
+    indicator:indicatorName="BallTrianglePathIndicator" />

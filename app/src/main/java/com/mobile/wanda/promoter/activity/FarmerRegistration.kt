@@ -1,9 +1,7 @@
 package com.mobile.wanda.promoter.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
@@ -38,7 +36,7 @@ import org.jetbrains.anko.yesButton
 /**
  * Created by kombo on 03/01/2018.
  */
-class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger {
+class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
 
     private val disposable = CompositeDisposable()
 
@@ -174,11 +172,18 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
     /**
      * Show appropriate message of transaction; whether success or failure
      */
+
+    //TODO inform Moses that having orderDetails return both the farmer details and error body wont work
     private fun showMessage(farmerRegistrationResponse: FarmerRegistrationResponse) {
-        if (farmerRegistrationResponse.error) {
+        if (farmerRegistrationResponse.error != null) {
             if (!isFinishing)
-                alert(buildMessage(farmerRegistrationResponse.registrationErrors!!), "Error") {
-                    yesButton { it.dismiss() }
+//                alert(buildMessage(farmerRegistrationResponse.registrationErrors!), "Error") {
+//                    yesButton { it.dismiss() }
+//                }.show()
+                alert("Error creating farmer", null) {
+                    yesButton {
+                        it.dismiss()
+                    }
                 }.show()
         } else {
             if (!isFinishing)
@@ -224,19 +229,6 @@ class FarmerRegistration : AppCompatActivity(), View.OnClickListener, AnkoLogger
      */
     private fun showSnackbar(message: String) {
         snackbar(parentLayout, message)
-    }
-
-    /**
-     * Listener for hardware back button press
-     */
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> false
-        }
     }
 
     override fun onStart() {

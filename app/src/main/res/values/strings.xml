@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wanda Mobile Promoter</string>
+    <string name="app_name">Wanda Mobile</string>
 
     <string name="client_secret">uy90t9L5xjgiYYWrBINzqs4JvHbGvC0tE72pTWeT</string>
     <string name="grant_type">password</string>
@@ -10,11 +10,12 @@
     <string name="network_unavailable">Internet connection unavailable</string>
     <string name="enter_username">Please enter your username</string>
     <string name="enter_password">Please enter a valid password</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
 
     <!-- Main Menu Options -->
     <string name="farmer_reg">Farmer Registration</string>
     <string name="farm_audit">Farm Visit</string>
+    <string name="add_farm">Add Farm</string>
     <string name="order_mgmt">Order Management</string>
     <string name="farmer_voucher">Farmer Voucher Topup</string>
     <string name="promoter_voucher">Promoter Voucher Management</string>
@@ -60,5 +61,18 @@
     <string name="no_pending_orders">You have no pending orders</string>
     <string name="pay_order">Pay Order</string>
     <string name="orders">Orders</string>
+    <string name="products">Products</string>
+    <string name="select_farmer">Select Farmer</string>
+    <string name="empty_products">No products available for this category</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="enter_quantity">Please enter the quantity</string>
+    <string name="confirm">Confirm</string>
+    <string name="enter_valid_quantity">Please enter a valid quantity to proceed.</string>
+    <string name="checkout">Checkout</string>
+
+    <plurals name="no_of_items">
+        <item quantity="one">Checkout (%d)</item>
+        <item quantity="other">Checkout (%d)</item>
+    </plurals>
 
 </resources>

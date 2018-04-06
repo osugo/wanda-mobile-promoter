@@ -25,11 +25,15 @@
         </activity>
         <activity
             android:name=".activity.Home"
-            android:label="Home"
+            android:label="@string/app_name"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.CommissionManagement"
+            android:name=".activity.Commissions"
             android:label="Commissions"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.CartReview"
+            android:label="Cart"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.PromoterVoucher"
@@ -52,8 +56,15 @@
             android:label="@string/farmer_reg"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.FarmReport"
-            android:label="@string/farm_audit"
+            android:name=".activity.AddFarm"
+            android:label="@string/add_farm"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.ProductsList"
+            android:label="@string/products" />
+        <activity
+            android:name=".activity.CreateOrders"
+            android:label="@string/select_farmer"
             android:launchMode="singleTask" />
 
         <service

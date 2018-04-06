@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="20dp"
+    tools:ignore="MissingPrefix"
     android:id="@+id/parentLayout"
     android:orientation="vertical">
 
@@ -13,6 +15,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_bg"
         android:text="Check balance"
+        fontPath="fonts/CircularStd-Bold.ttf"
         android:textColor="#fff" />
 
     <Button
@@ -21,6 +24,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
         android:text="Voucher topup"
+        fontPath="fonts/CircularStd-Bold.ttf"
         android:textColor="#fff" />
 
 </LinearLayout>

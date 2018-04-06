@@ -2,20 +2,22 @@ package com.mobile.wanda.promoter.activity
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.model.errors.LoginError
 import com.mobile.wanda.promoter.model.requests.LoginCredentials
 import com.mobile.wanda.promoter.rest.HeaderlessRestClient
 import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.rest.RetrofitException
 import com.mobile.wanda.promoter.util.NetworkHelper
 import com.mobile.wanda.promoter.util.PrefUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,6 +26,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.login.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.indeterminateProgressDialog
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 /**
@@ -33,7 +36,7 @@ import org.jetbrains.anko.indeterminateProgressDialog
 /**
  * Handles logging in of the users to the app
  */
-class Login : AppCompatActivity(), View.OnClickListener {
+class Login : BaseActivity(), View.OnClickListener {
 
     private var dialog: ProgressDialog? = null
     private val disposable = CompositeDisposable()
@@ -57,7 +60,7 @@ class Login : AppCompatActivity(), View.OnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
             } else {
-                //proceed to login
+//                proceed to login
                 login()
             }
         } catch (e: Exception) {
@@ -145,14 +148,20 @@ class Login : AppCompatActivity(), View.OnClickListener {
                             Log.e(TAG, "User logged in successfully")
 
                             startActivity(Intent(this, Home::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-                        }
-                                , {
+                        }) {
                             hideProgressDialog()
                             //show user error message
-                            showSnackBar(it.localizedMessage)
+
+                            val loginError: String? = if (it as? RetrofitException != null)
+                                it.getErrorBodyAs(LoginError::class.java).message
+                            else
+                                it.localizedMessage
+
+                            snackbar(parentLayout, loginError!!)
+
                             //show user error message
                             Log.e(TAG, it.localizedMessage, it)
-                        })
+                        }
         )
     }
 
@@ -167,5 +176,9 @@ class Login : AppCompatActivity(), View.OnClickListener {
         super.onDestroy()
 
         disposable.dispose()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

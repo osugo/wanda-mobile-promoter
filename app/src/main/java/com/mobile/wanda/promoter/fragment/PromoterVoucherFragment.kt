@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import com.mobile.wanda.promoter.R
-import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
@@ -21,11 +20,9 @@ import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.indeterminateProgressDialog
-import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.yesButton
 
 /**
@@ -119,7 +116,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
         if (!activity.isFinishing)
             alert(String.format("Your voucher balance is %s KES", balance), "Balance") {
                 yesButton {
-                    startActivity(intentFor<Home>().clearTop())
+                    it.dismiss()
                 }
             }.show()
     }
