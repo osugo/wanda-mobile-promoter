@@ -28,7 +28,7 @@ interface RestInterface {
     fun registerFarmer(@Body registrationDetails: FarmerRegistrationDetails): Observable<FarmerRegistrationResponse>
 
     @POST("farmers/add-farm")
-    fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmAuditResponse>
+    fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmCreationResponse>
 
     @GET("products/categories?")
     fun getProductCategories(): Observable<ProductResults>

@@ -6,11 +6,11 @@ import com.mobile.wanda.promoter.model.errors.FarmAuditErrors
 /**
  * Created by kombo on 05/03/2018.
  */
-data class FarmAuditResponse(
+data class FarmCreationResponse(
         @SerializedName("error")
         val error: Boolean?,
         @SerializedName("message")
         val message: String?,
-        @SerializedName("data")
+        @SerializedName("errorData")
         val farmAuditErrors: FarmAuditErrors?
 )

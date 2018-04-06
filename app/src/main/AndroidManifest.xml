@@ -61,7 +61,7 @@
             android:label="@string/farmer_reg"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.AddFarm"
+            android:name=".activity.FarmCreation"
             android:label="@string/add_farm"
             android:launchMode="singleTask" >
             <meta-data

@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.activity
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -37,6 +38,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
     private var orderId: Int? = null
     private var pendingOrder: PendingOrder? = null
     private val disposable = CompositeDisposable()
+    private lateinit var alertDialog: DialogInterface
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -114,7 +116,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
      * Prompts the user to either choose whether products are to be delivered or picked up
      */
     private fun showPickUpPrompt() {
-        alert {
+        alertDialog = alert {
             customView {
                 verticalLayout {
                     textView("Would you like the delivery to be made to the farm?") {
@@ -133,6 +135,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
                             rightMargin = dip(1)
                         }.setOnClickListener {
                             placeOrder(0)
+                            alertDialog.dismiss()
                         }
 
                         button("Yes") {
@@ -143,6 +146,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
                             weight = 1f
                         }.setOnClickListener {
                             placeOrder(1)
+                            alertDialog.dismiss()
                         }
                     }.lparams(width = matchParent, height = wrapContent) {
                         weightSum = 2f
@@ -162,7 +166,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
-                                    
+
                                 }) {
                                     hideLoadingDialog()
                                     ErrorHandler.showError(it)
