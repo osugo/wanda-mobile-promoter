@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.rest
 
+import com.mobile.wanda.promoter.model.OrderPlacementRequest
 import com.mobile.wanda.promoter.model.PendingOrder
 import com.mobile.wanda.promoter.model.orders.Order
 import com.mobile.wanda.promoter.model.orders.ProductResults
@@ -27,7 +28,7 @@ interface RestInterface {
     fun registerFarmer(@Body registrationDetails: FarmerRegistrationDetails): Observable<FarmerRegistrationResponse>
 
     @POST("farmers/add-farm")
-    fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmAuditResponse>
+    fun addFarm(@Body auditDetails: FarmAuditDetails): Observable<FarmCreationResponse>
 
     @GET("products/categories?")
     fun getProductCategories(): Observable<ProductResults>
@@ -39,7 +40,10 @@ interface RestInterface {
     fun getProductVariations(@Query("type_id") typeId: Long): Observable<ProductResults>
 
     @POST("farmers/orders/create")
-    fun placeOrder(@Body order: Order): Observable<PendingOrder>
+    fun createOrder(@Body order: Order): Observable<PendingOrder>
+
+    @POST("farmers/orders/place")
+    fun placeOrder(@Body request: OrderPlacementRequest): Observable<PendingOrder>
 
     @POST("payments/pay-for-order")
     fun payOrder(@Body orderPayment: OrderPayment): Observable<PaymentResponse>

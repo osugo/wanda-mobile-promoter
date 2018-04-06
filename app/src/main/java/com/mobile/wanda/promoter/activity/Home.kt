@@ -57,7 +57,7 @@ class Home : BaseActivity() {
     private fun navigate(position: Int) {
         when (position) {
             0 -> startActivity<FarmerRegistration>()
-            1 -> startActivity<AddFarm>()
+            1 -> startActivity<FarmCreation>()
             2 -> startActivity<OrderManagement>()
             3 -> startActivity<FarmerVoucherTopup>()
             4 -> startActivity<PromoterVoucher>()

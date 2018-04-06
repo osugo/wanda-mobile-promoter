@@ -16,8 +16,7 @@ import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.errors.FarmAuditErrors
 import com.mobile.wanda.promoter.model.requests.FarmAuditDetails
 import com.mobile.wanda.promoter.model.requests.WardList
-import com.mobile.wanda.promoter.model.responses.FarmAuditResponse
-import com.mobile.wanda.promoter.model.responses.Farmer
+import com.mobile.wanda.promoter.model.responses.FarmCreationResponse
 import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
@@ -32,9 +31,9 @@ import org.apache.commons.lang3.text.WordUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.design.snackbar
+import org.jetbrains.anko.find
 import org.jetbrains.anko.singleTop
 import org.jetbrains.anko.support.v4.alert
-import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.indeterminateProgressDialog
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.yesButton
@@ -43,13 +42,12 @@ import org.jetbrains.anko.yesButton
  * Created by kombo on 05/03/2018.
  */
 
-//TODO location does't work for some reason; figure it out; if it doesn't work, move it to parent activity
+//TODO test with actual location received from device
 class FarmCreationFragment : Fragment(), View.OnClickListener {
 
     private var location: Location? = null
-    private var farmer: Farmer? = null
+    private var farmerId: Long? = null
 
-    private var username: EditText? = null
     private var submit: Button? = null
     private var ward: AutoCompleteTextView? = null
     private var farmSize: EditText? = null
@@ -64,14 +62,11 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private val TAG: String = FarmCreationFragment::class.java.simpleName
-        private val ID: String = "id"
-        private val NAME: String = "name"
-        private val PERMISSION_REQUEST_CODE = 234
+        private const val ID: String = "id"
 
-        fun newInstance(id: Long, name: String): FarmCreationFragment {
+        fun newInstance(id: Long): FarmCreationFragment {
             val bundle = Bundle().apply {
                 putLong(ID, id)
-                putString(NAME, name)
             }
 
             val fragment = FarmCreationFragment()
@@ -94,18 +89,15 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.farm_audit, container, false)
 
-        username = find(R.id.username)
-        submit = find(R.id.submit)
-        ward = find(R.id.ward)
-        description = find(R.id.description)
-        farmSize = find(R.id.farmSize)
-        parentLayout = find(R.id.parentLayout)
+        submit = view.find(R.id.submit) as Button
+        ward = view.find(R.id.ward) as AutoCompleteTextView
+        description = view.find(R.id.description) as EditText
+        farmSize = view.find(R.id.farmSize) as EditText
+        parentLayout = view.find(R.id.parentLayout) as RelativeLayout
 
         arguments?.let {
-            farmer = Farmer(it.getLong(ID, 0), it.getString(NAME, null))
+            farmerId = it.getLong(ID, 0)
         }
-
-        username?.setText(farmer?.name)
 
         submit?.setOnClickListener(this)
 
@@ -157,77 +149,80 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
      * Click listener for the submit button
      */
     override fun onClick(v: View?) {
-        val name = username?.text.toString()
-        val size = farmSize?.text.toString()
-        val desc = description?.text.toString()
-        val farmerWard = ward?.text.toString()
+        when (v?.id) {
+            R.id.submit -> {
+                val size = farmSize?.text.toString()
+                val desc = description?.text.toString()
+                val farmerWard = ward?.text.toString()
 
-        //check if name field is empty
-        if (isEmpty(name)) {
-            showSnackbar("Please enter the farmer's name.")
-            return
-        }
+                //check if size field is empty
+                if (isEmpty(size)) {
+                    showSnackbar("Please enter farm size.")
+                    return
+                }
 
-        //check if phone number field is empty
-        if (isEmpty(size)) {
-            showSnackbar("Please enter farm size.")
-            return
-        }
+                //check if ward details are provided
+                if (isEmpty(desc)) {
+                    showSnackbar("Please enter a description of the farm")
+                    return
+                }
 
-        //check if ward details are provided
-        if (isEmpty(desc)) {
-            showSnackbar("Please enter a description of the farm")
-            return
-        }
+                if (isEmpty(farmerWard)) {
+                    showSnackbar("Please choose a ward to proceed")
+                }
 
-        if (isEmpty(farmerWard)) {
-            showSnackbar("Please choose a ward to proceed")
-        }
+//                Log.e("Size", size)
+//                Log.e("Desc", desc)
+//                Log.e("Ward", farmerWard)
 
 //        if (location == null) {
 //            Log.e(TAG, "Getting location")
 //            getLocation()
 //        }
 
-        if (name.isNotEmpty() && size.isNotEmpty() && desc.isNotEmpty() && location != null && getWard(farmerWard) != null) {
-            if (NetworkHelper.isOnline(activity)) {
+                if (size.isNotEmpty() && desc.isNotEmpty() && getWard(farmerWard) != null) {
+                    if (NetworkHelper.isOnline(activity)) {
 //                val locale = "${location!!.latitude}, ${location!!.longitude}"
-                val locale = "1.235, 3.567"
+                        val locale = "1.235, 3.567"
 
-                if (!activity.isFinishing) {
-                    val dialog = indeterminateProgressDialog("Please wait")
-                    compositeDisposable.add(
-                            restInterface.addFarm(FarmAuditDetails(farmer!!.id!!, getWard(farmerWard)!!.id, size, desc, locale))
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({
-                                        dialog.dismiss()
-                                        showMessage(it)
-                                    }) {
-                                        dialog.dismiss()
-                                        Log.e(TAG, it.localizedMessage, it)
+                        Log.e(TAG, "Here")
 
-                                        ErrorHandler.showError(it)
-                                    }
-                    )
+                        if (!activity.isFinishing) {
+                            val dialog = indeterminateProgressDialog("Please wait")
+                            compositeDisposable.add(
+                                    restInterface.addFarm(FarmAuditDetails(farmerId!!, getWard(farmerWard)!!.id, size, desc, locale))
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe({
+                                                dialog.dismiss()
+                                                showMessage(it)
+                                            }) {
+                                                dialog.dismiss()
+                                                Log.e(TAG, it.localizedMessage, it)
+
+                                                ErrorHandler.showError(it)
+                                            }
+                            )
+                        }
+                    } else
+                        snackbar(parentLayout!!, getString(R.string.network_unavailable))
                 }
-            } else
-                snackbar(parentLayout!!, getString(R.string.network_unavailable))
+            }
         }
     }
 
     /**
      * Show appropriate message of transaction; whether success or failure
      */
-    private fun showMessage(farmAuditResponse: FarmAuditResponse) {
-        if (farmAuditResponse.error != null) {
+    private fun showMessage(farmCreationResponse: FarmCreationResponse) {
+        if (farmCreationResponse.error != null) {
             if (!activity.isFinishing)
-                alert(buildMessage(farmAuditResponse.farmAuditErrors!!).toString(), "Error") {
+                alert(buildMessage(farmCreationResponse.farmAuditErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
                 }.show()
         } else {
             if (!activity.isFinishing)
-                alert(getString(R.string.farm_audit_successful), null) {
+                alert(farmCreationResponse.message!!, null) {
                     yesButton {
                         it.dismiss()
 

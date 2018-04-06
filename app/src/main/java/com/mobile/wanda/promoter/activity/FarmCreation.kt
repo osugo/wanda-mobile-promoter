@@ -22,13 +22,13 @@ import org.jetbrains.anko.design.snackbar
 /**
  * Created by kombo on 05/03/2018.
  */
-class AddFarm : BaseActivity(), FarmersList.SelectionListener {
+class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
 
     private val compositeDisposable = CompositeDisposable()
 
     companion object {
-        val TAG: String = AddFarm::class.java.simpleName
-        val PERMISSION_REQUEST_CODE = 12
+        val TAG: String = FarmCreation::class.java.simpleName
+        const val PERMISSION_REQUEST_CODE = 12
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,7 @@ class AddFarm : BaseActivity(), FarmersList.SelectionListener {
     override fun onFarmerSelected(id: Long, name: String) {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.contentFrame, FarmCreationFragment.newInstance(id, name))
+                .replace(R.id.contentFrame, FarmCreationFragment.newInstance(id))
                 .commitAllowingStateLoss()
     }
 
