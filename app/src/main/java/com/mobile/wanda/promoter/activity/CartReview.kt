@@ -1,6 +1,9 @@
 package com.mobile.wanda.promoter.activity
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.google.gson.Gson
@@ -9,19 +12,22 @@ import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.OrderReviewAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
+import com.mobile.wanda.promoter.model.OrderPlacementRequest
 import com.mobile.wanda.promoter.model.PendingOrder
+import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.util.NetworkHelper
 import com.mobile.wanda.promoter.view.DividerItemDecoration
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import kotlinx.android.synthetic.main.cart_review.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.yesButton
+import org.jetbrains.anko.*
 
 /**
  * Created by kombo on 25/03/2018.
@@ -29,6 +35,7 @@ import org.jetbrains.anko.yesButton
 class CartReview : BaseActivity(), View.OnClickListener {
 
     private var orderId: Int? = null
+    private var pendingOrder: PendingOrder? = null
     private val disposable = CompositeDisposable()
 
     private val restInterface by lazy {
@@ -75,12 +82,16 @@ class CartReview : BaseActivity(), View.OnClickListener {
      * Load items from cart onto recycler
      */
     private fun loadCart(orderString: String) {
-        val pendingOrder = getPendingOrder(orderString)
+        pendingOrder = getPendingOrder(orderString)
         orderId = pendingOrder?.details?.id
 
         if (pendingOrder != null) {
-            val adapter = OrderReviewAdapter(pendingOrder.details!!.items!!)
+            val adapter = OrderReviewAdapter(pendingOrder!!.details!!.items!!)
             recyclerView.adapter = adapter
+
+            itemsCost.text = "${pendingOrder!!.details!!.itemsCost}"
+            deliveryCost.text = "${pendingOrder!!.details!!.deliveryCost}"
+            total.text = "${pendingOrder!!.details!!.totalCost}"
         }
     }
 
@@ -103,14 +114,62 @@ class CartReview : BaseActivity(), View.OnClickListener {
      * Prompts the user to either choose whether products are to be delivered or picked up
      */
     private fun showPickUpPrompt() {
-       alert("Would you like the delivery to be made to the farm?"){
-           yesButton {
-//               placeOrder(1)
-           }
-           noButton {
-//               placeOrder(0)
-           }
-       }.show()
+        alert {
+            customView {
+                verticalLayout {
+                    textView("Would you like the delivery to be made to the farm?") {
+                        textSize = 18f
+                        textColor = Color.BLACK
+                        padding = dip(17)
+                    }
+
+                    linearLayout {
+                        button("No") {
+                            textColor = Color.WHITE
+                            background = ContextCompat.getDrawable(this@CartReview, R.color.colorPrimary)
+                            typeface = Typeface.createFromAsset(this@CartReview.assets, "fonts/PT_Sans-Web-Bold.ttf")
+                        }.lparams(width = dip(0), height = wrapContent) {
+                            weight = 1f
+                            rightMargin = dip(1)
+                        }.setOnClickListener {
+                            placeOrder(0)
+                        }
+
+                        button("Yes") {
+                            textColor = Color.WHITE
+                            background = ContextCompat.getDrawable(this@CartReview, R.color.colorPrimary)
+                            typeface = Typeface.createFromAsset(this@CartReview.assets, "fonts/PT_Sans-Web-Bold.ttf")
+                        }.lparams(width = dip(0), height = wrapContent) {
+                            weight = 1f
+                        }.setOnClickListener {
+                            placeOrder(1)
+                        }
+                    }.lparams(width = matchParent, height = wrapContent) {
+                        weightSum = 2f
+                    }
+                }
+            }
+        }.show()
+    }
+
+    private fun placeOrder(shouldDeliver: Int) {
+        if (NetworkHelper.isOnline(this)) {
+            if (!isFinishing) {
+                showLoadingDialog()
+
+                disposable.add(
+                        restInterface.placeOrder(OrderPlacementRequest(pendingOrder!!.details!!.farmer!!.id!!, shouldDeliver))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({
+                                    
+                                }) {
+                                    hideLoadingDialog()
+                                    ErrorHandler.showError(it)
+                                }
+                )
+            }
+        }
     }
 
     private fun showMessage(pendingOrder: PendingOrder) {
@@ -143,7 +202,5 @@ class CartReview : BaseActivity(), View.OnClickListener {
 
     companion object {
         const val PENDING_ORDER = "pendingOrder"
-        private const val DELIVERY = "Delivery"
-        private const val PICK_UP = "Pick up"
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PendingOrder(
 
-        @field:SerializedName("details")
+        @field:SerializedName("data")
         val details: OrderDetails? = null,
 
         @field:SerializedName("message")

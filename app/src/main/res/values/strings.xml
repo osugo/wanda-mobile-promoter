@@ -71,6 +71,9 @@
     <string name="checkout">Checkout</string>
     <string name="order_review">Order Review</string>
     <string name="complete_order">Complete Order</string>
+    <string name="total">Total</string>
+    <string name="items_cost">Items Cost</string>
+    <string name="delivery_cost">Estimated Delivery Cost</string>
 
     <plurals name="no_of_items">
         <item quantity="one">Checkout (%d)</item>

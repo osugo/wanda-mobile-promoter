@@ -346,7 +346,7 @@ class ProductsList : BaseActivity() {
         }
 
         showLoadingDialog()
-        restInterface.placeOrder(order)
+        restInterface.createOrder(order)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
