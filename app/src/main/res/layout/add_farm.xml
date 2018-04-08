@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<EditText-->
-    <!--android:id="@+id/username"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="15dp"-->
-    <!--android:layout_marginEnd="15dp"-->
-    <!--android:layout_marginStart="15dp"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:background="@drawable/textbox_bg"-->
-    <!--android:hint="@string/name"-->
-    <!--android:inputType="textCapWords" />-->
-
     <AutoCompleteTextView
         android:id="@+id/ward"
         android:layout_width="match_parent"
@@ -57,7 +45,7 @@
 
     <Button
         android:id="@+id/submit"
-        fontPath="fonts/CircularStd-Bold.ttf"
+        fontPath="fonts/PT_Sans-Web-Bold.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

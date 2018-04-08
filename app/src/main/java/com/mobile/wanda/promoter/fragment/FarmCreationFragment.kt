@@ -13,11 +13,11 @@ import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.activity.FarmerRegistration
 import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
+import com.mobile.wanda.promoter.model.Ward
 import com.mobile.wanda.promoter.model.errors.FarmAuditErrors
-import com.mobile.wanda.promoter.model.requests.FarmAuditDetails
+import com.mobile.wanda.promoter.model.requests.FarmDetails
 import com.mobile.wanda.promoter.model.requests.WardList
 import com.mobile.wanda.promoter.model.responses.FarmCreationResponse
-import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
@@ -87,7 +87,7 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.farm_audit, container, false)
+        val view = inflater.inflate(R.layout.add_farm, container, false)
 
         submit = view.find(R.id.submit) as Button
         ward = view.find(R.id.ward) as AutoCompleteTextView
@@ -190,7 +190,7 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
                         if (!activity.isFinishing) {
                             val dialog = indeterminateProgressDialog("Please wait")
                             compositeDisposable.add(
-                                    restInterface.addFarm(FarmAuditDetails(farmerId!!, getWard(farmerWard)!!.id, size, desc, locale))
+                                    restInterface.addFarm(FarmDetails(farmerId!!.toInt(), getWard(farmerWard)!!.id!!.toInt(), size, desc, locale))
                                             .subscribeOn(Schedulers.io())
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .subscribe({

@@ -11,7 +11,6 @@ import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
 import com.mobile.wanda.promoter.model.requests.WardList
 import com.mobile.wanda.promoter.model.responses.FarmerRegistrationResponse
-import com.mobile.wanda.promoter.model.responses.Ward
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
@@ -177,9 +176,6 @@ class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
     private fun showMessage(farmerRegistrationResponse: FarmerRegistrationResponse) {
         if (farmerRegistrationResponse.error != null) {
             if (!isFinishing)
-//                alert(buildMessage(farmerRegistrationResponse.registrationErrors!), "Error") {
-//                    yesButton { it.dismiss() }
-//                }.show()
                 alert("Error creating farmer", null) {
                     yesButton {
                         it.dismiss()

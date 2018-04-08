@@ -35,6 +35,11 @@
             android:name=".activity.CartReview"
             android:label="@string/order_review"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.FarmVisit"
+            android:label="@string/farm_visit"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.PromoterVoucher"
             android:label="Promoter Voucher Management"
