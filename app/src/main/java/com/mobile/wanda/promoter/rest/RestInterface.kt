@@ -1,5 +1,6 @@
 package com.mobile.wanda.promoter.rest
 
+import com.mobile.wanda.promoter.model.FarmList
 import com.mobile.wanda.promoter.model.OrderPlacementRequest
 import com.mobile.wanda.promoter.model.PendingOrder
 import com.mobile.wanda.promoter.model.orders.Order
@@ -7,10 +8,7 @@ import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.requests.*
 import com.mobile.wanda.promoter.model.responses.*
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by kombo on 23/11/2017.
@@ -68,4 +66,7 @@ interface RestInterface {
 
     @GET("lookup/ward?search")
     fun getWards(): Observable<WardList>
+
+    @GET("lookup?farm/{farmerId}")
+    fun getFarms(@Path("farmerId") farmerId: Int): Observable<FarmList>
 }

@@ -17,10 +17,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.adapter.FarmerAdapter
+import com.mobile.wanda.promoter.adapter.FarmsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
-import com.mobile.wanda.promoter.model.requests.FarmerList
-import com.mobile.wanda.promoter.model.responses.Farmer
+import com.mobile.wanda.promoter.model.FarmList
+import com.mobile.wanda.promoter.model.UserFarm
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
@@ -35,12 +35,12 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.find
 
 /**
- * Created by kombo on 04/03/2018.
+ * Created by kombo on 02/05/2018.
  */
-class FarmersList : Fragment(), SearchView.OnQueryTextListener {
+class FarmsList: Fragment(), SearchView.OnQueryTextListener {
 
     private val disposable = CompositeDisposable()
-    private var farmerAdapter: FarmerAdapter? = null
+    private var farmsAdapter: FarmsAdapter? = null
     private var callback: SelectionListener? = null
 
     private var loadingIndicator: ProgressBar? = null
@@ -49,6 +49,8 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     private var errorText: TextView? = null
     private var recyclerView: RecyclerView? = null
     private var searchView: SearchView? = null
+
+    private var farmerId: Int? = null
 
     private val restInterface by lazy {
         RestClient.client.create(RestInterface::class.java)
@@ -65,19 +67,36 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
         errorText?.text = errorEvent.message
     }
 
+    companion object {
+
+        const val ID = "id"
+
+        fun newInstance(id: Int): FarmsList {
+            val bundle = Bundle().apply {
+                putInt(ID, id)
+            }
+
+            val fragment = FarmsList()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.farmer_list, container, false)
 
         initViews(view)
 
-        getFarmers()
+        farmerId = arguments?.getInt(ID)
+
+        getFarms()
 
         retry?.setOnClickListener {
             recyclerView?.visibility = View.GONE
             errorLayout?.visibility = View.GONE
             loadingIndicator?.visibility = View.VISIBLE
 
-            getFarmers()
+            getFarms()
         }
 
         return view
@@ -108,23 +127,23 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextSubmit(query: String?): Boolean = false
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        farmerAdapter?.filter?.filter(newText)
+        farmsAdapter?.filter?.filter(newText)
         return true
     }
 
     /**
      * Load farmers from network
      */
-    private fun getFarmers() {
-        if (NetworkHelper.isOnline(activity as AppCompatActivity)) {
+    private fun getFarms() {
+        if (NetworkHelper.isOnline(activity as AppCompatActivity) && farmerId != null) {
             loadingIndicator?.visibility = View.VISIBLE
 
             disposable.add(
-                    restInterface.getFarmers()
+                    restInterface.getFarms(farmerId!!)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
-                                showFarmers(it)
+                                showFarms(it)
                             }) {
                                 ErrorHandler.showError(it)
                             }
@@ -139,19 +158,17 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     /**
      * load retrieved farmers into view
      */
-    private fun showFarmers(farmerList: FarmerList) {
-        if (!realm.isClosed) {
+    private fun showFarms(farmList: FarmList) {
             loadingIndicator?.visibility = View.GONE
 
             recyclerView?.visibility = View.VISIBLE
 
-            farmerAdapter = FarmerAdapter(farmerList.farmers!!, object : FarmerAdapter.ClickListener {
-                override fun onItemClicked(farmer: Farmer) {
-                    callback?.onFarmerSelected(farmer.id!!, farmer.name!!)
+            farmsAdapter = FarmsAdapter(farmList.farms!!, object : FarmsAdapter.ClickListener {
+                override fun onItemClicked(farm: UserFarm) {
+                    callback?.onFarmSelected(farm.id)
                 }
             })
-            recyclerView?.adapter = farmerAdapter
-        }
+            recyclerView?.adapter = farmsAdapter
     }
 
     /**
@@ -192,6 +209,6 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     }
 
     interface SelectionListener {
-        fun onFarmerSelected(id: Long, name: String)
+        fun onFarmSelected(id: Int?)
     }
 }
