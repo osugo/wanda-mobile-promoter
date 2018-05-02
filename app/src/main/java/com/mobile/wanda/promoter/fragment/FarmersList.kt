@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
@@ -23,7 +25,6 @@ import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
-import com.wang.avi.AVLoadingIndicatorView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -42,7 +43,7 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     private var farmerAdapter: FarmerAdapter? = null
     private var callback: SelectionListener? = null
 
-    private var loadingIndicator: AVLoadingIndicatorView? = null
+    private var loadingIndicator: ProgressBar? = null
     private var retry: Button? = null
     private var errorLayout: LinearLayout? = null
     private var errorText: TextView? = null
@@ -95,7 +96,7 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
         searchView = v.find(R.id.searchView) as SearchView
         errorLayout = v.find(R.id.errorLayout) as LinearLayout
         recyclerView = v.find(R.id.recyclerView) as RecyclerView
-        loadingIndicator = v.find(R.id.loadingIndicator) as AVLoadingIndicatorView
+        loadingIndicator = v.find(R.id.loadingIndicator) as ProgressBar
 
         recyclerView?.layoutManager = LinearLayoutManager(activity)
 
@@ -103,8 +104,8 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initSearchView() {
-        val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         searchView?.setOnQueryTextListener(this)
     }
 
@@ -119,9 +120,8 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
      * Load farmers from network
      */
     private fun getFarmers() {
-        if (NetworkHelper.isOnline(activity)) {
+        if (NetworkHelper.isOnline(activity as AppCompatActivity)) {
             loadingIndicator?.visibility = View.VISIBLE
-            loadingIndicator?.smoothToShow()
 
             disposable.add(
                     restInterface.getFarmers()
@@ -146,7 +146,6 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
     private fun showFarmers(farmerList: FarmerList) {
         if (!realm.isClosed) {
             loadingIndicator?.visibility = View.GONE
-            loadingIndicator?.smoothToHide()
 
             recyclerView?.visibility = View.VISIBLE
 

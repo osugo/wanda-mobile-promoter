@@ -22,7 +22,7 @@ class MenuAdapter(private val menus: ArrayList<MenuItem>, private val clickListe
     /**
      * Bind items to viewholder
      */
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bindItems(menus[holder.adapterPosition], clickListener, holder.adapterPosition)
     }
 
@@ -34,7 +34,7 @@ class MenuAdapter(private val menus: ArrayList<MenuItem>, private val clickListe
     /**
      * Inflate the view and create the viewholder
      */
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.main_menu_item_layout, parent, false)
         return ViewHolder(view)
     }

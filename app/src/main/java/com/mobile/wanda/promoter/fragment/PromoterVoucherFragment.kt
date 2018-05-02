@@ -53,7 +53,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
-        if (!activity.isFinishing)
+        if (!activity!!.isFinishing)
             alert(errorEvent.message, null) {
                 yesButton {
                     it.dismiss()
@@ -77,7 +77,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.checkBalance -> {
-                if (NetworkHelper.isOnline(activity))
+                if (NetworkHelper.isOnline(activity!!))
                     checkBalance()
                 else
                     snackbar(parentLayout!!, getString(R.string.network_unavailable))
@@ -90,7 +90,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
      * Request balance from server
      */
     private fun checkBalance() {
-        if (!activity.isFinishing) {
+        if (!activity!!.isFinishing) {
             val dialog = indeterminateProgressDialog("Please wait...")
 
             disposable.add(
@@ -113,7 +113,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
      * Displays the promoter's voucher balance in a dialog
      */
     private fun showBalance(balance: Long) {
-        if (!activity.isFinishing)
+        if (!activity!!.isFinishing)
             alert(String.format("Your voucher balance is %s KES", balance), "Balance") {
                 yesButton {
                     it.dismiss()

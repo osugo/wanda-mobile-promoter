@@ -14,12 +14,12 @@ import com.mobile.wanda.promoter.model.PendingOrder
  */
 class OrdersAdapter(private val pendingOrders: ArrayList<PendingOrder>, private val clickListener: ClickListener) : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.order_item_layout, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.bindItems(pendingOrders[holder.adapterPosition], clickListener)
     }
 

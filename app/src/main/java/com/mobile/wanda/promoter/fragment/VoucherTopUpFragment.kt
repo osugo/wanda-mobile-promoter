@@ -76,7 +76,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
-        if (!activity.isFinishing)
+        if (!activity!!.isFinishing)
             alert(errorEvent.message, null) {
                 yesButton {
                     it.dismiss()
@@ -103,7 +103,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
             R.id.topUp -> {
                 when {
                     amount?.text.isNullOrBlank() || amount?.text.toString() == "0" -> snackbar(parentLayout!!, getString(R.string.enter_valid_amount))
-                    else -> if (NetworkHelper.isOnline(activity))
+                    else -> if (NetworkHelper.isOnline(activity!!))
                         showOptions()
                     else
                         snackbar(parentLayout!!, getString(R.string.network_unavailable))
@@ -134,7 +134,7 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
         }
 
         paymentMethod?.let {
-            if (!activity.isFinishing) {
+            if (!activity!!.isFinishing) {
                 val dialog = indeterminateProgressDialog("Please wait")
 
                 val call = if (userId != null)
@@ -162,13 +162,13 @@ class VoucherTopUpFragment : Fragment(), View.OnClickListener {
      */
     private fun showMessage(voucherTopupResponse: VoucherTopupResponse) {
         if (voucherTopupResponse.error != null) {
-            if (!activity.isFinishing)
+            if (!activity!!.isFinishing)
             //show dialog with error messages
                 alert(buildMessage(voucherTopupResponse.voucherTopupErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
                 }.show()
         } else {
-            if (!activity.isFinishing)
+            if (!activity!!.isFinishing)
             //show dialog with success message
                 alert("Please wait for instructions on how to pay for the voucher", null) {
                     yesButton {

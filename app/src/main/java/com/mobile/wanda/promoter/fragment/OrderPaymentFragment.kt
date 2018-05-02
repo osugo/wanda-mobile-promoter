@@ -74,7 +74,7 @@ class OrderPaymentFragment : Fragment(), View.OnClickListener {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
-        if (!activity.isFinishing)
+        if (!activity!!.isFinishing)
             alert(errorEvent.message, null) {
                 yesButton {
                     it.dismiss()
@@ -85,7 +85,7 @@ class OrderPaymentFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.order_payment_layout, container, false)
 
-        orderId = arguments.getLong(ORDER_ID)
+        orderId = arguments?.getLong(ORDER_ID)
 
         amount = view.findViewById(R.id.amount) as EditText
         pay = view.findViewById(R.id.pay) as Button
@@ -99,7 +99,7 @@ class OrderPaymentFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.pay -> {
-                if (NetworkHelper.isOnline(activity)) {
+                if (NetworkHelper.isOnline(activity!!)) {
                     showPaymentOptions()
                 } else {
                     snackbar(parentLayout!!, getString(R.string.network_unavailable))
@@ -130,7 +130,7 @@ class OrderPaymentFragment : Fragment(), View.OnClickListener {
         }
 
         paymentMethod?.let {
-            if (!activity.isFinishing && orderId != null) {
+            if (!activity!!.isFinishing && orderId != null) {
                 val dialog = indeterminateProgressDialog("Please wait")
 
                 disposable.add(
@@ -154,7 +154,7 @@ class OrderPaymentFragment : Fragment(), View.OnClickListener {
      */
     private fun showMessage(paymentResponse: PaymentResponse) {
         if (paymentResponse.error != null) {
-            if (paymentResponse.error && !activity.isFinishing) {
+            if (paymentResponse.error && !activity!!.isFinishing) {
                 alert(paymentResponse.message!!, null) {
                     yesButton {
                         it.dismiss()

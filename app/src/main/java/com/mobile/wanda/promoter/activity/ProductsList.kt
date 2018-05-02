@@ -361,12 +361,10 @@ class ProductsList : BaseActivity() {
 
     private fun showLoadingIndicator() {
         loadingIndicator.visibility = View.VISIBLE
-        loadingIndicator.show()
     }
 
     private fun hideLoadingIndicator() {
         loadingIndicator.visibility = View.GONE
-        loadingIndicator.hide()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -31,8 +31,8 @@ class FarmerAdapter(private val farmers: ArrayList<Farmer>, private val clickLis
 
     override fun getItemCount() = if (filteredList != null) filteredList!!.size else 0
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindItem(farmers[position], clickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindItem(farmers[position], clickListener)
     }
 
     override fun getFilter(): Filter {

@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.event.ErrorEvent
+import com.mobile.wanda.promoter.model.Ward
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors
 import com.mobile.wanda.promoter.model.requests.FarmerRegistrationDetails
 import com.mobile.wanda.promoter.model.requests.WardList
@@ -149,7 +150,7 @@ class FarmerRegistration : BaseActivity(), View.OnClickListener, AnkoLogger {
                     val dialog = indeterminateProgressDialog("Please wait")
 
                     disposable.add(
-                            restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id))
+                            restInterface.registerFarmer(FarmerRegistrationDetails(name.toString(), phone.toString(), farmerCollectionCenter.toString(), getWard(farmerWard.toString())!!.id!!.toLong()))
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe({

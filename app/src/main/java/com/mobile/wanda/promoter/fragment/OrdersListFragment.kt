@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.adapter.OrdersAdapter
 import com.mobile.wanda.promoter.model.PendingOrder
-import com.wang.avi.AVLoadingIndicatorView
 import io.realm.Realm
 
 /**
@@ -24,7 +24,7 @@ import io.realm.Realm
  */
 class OrdersListFragment : Fragment() {
 
-    private var loadingIndicator: AVLoadingIndicatorView? = null
+    private var loadingIndicator: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
     private var empty: TextView? = null
 
@@ -45,7 +45,7 @@ class OrdersListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pending_orders, container, false)
 
-        loadingIndicator = view.findViewById(R.id.loadingIndicator) as AVLoadingIndicatorView
+        loadingIndicator = view.findViewById(R.id.loadingIndicator) as ProgressBar
         recyclerView = view.findViewById(R.id.recyclerView) as RecyclerView
         empty = view.findViewById(R.id.empty) as TextView
 
@@ -88,12 +88,10 @@ class OrdersListFragment : Fragment() {
     private fun showLoadingIndicator() {
         empty?.visibility = View.GONE
         loadingIndicator?.visibility = View.VISIBLE
-        loadingIndicator?.smoothToShow()
     }
 
     private fun hideLoadingIndicator() {
         loadingIndicator?.visibility = View.GONE
-        loadingIndicator?.smoothToHide()
     }
 
     /**

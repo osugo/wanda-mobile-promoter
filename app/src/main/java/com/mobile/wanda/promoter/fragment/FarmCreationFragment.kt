@@ -78,7 +78,7 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(errorEvent: ErrorEvent) {
-        if (!activity.isFinishing)
+        if (!activity!!.isFinishing)
             alert(errorEvent.message, null) {
                 yesButton {
                     it.dismiss()
@@ -181,13 +181,13 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
 //        }
 
                 if (size.isNotEmpty() && desc.isNotEmpty() && getWard(farmerWard) != null) {
-                    if (NetworkHelper.isOnline(activity)) {
+                    if (NetworkHelper.isOnline(activity!!)) {
 //                val locale = "${location!!.latitude}, ${location!!.longitude}"
                         val locale = "1.235, 3.567"
 
                         Log.e(TAG, "Here")
 
-                        if (!activity.isFinishing) {
+                        if (!activity!!.isFinishing) {
                             val dialog = indeterminateProgressDialog("Please wait")
                             compositeDisposable.add(
                                     restInterface.addFarm(FarmDetails(farmerId!!.toInt(), getWard(farmerWard)!!.id!!.toInt(), size, desc, locale))
@@ -216,12 +216,12 @@ class FarmCreationFragment : Fragment(), View.OnClickListener {
      */
     private fun showMessage(farmCreationResponse: FarmCreationResponse) {
         if (farmCreationResponse.error != null) {
-            if (!activity.isFinishing)
+            if (!activity!!.isFinishing)
                 alert(buildMessage(farmCreationResponse.farmAuditErrors!!).toString(), "Error") {
                     yesButton { it.dismiss() }
                 }.show()
         } else {
-            if (!activity.isFinishing)
+            if (!activity!!.isFinishing)
                 alert(farmCreationResponse.message!!, null) {
                     yesButton {
                         it.dismiss()
