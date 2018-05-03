@@ -32,6 +32,7 @@ import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.bundleOf
 import org.jetbrains.anko.find
 
 /**
@@ -72,12 +73,8 @@ class FarmsList: Fragment(), SearchView.OnQueryTextListener {
         const val ID = "id"
 
         fun newInstance(id: Int): FarmsList {
-            val bundle = Bundle().apply {
-                putInt(ID, id)
-            }
-
             val fragment = FarmsList()
-            fragment.arguments = bundle
+            fragment.arguments = bundleOf(ID to id)
             return fragment
         }
     }

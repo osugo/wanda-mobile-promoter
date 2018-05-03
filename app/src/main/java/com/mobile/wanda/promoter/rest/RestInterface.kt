@@ -67,6 +67,6 @@ interface RestInterface {
     @GET("lookup/ward?search")
     fun getWards(): Observable<WardList>
 
-    @GET("lookup?farm/{farmerId}")
+    @GET("lookup/farm/{farmerId}")
     fun getFarms(@Path("farmerId") farmerId: Int): Observable<FarmList>
 }
