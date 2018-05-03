@@ -76,6 +76,7 @@
     <string name="delivery_cost">Estimated Delivery Cost</string>
     <string name="comments">Comments</string>
     <string name="farm_visit">Farm Visit</string>
+    <string name="search_farm">Search Farm</string>
 
     <plurals name="no_of_items">
         <item quantity="one">Checkout (%d)</item>

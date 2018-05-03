@@ -43,6 +43,7 @@ class Home : BaseActivity() {
         val menu = ArrayList<MenuItem>()
         menu.add(MenuItem(getString(R.string.farmer_reg), R.drawable.ic_farmer))
         menu.add(MenuItem(getString(R.string.add_farm), R.drawable.ic_fields))
+        menu.add(MenuItem(getString(R.string.farm_visit), R.drawable.ic_farm))
         menu.add(MenuItem(getString(R.string.order_mgmt), R.drawable.ic_order))
         menu.add(MenuItem(getString(R.string.farmer_voucher), R.drawable.ic_voucher))
         menu.add(MenuItem(getString(R.string.promoter_voucher), R.drawable.ic_voucher))
@@ -58,10 +59,11 @@ class Home : BaseActivity() {
         when (position) {
             0 -> startActivity<FarmerRegistration>()
             1 -> startActivity<FarmCreation>()
-            2 -> startActivity<OrderManagement>()
-            3 -> startActivity<FarmerVoucherTopup>()
-            4 -> startActivity<PromoterVoucher>()
-            5 -> startActivity<Commissions>()
+            2 -> startActivity<FarmAudit>()
+            3 -> startActivity<OrderManagement>()
+            4 -> startActivity<FarmerVoucherTopup>()
+            5 -> startActivity<PromoterVoucher>()
+            6 -> startActivity<Commissions>()
         }
     }
 }

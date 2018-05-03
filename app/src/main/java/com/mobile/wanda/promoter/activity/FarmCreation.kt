@@ -68,16 +68,6 @@ class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
     }
 
     /**
-     * Show farm report fragment after selecting farmer
-     */
-    override fun onFarmerSelected(id: Long, name: String) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.contentFrame, FarmCreationFragment.newInstance(id))
-                .commitAllowingStateLoss()
-    }
-
-    /**
      * Retrieve user location in background
      */
     private fun getLocation() {
@@ -93,7 +83,7 @@ class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
                 }) {
                     when (it) {
                         is RxGps.PermissionException -> ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
-                        is RxGps.PlayServicesNotAvailableException -> snackbar(parentLayout!!, "Google Play Services is not available. Unable to retrieve location")
+                        is RxGps.PlayServicesNotAvailableException -> snackbar(parentLayout, "Google Play Services is not available. Unable to retrieve location")
                     }
                 }
     }
@@ -111,6 +101,16 @@ class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
                 })
             }
         }
+    }
+
+    /**
+     * Show farm report fragment after selecting farmer
+     */
+    override fun onFarmerSelected(id: Long, name: String) {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.contentFrame, FarmCreationFragment.newInstance(id))
+                .commitAllowingStateLoss()
     }
 
     private fun addDisposable(disposable: Disposable) {
