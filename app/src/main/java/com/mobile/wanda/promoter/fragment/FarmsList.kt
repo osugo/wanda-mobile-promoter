@@ -116,6 +116,8 @@ class FarmsList: Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initSearchView() {
+        searchView?.queryHint = getString(R.string.search_farm)
+
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         searchView?.setOnQueryTextListener(this)

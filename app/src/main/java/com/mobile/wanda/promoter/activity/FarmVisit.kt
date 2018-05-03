@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import com.github.florent37.rxgps.RxGps
+import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
 import com.mobile.wanda.promoter.event.ErrorEvent
@@ -77,7 +78,7 @@ class FarmVisit : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (NetworkHelper.isOnline(this)) {
-            val review = comments.text
+            val review = comments.text.toString()
 
             if (review.isEmpty()) {
                 snackbar(parentLayout, "Please enter a review to proceed")
@@ -101,11 +102,11 @@ class FarmVisit : BaseActivity(), View.OnClickListener {
                 Log.e(TAG, "Location is not null")
             }
 
-            if (review.isNotEmpty() && location != null) {
+            if (review.isNotEmpty()) {
                 if (!isFinishing) {
                     showLoadingDialog()
                     disposable.add(
-                            restInterface.addFarmVisit(FarmReview(farmId, location))
+                            restInterface.addFarmVisit(FarmReview(farmId, location ?: "1.2345, 3.5667", review))
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe({
@@ -192,6 +193,8 @@ class FarmVisit : BaseActivity(), View.OnClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val location = it
+                    Log.e("Location", Gson().toJson(location))
+
                     Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {
                         it.executeTransaction { it.copyToRealmOrUpdate(UserLocation(0, location.latitude.toString(), location.longitude.toString())) }
                     }
