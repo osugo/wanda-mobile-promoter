@@ -19,7 +19,6 @@ import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient
 import com.mobile.wanda.promoter.rest.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
-import com.mobile.wanda.promoter.view.DividerItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -77,7 +76,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
      */
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(DividerItemDecoration(this))
+//        recyclerView.addItemDecoration(DividerItemDecoration(this))
     }
 
     /**
@@ -92,7 +91,7 @@ class CartReview : BaseActivity(), View.OnClickListener {
             recyclerView.adapter = adapter
 
             itemsCost.text = "${pendingOrder!!.details!!.itemsCost}"
-            deliveryCost.text = "${pendingOrder!!.details!!.deliveryCost}"
+            deliveryCost.text = "${pendingOrder!!.details!!.estimateDeliveryCost}"
             total.text = "${pendingOrder!!.details!!.totalCost}"
         }
     }
@@ -166,7 +165,8 @@ class CartReview : BaseActivity(), View.OnClickListener {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe({
-
+                                    hideLoadingDialog()
+                                    showMessage(it)
                                 }) {
                                     hideLoadingDialog()
                                     ErrorHandler.showError(it)
@@ -180,11 +180,15 @@ class CartReview : BaseActivity(), View.OnClickListener {
         if (pendingOrder.error == null) {
             alert(pendingOrder.message!!) {
                 yesButton {
-                    //TODO proceed to payment
+                    startActivity(intentFor<ProcessOrder>(ProcessOrder.ORDER to Gson().toJson(pendingOrder)))
                 }
             }.show()
         } else {
-            //TODO show error message here
+            alert(pendingOrder.errorData!!.message!!) {
+                yesButton {
+                    it.dismiss()
+                }
+            }.show()
         }
     }
 

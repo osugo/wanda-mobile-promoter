@@ -32,6 +32,10 @@
             android:label="Commissions"
             android:launchMode="singleTask" />
         <activity
+            android:name=".activity.ProcessOrder"
+            android:label="@string/orders"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".activity.CartReview"
             android:label="@string/order_review"
             android:launchMode="singleTask" />

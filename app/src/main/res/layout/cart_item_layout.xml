@@ -6,27 +6,37 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-    <TextView
-        android:id="@+id/position"
+    <!--<TextView-->
+    <!--android:id="@+id/position"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginEnd="15dp"-->
+    <!--android:text="1"-->
+    <!--android:textColor="#000"-->
+    <!--android:layout_marginRight="15dp" />-->
+
+    <com.github.vipulasri.timelineview.TimelineView
+        android:id="@+id/marker"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         android:layout_marginEnd="15dp"
-        android:text="1"
-        android:textColor="#000"
-        android:layout_marginRight="15dp" />
+        app:line="@color/colorPrimary"
+        app:linePadding="5dp"
+        app:lineSize="2dp"
+        app:markerSize="10dp" />
 
     <TextView
         android:id="@+id/item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/position"
-        android:layout_toRightOf="@+id/position"
+        android:layout_toEndOf="@+id/marker"
+        android:layout_toRightOf="@+id/marker"
         android:ellipsize="end"
         android:text="NPR"
-        android:textColor="#000"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/amount"

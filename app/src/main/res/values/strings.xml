@@ -77,6 +77,10 @@
     <string name="comments">Comments</string>
     <string name="farm_visit">Farm Visit</string>
     <string name="search_farm">Search Farm</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="reference">Reference Number</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="order_details">Order Details</string>
 
     <plurals name="no_of_items">
         <item quantity="one">Checkout (%d)</item>
