@@ -6,36 +6,35 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-    <TextView
-        android:id="@+id/position"
+    <com.github.vipulasri.timelineview.TimelineView
+        android:id="@+id/marker"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         android:layout_marginEnd="15dp"
-        android:text="1"
-        android:textColor="#000"
-        android:layout_marginRight="15dp" />
+        app:line="@color/colorPrimary"
+        app:linePadding="5dp"
+        app:lineSize="2dp"
+        app:markerSize="10dp" />
 
     <TextView
         android:id="@+id/item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/position"
-        android:layout_toRightOf="@+id/position"
+        android:layout_toEndOf="@+id/marker"
         android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_toStartOf="@+id/amount"
         android:text="NPR"
-        android:textColor="#000"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#000" />
 
     <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:gravity="center"
         android:text="10"
@@ -47,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:tint="#999"
         android:visibility="gone"

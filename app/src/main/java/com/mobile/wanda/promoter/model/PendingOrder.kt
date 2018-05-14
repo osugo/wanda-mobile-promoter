@@ -11,5 +11,13 @@ data class PendingOrder(
         val message: String? = null,
 
         @SerializedName("error")
-        val error: Boolean? = null
+        val error: Boolean? = null,
+
+        @SerializedName("error_data")
+        var errorData: ErrorData? = null
+)
+
+data class ErrorData(
+        @SerializedName("message")
+        var message: String? = null
 )
