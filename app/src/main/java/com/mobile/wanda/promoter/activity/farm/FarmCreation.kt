@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.farm
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,6 +8,7 @@ import android.util.Log
 import com.github.florent37.rxgps.RxGps
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.fragment.FarmCreationFragment
 import com.mobile.wanda.promoter.fragment.FarmersList
 import com.mobile.wanda.promoter.model.UserLocation

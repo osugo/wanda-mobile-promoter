@@ -1,9 +1,10 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.orders
 
 import android.os.Bundle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.fragment.OrderDetailsFragment
 import com.mobile.wanda.promoter.fragment.OrderPaymentFragment
 import com.mobile.wanda.promoter.model.PendingOrder

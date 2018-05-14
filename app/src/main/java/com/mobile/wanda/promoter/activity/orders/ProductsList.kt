@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.orders
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -14,6 +14,7 @@ import android.view.View
 import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.adapter.ProductsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.Cart

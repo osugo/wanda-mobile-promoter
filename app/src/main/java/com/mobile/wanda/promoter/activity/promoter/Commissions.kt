@@ -1,8 +1,10 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.promoter
 
 import android.os.Bundle
 import android.view.View
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.activity.BaseActivity
+import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.rest.ErrorHandler
 import com.mobile.wanda.promoter.rest.RestClient

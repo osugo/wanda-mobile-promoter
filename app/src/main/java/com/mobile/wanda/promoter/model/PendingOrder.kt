@@ -1,6 +1,7 @@
 package com.mobile.wanda.promoter.model
 
 import com.google.gson.annotations.SerializedName
+import com.mobile.wanda.promoter.model.errors.ErrorData
 
 data class PendingOrder(
 
@@ -15,9 +16,4 @@ data class PendingOrder(
 
         @SerializedName("error_data")
         var errorData: ErrorData? = null
-)
-
-data class ErrorData(
-        @SerializedName("message")
-        var message: String? = null
 )

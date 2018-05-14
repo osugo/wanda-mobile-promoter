@@ -1,8 +1,9 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.orders
 
 import android.os.Bundle
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.fragment.FarmersList
 import com.mobile.wanda.promoter.model.Cart
 import com.mobile.wanda.promoter.model.CartItem

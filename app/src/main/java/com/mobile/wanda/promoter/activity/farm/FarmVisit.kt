@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.farm
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -10,6 +10,8 @@ import com.github.florent37.rxgps.RxGps
 import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.activity.BaseActivity
+import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.UserLocation
 import com.mobile.wanda.promoter.model.errors.FarmReviewError

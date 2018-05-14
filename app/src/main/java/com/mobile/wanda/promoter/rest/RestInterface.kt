@@ -2,6 +2,7 @@ package com.mobile.wanda.promoter.rest
 
 import com.mobile.wanda.promoter.model.FarmList
 import com.mobile.wanda.promoter.model.OrderPlacementRequest
+import com.mobile.wanda.promoter.model.PaymentBody
 import com.mobile.wanda.promoter.model.PendingOrder
 import com.mobile.wanda.promoter.model.orders.Order
 import com.mobile.wanda.promoter.model.orders.ProductResults
@@ -69,4 +70,7 @@ interface RestInterface {
 
     @GET("lookup/farm/{farmerId}")
     fun getFarms(@Path("farmerId") farmerId: Int): Observable<FarmList>
+
+    @POST("payments/pending-payments")
+    fun completePendingPayment(@Body paymentBody: PaymentBody): Observable<PendingPaymentResponse>
 }

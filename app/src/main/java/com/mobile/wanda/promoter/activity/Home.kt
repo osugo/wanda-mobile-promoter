@@ -4,6 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.activity.farm.FarmAudit
+import com.mobile.wanda.promoter.activity.farm.FarmCreation
+import com.mobile.wanda.promoter.activity.farmer.FarmerRegistration
+import com.mobile.wanda.promoter.activity.farmer.FarmerVoucherTopup
+import com.mobile.wanda.promoter.activity.orders.OrderManagement
+import com.mobile.wanda.promoter.activity.promoter.Commissions
+import com.mobile.wanda.promoter.activity.promoter.PromoterVoucher
 import com.mobile.wanda.promoter.adapter.MenuAdapter
 import com.mobile.wanda.promoter.model.MenuItem
 import com.mobile.wanda.promoter.service.BackgroundDataLoaderService

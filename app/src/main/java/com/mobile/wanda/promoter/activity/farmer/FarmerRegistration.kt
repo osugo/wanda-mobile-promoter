@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.farmer
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.Ward
 import com.mobile.wanda.promoter.model.errors.FarmerRegistrationErrors

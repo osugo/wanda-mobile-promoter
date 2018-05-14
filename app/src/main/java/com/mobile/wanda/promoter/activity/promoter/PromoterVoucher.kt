@@ -1,7 +1,8 @@
-package com.mobile.wanda.promoter.activity
+package com.mobile.wanda.promoter.activity.promoter
 
 import android.os.Bundle
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.activity.BaseActivity
 import com.mobile.wanda.promoter.fragment.PromoterVoucherFragment
 import com.mobile.wanda.promoter.fragment.VoucherTopUpFragment
 

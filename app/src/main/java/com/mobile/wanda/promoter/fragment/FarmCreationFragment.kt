@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.activity.FarmerRegistration
+import com.mobile.wanda.promoter.activity.farmer.FarmerRegistration
 import com.mobile.wanda.promoter.activity.Home
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.Ward
