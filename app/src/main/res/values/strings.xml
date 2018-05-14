@@ -81,6 +81,7 @@
     <string name="reference">Reference Number</string>
     <string name="make_payment">Make Payment</string>
     <string name="order_details">Order Details</string>
+    <string name="cart_cleared">Cart cleared</string>
 
     <plurals name="no_of_items">
         <item quantity="one">Checkout (%d)</item>

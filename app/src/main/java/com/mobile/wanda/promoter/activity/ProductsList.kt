@@ -319,7 +319,7 @@ class ProductsList : BaseActivity() {
 
                         cartItems.text = resources.getQuantityString(R.plurals.no_of_items, 0, 0)
 
-                        toast("Cart cleared")
+                        snackbar(parentLayout, getString(R.string.cart_cleared))
                     }
                 }
             }

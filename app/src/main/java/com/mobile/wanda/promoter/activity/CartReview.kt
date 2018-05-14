@@ -76,7 +76,6 @@ class CartReview : BaseActivity(), View.OnClickListener {
      */
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.addItemDecoration(DividerItemDecoration(this))
     }
 
     /**
