@@ -82,6 +82,8 @@
     <string name="make_payment">Make Payment</string>
     <string name="order_details">Order Details</string>
     <string name="cart_cleared">Cart cleared</string>
+    <string name="no_pending_payments">You have no pending payments</string>
+    <string name="pending_payment">Pending Payment</string>
 
     <plurals name="no_of_items">
         <item quantity="one">Checkout (%d)</item>

@@ -3,18 +3,17 @@ package com.mobile.wanda.promoter.activity.orders
 import android.os.Bundle
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.activity.BaseActivity
-import com.mobile.wanda.promoter.fragment.OrderPaymentFragment
-import com.mobile.wanda.promoter.fragment.OrdersListFragment
-import com.mobile.wanda.promoter.model.PendingOrder
+import com.mobile.wanda.promoter.fragment.PendingPaymentsFragment
+import com.mobile.wanda.promoter.model.PendingPayment
 
 /**
  * Created by kombo on 08/03/2018.
  */
 
 /**
- * Inflates fragment that shows the list of pending orders
+ * Inflates fragment that shows the list of pending payments
  */
-class PendingOrders : BaseActivity(), OrdersListFragment.ClickListener {
+class PendingPayments : BaseActivity(), PendingPaymentsFragment.ClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,18 +26,16 @@ class PendingOrders : BaseActivity(), OrdersListFragment.ClickListener {
             supportActionBar?.title = getString(R.string.orders)
             supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.contentFrame, OrdersListFragment())
+                    .replace(R.id.contentFrame, PendingPaymentsFragment())
                     .commitAllowingStateLoss()
         }
     }
 
-    override fun onOrderSelected(order: PendingOrder) {
+    //TODO load a fragment that show the order summary and allow the promter to complete the payment
+    override fun onItemSelected(pendingPayment: PendingPayment) {
         if (!isFinishing) {
-            supportActionBar?.title = getString(R.string.pay_order)
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.contentFrame, OrderPaymentFragment())
-                    .commitAllowingStateLoss()
+            supportActionBar?.title = getString(R.string.pending_payment)
+
         }
     }
 }

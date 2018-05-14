@@ -32,6 +32,6 @@ class OrderManagement : BaseActivity(), OrderOptionsFragment.ClickListener {
     }
 
     override fun onClickPendingOrders() {
-        startActivity(intentFor<PendingOrders>().clearTop())
+        startActivity(intentFor<PendingPayments>().clearTop())
     }
 }

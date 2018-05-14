@@ -32,7 +32,7 @@ class OrdersAdapter(private val pendingOrders: ArrayList<PendingOrder>, private 
 
         fun bindItems(order: PendingOrder, clickListener: ClickListener) {
             this.clickListener = clickListener
-            this.position = position
+//            this.position = position
 
             val parentLayout = itemView.findViewById<LinearLayout>(R.id.parentLayout)
             val text = itemView.findViewById<TextView>(R.id.order)

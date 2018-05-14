@@ -48,7 +48,7 @@
             android:label="Promoter Voucher Management"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.orders.PendingOrders"
+            android:name=".activity.orders.PendingPayments"
             android:label="@string/orders"
             android:launchMode="singleTask" />
         <activity

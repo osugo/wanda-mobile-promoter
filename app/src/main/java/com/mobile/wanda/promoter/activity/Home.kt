@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import com.mobile.wanda.promoter.R
+import com.mobile.wanda.promoter.R.id.recycler
 import com.mobile.wanda.promoter.activity.farm.FarmAudit
 import com.mobile.wanda.promoter.activity.farm.FarmCreation
 import com.mobile.wanda.promoter.activity.farmer.FarmerRegistration

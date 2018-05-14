@@ -1,9 +1,6 @@
 package com.mobile.wanda.promoter.rest
 
-import com.mobile.wanda.promoter.model.FarmList
-import com.mobile.wanda.promoter.model.OrderPlacementRequest
-import com.mobile.wanda.promoter.model.PaymentBody
-import com.mobile.wanda.promoter.model.PendingOrder
+import com.mobile.wanda.promoter.model.*
 import com.mobile.wanda.promoter.model.orders.Order
 import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.requests.*
@@ -17,8 +14,8 @@ import retrofit2.http.*
 
 interface RestInterface {
 
-    @GET("vouchers/balance")
-    fun voucherBalance(): Observable<VoucherBalance>
+    @get:GET("vouchers/balance")
+    val voucherBalance: Observable<VoucherBalance>
 
     @POST("/wanda-mobile/oauth/token")
     fun login(@Body loginCredentials: LoginCredentials): Observable<AuthCredentials>
@@ -56,21 +53,24 @@ interface RestInterface {
     @POST("payments/top-up-promoter-voucher")
     fun promoterVoucherTopUp(@Body promoterVoucherTopUpRequest: PromoterVoucherTopUpRequest): Observable<VoucherTopupResponse>
 
-    @GET("commissions/check")
-    fun checkCommission(): Observable<Commission>
+    @get:GET("commissions/check")
+    val checkCommission: Observable<Commission>
 
     @POST("commissions/request-payment")
     fun requestCommission(): Observable<CommissionRequestResponse>
 
-    @GET("lookup/farmer?search")
-    fun getFarmers(): Observable<FarmerList>
+    @get:GET("lookup/farmer?search")
+    val getFarmers: Observable<FarmerList>
 
-    @GET("lookup/ward?search")
-    fun getWards(): Observable<WardList>
+    @get:GET("lookup/ward?search")
+    val getWards: Observable<WardList>
 
     @GET("lookup/farm/{farmerId}")
     fun getFarms(@Path("farmerId") farmerId: Int): Observable<FarmList>
 
-    @POST("payments/pending-payments")
+    @get:GET("payments/pending-payments")
+    val pendingPayments: Observable<PendingPaymentsList>
+
+    @POST("payments/complete-pending-payments")
     fun completePendingPayment(@Body paymentBody: PaymentBody): Observable<PendingPaymentResponse>
 }
