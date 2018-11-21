@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.rest;
+package com.mobile.wanda.promoter.network;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

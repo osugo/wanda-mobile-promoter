@@ -1,6 +1,7 @@
 package com.mobile.wanda.promoter.activity.farm
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -71,6 +72,7 @@ class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
     /**
      * Retrieve user location in background
      */
+    @SuppressLint("CheckResult")
     private fun getLocation() {
         RxGps(this).locationLowPower()
                 .doOnSubscribe(this::addDisposable)
@@ -97,9 +99,9 @@ class FarmCreation : BaseActivity(), FarmersList.SelectionListener {
             PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocation()
             } else {
-                snackbar(parentLayout, "Location permission denied.").setAction("Allow", {
+                snackbar(parentLayout, "Location permission denied.").setAction("Allow") {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
-                })
+                }
             }
         }
     }

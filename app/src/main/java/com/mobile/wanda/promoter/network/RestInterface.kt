@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.rest
+package com.mobile.wanda.promoter.network
 
 import com.mobile.wanda.promoter.model.*
 import com.mobile.wanda.promoter.model.orders.Order

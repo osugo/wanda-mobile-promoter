@@ -18,9 +18,9 @@ import com.mobile.wanda.promoter.model.errors.FarmAuditErrors
 import com.mobile.wanda.promoter.model.requests.FarmDetails
 import com.mobile.wanda.promoter.model.requests.WardList
 import com.mobile.wanda.promoter.model.responses.FarmCreationResponse
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

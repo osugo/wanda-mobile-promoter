@@ -23,9 +23,9 @@ import com.mobile.wanda.promoter.model.orders.OrderItem
 import com.mobile.wanda.promoter.model.orders.Product
 import com.mobile.wanda.promoter.model.orders.ProductResults
 import com.mobile.wanda.promoter.model.responses.Farmer
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.CartUtil
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers

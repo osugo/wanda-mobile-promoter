@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -15,6 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.model.PendingOrder
+import org.jetbrains.anko.bundleOf
 
 /**
  * Created by kombo on 10/05/2018.
@@ -40,7 +40,7 @@ class OrderDetailsFragment : Fragment() {
 
     companion object {
 
-        val ORDER = "order"
+        const val ORDER = "order"
         const val CURRENCY = "KES"
 
         fun newInstance(orderString: String): OrderDetailsFragment {

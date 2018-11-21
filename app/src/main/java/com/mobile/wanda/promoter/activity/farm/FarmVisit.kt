@@ -1,6 +1,7 @@
 package com.mobile.wanda.promoter.activity.farm
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -17,9 +18,9 @@ import com.mobile.wanda.promoter.model.UserLocation
 import com.mobile.wanda.promoter.model.errors.FarmReviewError
 import com.mobile.wanda.promoter.model.requests.FarmReview
 import com.mobile.wanda.promoter.model.responses.FarmReviewResponse
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -188,6 +189,7 @@ class FarmVisit : BaseActivity(), View.OnClickListener {
     /**
      * Retrieve user location in background
      */
+    @SuppressLint("CheckResult")
     private fun getLocation() {
         RxGps(this).locationLowPower()
                 .doOnSubscribe(this::addDisposable)

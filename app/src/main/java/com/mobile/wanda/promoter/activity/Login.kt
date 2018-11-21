@@ -15,9 +15,9 @@ import com.google.gson.Gson
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.model.errors.LoginError
 import com.mobile.wanda.promoter.model.requests.LoginCredentials
-import com.mobile.wanda.promoter.rest.HeaderlessRestClient
-import com.mobile.wanda.promoter.rest.RestInterface
-import com.mobile.wanda.promoter.rest.RetrofitException
+import com.mobile.wanda.promoter.network.HeaderlessRestClient
+import com.mobile.wanda.promoter.network.RestInterface
+import com.mobile.wanda.promoter.network.RetrofitException
 import com.mobile.wanda.promoter.util.NetworkHelper
 import com.mobile.wanda.promoter.util.PrefUtils
 import io.reactivex.android.schedulers.AndroidSchedulers

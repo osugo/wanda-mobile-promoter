@@ -18,9 +18,9 @@ import com.mobile.wanda.promoter.adapter.PendingPaymentsAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.PendingPayment
 import com.mobile.wanda.promoter.model.PendingPaymentsList
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

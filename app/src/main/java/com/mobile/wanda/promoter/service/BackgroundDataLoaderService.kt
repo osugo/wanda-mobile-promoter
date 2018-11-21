@@ -4,8 +4,8 @@ import android.app.IntentService
 import android.content.Intent
 import android.util.Log
 import com.mobile.wanda.promoter.Wanda
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
@@ -27,7 +27,7 @@ class BackgroundDataLoaderService: IntentService(TAG) {
 
         (intent.action == GET_WARDS).let {
             RestClient.client.create(RestInterface::class.java)
-                    .getWards()
+                    .getWards
                     .subscribeOn(Schedulers.io())
                     .subscribe({ wardList ->
                         Realm.getInstance(Wanda.INSTANCE.realmConfig()).use {

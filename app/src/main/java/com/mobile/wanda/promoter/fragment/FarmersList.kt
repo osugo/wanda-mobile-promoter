@@ -21,9 +21,9 @@ import com.mobile.wanda.promoter.adapter.FarmerAdapter
 import com.mobile.wanda.promoter.event.ErrorEvent
 import com.mobile.wanda.promoter.model.requests.FarmerList
 import com.mobile.wanda.promoter.model.responses.Farmer
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -120,7 +120,7 @@ class FarmersList : Fragment(), SearchView.OnQueryTextListener {
             loadingIndicator?.visibility = View.VISIBLE
 
             disposable.add(
-                    restInterface.getFarmers()
+                    restInterface.getFarmers
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({

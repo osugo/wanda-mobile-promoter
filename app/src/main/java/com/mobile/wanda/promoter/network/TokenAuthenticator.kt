@@ -1,4 +1,4 @@
-package com.mobile.wanda.promoter.rest
+package com.mobile.wanda.promoter.network
 
 import android.content.Context
 import android.content.Intent

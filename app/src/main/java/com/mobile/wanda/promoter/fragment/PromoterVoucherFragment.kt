@@ -10,9 +10,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.mobile.wanda.promoter.R
 import com.mobile.wanda.promoter.event.ErrorEvent
-import com.mobile.wanda.promoter.rest.ErrorHandler
-import com.mobile.wanda.promoter.rest.RestClient
-import com.mobile.wanda.promoter.rest.RestInterface
+import com.mobile.wanda.promoter.network.ErrorHandler
+import com.mobile.wanda.promoter.network.RestClient
+import com.mobile.wanda.promoter.network.RestInterface
 import com.mobile.wanda.promoter.util.NetworkHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -94,7 +94,7 @@ class PromoterVoucherFragment : Fragment(), View.OnClickListener {
             val dialog = indeterminateProgressDialog("Please wait...")
 
             disposable.add(
-                    restInterface.voucherBalance()
+                    restInterface.voucherBalance
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
